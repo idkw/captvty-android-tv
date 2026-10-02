@@ -3,8 +3,13 @@ package dev.valentin.replaytv
 import android.app.Application
 import android.content.Context
 import dev.valentin.replaytv.catalog.CatalogRepository
+import dev.valentin.replaytv.catalog.M6Catalog
 import dev.valentin.replaytv.download.DownloadManager
 import dev.valentin.replaytv.download.DownloadService
+import dev.valentin.replaytv.drm.Accounts
+import dev.valentin.replaytv.drm.DrmPlayback
+import dev.valentin.replaytv.drm.M6Playback
+import dev.valentin.replaytv.drm.Tf1Playback
 import dev.valentin.replaytv.ytdlp.YtDlp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,11 +41,18 @@ class ReplayTvApp : Application() {
         private set
     lateinit var downloads: DownloadManager
         private set
+    lateinit var accounts: Accounts
+        private set
+    lateinit var drm: DrmPlayback
+        private set
 
     override fun onCreate() {
         super.onCreate()
         ytDlp = YtDlp(this, scope)
-        catalog = CatalogRepository(http, ytDlp)
+        val m6Catalog = M6Catalog(http)
+        catalog = CatalogRepository(http, ytDlp, m6Catalog)
+        accounts = Accounts(this)
+        drm = DrmPlayback(accounts, Tf1Playback(http, accounts), M6Playback(http, accounts, m6Catalog))
         downloads = DownloadManager(this, ytDlp, scope)
         DownloadService.ensureChannel(this)
         ytDlp.initAsync()

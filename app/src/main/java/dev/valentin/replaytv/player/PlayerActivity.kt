@@ -10,6 +10,7 @@ import androidx.activity.addCallback
 import androidx.activity.compose.setContent
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.C
 import androidx.media3.common.Player
@@ -21,11 +22,12 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import dev.valentin.replaytv.ReplayTvApp
+import dev.valentin.replaytv.drm.DrmStream
 import dev.valentin.replaytv.ui.theme.ReplayTvTheme
 
 /**
- * Lecteur plein écran (Media3 / ExoPlayer) pour un flux HLS distant ou un MP4 local, avec une
- * surcouche de contrôle pensée pour la télécommande :
+ * Lecteur plein écran (Media3 / ExoPlayer) pour un flux HLS distant, un flux DASH chiffré en Widevine
+ * (TF1+, M6+) ou un MP4 local, avec une surcouche de contrôle pensée pour la télécommande :
  * - Retour masque d'abord la surcouche, et ne quitte la vidéo que si elle est déjà masquée ;
  * - gauche/droite déplacent la tête de lecture par pas de 10 s, accélérés si la touche reste enfoncée ;
  * - la position est mémorisée pour reprendre la lecture au retour sur la vidéo.
@@ -53,7 +55,7 @@ class PlayerActivity : ComponentActivity() {
         prefs = PlayerPrefs(this)
         ui.subtitleSizeIndex = prefs.subtitleSize
 
-        val exoPlayer = buildPlayer(uri, title)
+        val exoPlayer = buildPlayer(uri, title, drmFrom(intent))
         val saved = positions.get(resumeKey)
         if (saved > 0) {
             exoPlayer.seekTo(saved)
@@ -80,19 +82,27 @@ class PlayerActivity : ComponentActivity() {
         }
     }
 
-    private fun buildPlayer(uri: String, title: String): ExoPlayer {
+    private fun buildPlayer(uri: String, title: String, drm: DrmStream?): ExoPlayer {
         val httpFactory = DefaultHttpDataSource.Factory()
             .setUserAgent(ReplayTvApp.USER_AGENT)
             .setAllowCrossProtocolRedirects(true)
         val exoPlayer = ExoPlayer.Builder(this)
             .setMediaSourceFactory(DefaultMediaSourceFactory(DefaultDataSource.Factory(this, httpFactory)))
             .build()
-        exoPlayer.setMediaItem(
-            MediaItem.Builder()
-                .setUri(uri)
-                .setMediaMetadata(MediaMetadata.Builder().setTitle(title).build())
-                .build(),
-        )
+        val item = MediaItem.Builder()
+            .setUri(uri)
+            .setMediaMetadata(MediaMetadata.Builder().setTitle(title).build())
+        if (drm != null) {
+            // L'URL du manifeste TF1 ne finit pas par .mpd : le type doit être donné explicitement.
+            item.setMimeType(MimeTypes.APPLICATION_MPD)
+            item.setDrmConfiguration(
+                MediaItem.DrmConfiguration.Builder(C.WIDEVINE_UUID)
+                    .setLicenseUri(drm.licenseUrl)
+                    .setLicenseRequestHeaders(drm.licenseHeaders)
+                    .build(),
+            )
+        }
+        exoPlayer.setMediaItem(item.build())
         // Sous-titres désactivés par défaut ; sinon la langue choisie la dernière fois.
         val wanted = prefs.subtitleLanguage
         exoPlayer.trackSelectionParameters = exoPlayer.trackSelectionParameters.buildUpon()
@@ -297,6 +307,8 @@ class PlayerActivity : ComponentActivity() {
         private const val EXTRA_URI = "uri"
         private const val EXTRA_TITLE = "title"
         private const val EXTRA_RESUME_KEY = "resumeKey"
+        private const val EXTRA_LICENSE_URL = "licenseUrl"
+        private const val EXTRA_LICENSE_HEADERS = "licenseHeaders"
         private const val SEEK_STEP_MS = 10_000L
         private const val SEEK_REPEAT_INTERVAL_MS = 150L
         private val SEEK_BACK_KEYS = setOf(KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_MEDIA_REWIND)
@@ -308,5 +320,17 @@ class PlayerActivity : ComponentActivity() {
                 .putExtra(EXTRA_URI, uri)
                 .putExtra(EXTRA_TITLE, title)
                 .putExtra(EXTRA_RESUME_KEY, resumeKey)
+
+        fun intent(context: Context, stream: DrmStream, title: String, resumeKey: String): Intent =
+            intent(context, stream.manifestUrl, title, resumeKey)
+                .putExtra(EXTRA_LICENSE_URL, stream.licenseUrl)
+                .putExtra(EXTRA_LICENSE_HEADERS, HashMap(stream.licenseHeaders))
+
+        private fun drmFrom(intent: Intent): DrmStream? {
+            val licenseUrl = intent.getStringExtra(EXTRA_LICENSE_URL) ?: return null
+            @Suppress("DEPRECATION", "UNCHECKED_CAST")
+            val headers = intent.getSerializableExtra(EXTRA_LICENSE_HEADERS) as? HashMap<String, String>
+            return DrmStream(intent.getStringExtra(EXTRA_URI).orEmpty(), licenseUrl, headers.orEmpty())
+        }
     }
 }

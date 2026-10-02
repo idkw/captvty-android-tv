@@ -2,7 +2,8 @@
 
 Prototype d'application Android TV (testée pour une box Google TV Streamer) qui permet de
 **parcourir, lire et télécharger les replays** des chaînes gratuites françaises, directement
-depuis la télévision, sans ordinateur.
+depuis la télévision, sans ordinateur. TF1+ et M6+, protégés par DRM, sont lisibles en streaming
+seulement.
 
 > Captvty lui-même est un logiciel propriétaire (.NET/Windows, « gratuit mais pas libre », sa
 > licence interdit la réutilisation). Il ne peut pas être empaqueté dans un APK. Ce projet
@@ -19,13 +20,30 @@ depuis la télévision, sans ordinateur.
 | Téléchargement en MP4 dans la box, avec progression et notification | OK, yt-dlp + ffmpeg embarqués, service au premier plan |
 | Lecture des fichiers téléchargés | OK |
 | Lecteur télécommande : Retour masque la surcouche avant de quitter, ◀ ▶ = ±10 s (accéléré si maintenu), reprise à la dernière position | OK |
-| TF1+ / M6+ | **Non** : les flux sont protégés par DRM (Widevine). yt-dlp refuse, et il n'existe pas de moyen légal de les télécharger. Captvty bute sur la même limite. |
+| Catalogue TF1+ (TF1, TMC, TFX, TF1 Séries Films, LCI) et M6+ | OK, via l'API GraphQL de tf1.fr et l'API « middleware » de M6, sans compte. Seuls les replays gratuits sont listés. |
+| Lecture TF1+ / M6+ | OK en **streaming uniquement** : flux DASH chiffré en Widevine, licence obtenue avec un compte gratuit de la chaîne (écran « Comptes »). Jusqu'en 720p avec un compte gratuit. |
+| Téléchargement TF1+ / M6+ | **Non** : le déchiffrement se fait dans le module DRM de la box, le fichier n'est jamais accessible en clair. Captvty bute sur la même limite. |
 | Navigation à la télécommande (D-pad, Retour) | OK, Compose for TV |
 | Sous-titres (menu ▲ : piste, taille, version audio), désactivés par défaut | OK |
 | Recherche, reprise de téléchargement interrompu | Pas encore |
 
 Testé en amont (poste de travail, yt-dlp 2026.08.19) : France TV et Arte fournissent des
 flux HLS 1080p **sans DRM** ; TF1 renvoie `This video is DRM protected`.
+
+### TF1+ et M6+
+
+Les comptes gratuits se saisissent dans **Comptes** (accueil, en haut à droite). L'app vérifie
+les identifiants auprès de la chaîne avant de les enregistrer, chiffrés par une clé du Keystore
+Android. Au moment de lire :
+
+- TF1+ : connexion Gigya (`compte.tf1.fr`) → jeton TF1 → `mediainfo.tf1.fr` renvoie le manifeste
+  DASH et l'URL de licence Widevine ;
+- M6+ : connexion Gigya (`login-gigya.m6.fr`) → JWT 6cloud → jeton « upfront » par vidéo, présenté
+  à la licence DRMtoday ; le manifeste DASH vient de la fiche publique de la vidéo.
+
+Ces API ne sont pas documentées : les identifiants de requêtes GraphQL de TF1 et les clés Gigya
+viennent du code des sites web et peuvent changer sans préavis. Leur usage par une application
+tierce n'est probablement pas autorisé par les conditions d'utilisation des deux plateformes.
 
 ## Aperçu
 
@@ -56,13 +74,20 @@ app/src/main/java/dev/valentin/replaytv/
 ├── catalog/
 │   ├── FranceTvCatalog.kt    Lecture des cartes <a data-card-link> des pages france.tv
 │   ├── ArteCatalog.kt        API EMAC (pages), API player (métadonnées), yt-dlp (collections)
+│   ├── Tf1Catalog.kt         API GraphQL tf1.fr : programmes par chaîne et catégorie, replays gratuits
+│   ├── M6Catalog.kt          API middleware M6 : dossiers, programmes, épisodes gratuits, fiche vidéo
 │   └── CatalogRepository.kt  Dispatch par source
 ├── ytdlp/YtDlp.kt            Façade youtubedl-android : init, `-J` (analyse), `--flat-playlist`, téléchargement
 ├── download/
 │   ├── DownloadManager.kt    File d'attente séquentielle, état observable, métadonnées JSON à côté des MP4
 │   └── DownloadService.kt    Service au premier plan + notification de progression
-├── player/PlayerActivity.kt  ExoPlayer plein écran (HLS distant ou fichier local)
-└── ui/                       Home, Browse (rangées de cartes), Detail, Downloads, thème
+├── drm/
+│   ├── Accounts.kt           Comptes TF1+ / M6+ chiffrés (AES-GCM, clé du Keystore)
+│   ├── Tf1Playback.kt        Connexion TF1+, manifeste DASH et URL de licence
+│   ├── M6Playback.kt         Connexion M6+, jeton DRMtoday, manifeste DASH
+│   └── DrmPlayback.kt        Dispatch par source, vérification et enregistrement des comptes
+├── player/PlayerActivity.kt  ExoPlayer plein écran (HLS distant, DASH Widevine ou fichier local)
+└── ui/                       Home, Browse (rangées de cartes), Detail, DrmDetail, Accounts, Downloads, thème
 ```
 
 Flux d'une vidéo : carte du catalogue → `yt-dlp -J <url>` sur la box → manifeste HLS
@@ -76,7 +101,7 @@ Composants principaux :
   pour Android (arm64-v8a, x86_64). yt-dlp est mis à jour indépendamment de l'APK
   (`YoutubeDL.updateYoutubeDL`, pas encore branché dans l'UI).
 - Jetpack Compose + `androidx.tv:tv-material` pour l'interface télécommande.
-- Media3 ExoPlayer 1.11 (HLS).
+- Media3 ExoPlayer 1.11 (HLS, DASH, Widevine).
 - OkHttp, kotlinx-serialization, Coil.
 
 ## Télécharger l'APK
@@ -116,8 +141,9 @@ L'application apparaît dans le lanceur Google TV sous « Replay TV ».
 
 ## Limites connues et pistes
 
-- **DRM** : TF1+ et M6+ sont hors de portée (Widevine). France TV et Arte couvrent l'essentiel
-  des documentaires/fictions du service public.
+- **DRM** : TF1+ et M6+ se lisent en streaming mais ne se téléchargent pas. Les contenus payants
+  (TF1+ `MAX`, packs M6+) sont masqués. La lecture a été validée sur l'émulateur (Widevine L3) ;
+  la box dispose d'un Widevine matériel (L1).
 - Le catalogue France TV dépend du HTML du site : un changement de balisage casse la lecture
   des cartes (`FranceTvCatalog.parseCards`). L'API EMAC d'Arte est plus stable.
 - Pas de permission de stockage demandée : les fichiers sont dans le dossier privé de l'app

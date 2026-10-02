@@ -31,7 +31,7 @@ import dev.valentin.replaytv.model.Source
 import dev.valentin.replaytv.ytdlp.YtDlp
 
 @Composable
-fun HomeScreen(app: ReplayTvApp, onSection: (Section) -> Unit, onDownloads: () -> Unit) {
+fun HomeScreen(app: ReplayTvApp, onSection: (Section) -> Unit, onDownloads: () -> Unit, onAccounts: () -> Unit) {
     val ytState by app.ytDlp.state.collectAsStateWithLifecycle()
     val downloads by app.downloads.entries.collectAsStateWithLifecycle()
     val firstFocus = remember { FocusRequester() }
@@ -50,27 +50,28 @@ fun HomeScreen(app: ReplayTvApp, onSection: (Section) -> Unit, onDownloads: () -
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (ytState is YtDlp.State.Failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
             )
+            val active = downloads.count { it.isActive }
+            val done = downloads.size - active
+            Button(onClick = onDownloads) {
+                Text(
+                    buildString {
+                        append("Téléchargements")
+                        if (done > 0) append(" · $done")
+                        if (active > 0) append(" · $active en cours")
+                    },
+                )
+            }
+            Spacer(Modifier.width(12.dp))
+            Button(onClick = onAccounts) { Text("Comptes") }
         }
         Spacer(Modifier.height(24.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(48.dp), modifier = Modifier.fillMaxWidth()) {
+        Row(horizontalArrangement = Arrangement.spacedBy(32.dp), modifier = Modifier.fillMaxWidth()) {
             SectionColumn(Source.FRANCE_TV, Sections.franceTv, onSection, Modifier.weight(1f).focusRequester(firstFocus))
             SectionColumn(Source.ARTE, Sections.arte, onSection, Modifier.weight(1f))
-            Column(modifier = Modifier.weight(1f)) {
-                Text("Bibliothèque", style = MaterialTheme.typography.titleLarge)
-                Spacer(Modifier.height(12.dp))
-                val active = downloads.count { it.isActive }
-                val done = downloads.size - active
-                Button(onClick = onDownloads) {
-                    Text(
-                        buildString {
-                            append("Téléchargements")
-                            if (done > 0) append(" · $done")
-                            if (active > 0) append(" · $active en cours")
-                        },
-                    )
-                }
-            }
+            SectionColumn(Source.TF1, Sections.tf1, onSection, Modifier.weight(1f))
+            SectionColumn(Source.M6, Sections.m6, onSection, Modifier.weight(1f))
         }
     }
 }

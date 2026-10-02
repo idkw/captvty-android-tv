@@ -1,11 +1,14 @@
 package dev.valentin.replaytv.model
 
-enum class Source(val label: String) {
+/** [drm] : flux protégés par Widevine, lus via un compte de la chaîne et jamais téléchargés. */
+enum class Source(val label: String, val drm: Boolean = false) {
     FRANCE_TV("France TV"),
     ARTE("Arte"),
+    TF1("TF1+", drm = true),
+    M6("M6+", drm = true),
 }
 
-/** Une rubrique d'accueil : une page de catégorie France TV ou une page EMAC Arte. */
+/** Une rubrique d'accueil : une page France TV, une page EMAC Arte, une catégorie TF1+ ou un dossier M6+. */
 data class Section(val source: Source, val code: String, val label: String)
 
 sealed interface CatalogItem {
@@ -14,7 +17,7 @@ sealed interface CatalogItem {
     val subtitle: String?
     val imageUrl: String?
 
-    /** URL de la page web, telle que yt-dlp sait la consommer. */
+    /** URL de la page web : consommée par yt-dlp, et clé de reprise de lecture pour toutes les sources. */
     val url: String
 
     data class Video(
@@ -24,6 +27,9 @@ sealed interface CatalogItem {
         override val imageUrl: String?,
         override val url: String,
         val durationSeconds: Int?,
+        /** Identifiant de la vidéo dans l'API de la chaîne, pour les sources DRM. */
+        val streamId: String? = null,
+        val description: String? = null,
     ) : CatalogItem
 
     data class Collection(
@@ -61,6 +67,26 @@ object Sections {
         Section(Source.ARTE, "CPO", "Culture et pop"),
         Section(Source.ARTE, "DEC", "Voyages et découvertes"),
         Section(Source.ARTE, "EMI", "Les émissions"),
+    )
+
+    val tf1 = listOf(
+        Section(Source.TF1, "GT_SERIES_AND_FICTIONS", "Séries et fictions"),
+        Section(Source.TF1, "GT_ENTERTAINMENT", "Divertissements"),
+        Section(Source.TF1, "GT_MOVIES", "Cinéma"),
+        Section(Source.TF1, "GT_INFOS_MAG_AND_SPORT", "Infos, magazines et sport"),
+        Section(Source.TF1, "GT_YOUTH", "Jeunesse"),
+    )
+
+    // Identifiants des dossiers du service « 6play » de l'API middleware M6.
+    val m6 = listOf(
+        Section(Source.M6, "8", "Séries"),
+        Section(Source.M6, "10", "Divertissement"),
+        Section(Source.M6, "232", "Séries-réalité"),
+        Section(Source.M6, "907", "Cinéma"),
+        Section(Source.M6, "70", "Téléfilms"),
+        Section(Source.M6, "12", "Info et société"),
+        Section(Source.M6, "58", "Sport"),
+        Section(Source.M6, "6388", "Jeunesse"),
     )
 }
 

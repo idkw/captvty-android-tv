@@ -11,6 +11,7 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Surface
 import androidx.tv.material3.SurfaceDefaults
 import dev.valentin.replaytv.ReplayTvApp
+import dev.valentin.replaytv.drm.DrmStream
 import dev.valentin.replaytv.model.CatalogItem
 import dev.valentin.replaytv.model.Section
 import dev.valentin.replaytv.player.PlayerActivity
@@ -21,6 +22,7 @@ sealed interface Screen {
     data class Collection(val item: CatalogItem.Collection) : Screen
     data class Detail(val video: CatalogItem.Video) : Screen
     data object Downloads : Screen
+    data object Accounts : Screen
 }
 
 /** Navigation minimale par pile d'écrans ; le bouton Retour de la télécommande dépile. */
@@ -45,6 +47,10 @@ fun ReplayTvRoot(app: ReplayTvApp) {
         context.startActivity(PlayerActivity.intent(context, uri, title, resumeKey))
     }
 
+    fun playDrm(stream: DrmStream, title: String, resumeKey: String) {
+        context.startActivity(PlayerActivity.intent(context, stream, title, resumeKey))
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         colors = SurfaceDefaults.colors(containerColor = MaterialTheme.colorScheme.background),
@@ -54,6 +60,7 @@ fun ReplayTvRoot(app: ReplayTvApp) {
                 app = app,
                 onSection = { push(Screen.Browse(it)) },
                 onDownloads = { push(Screen.Downloads) },
+                onAccounts = { push(Screen.Accounts) },
             )
 
             is Screen.Browse -> BrowseScreen(
@@ -70,9 +77,16 @@ fun ReplayTvRoot(app: ReplayTvApp) {
                 onOpen = ::open,
             )
 
-            is Screen.Detail -> DetailScreen(app = app, video = current.video, onPlay = ::play)
+            is Screen.Detail ->
+                if (current.video.source.drm) {
+                    DrmDetailScreen(app = app, video = current.video, onPlay = ::playDrm, onAccounts = { push(Screen.Accounts) })
+                } else {
+                    DetailScreen(app = app, video = current.video, onPlay = ::play)
+                }
 
             Screen.Downloads -> DownloadsScreen(app = app, onPlay = ::play)
+
+            Screen.Accounts -> AccountsScreen(app = app)
         }
     }
 }
