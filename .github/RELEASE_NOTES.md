@@ -1,13 +1,18 @@
 Prototype d'application Android TV pour parcourir, lire et télécharger les replays de France TV et d'Arte directement sur la box (testé pour Google TV Streamer).
 
 **Fichiers**
-- `replaytv-*-arm64-v8a.apk` : pour la box Android TV (Google TV Streamer, Chromecast with Google TV, Shield…).
-- `replaytv-*-x86_64.apk` : pour l'émulateur Android TV.
+- `replaytv-*-universal.apk` : s'installe sur n'importe quelle box Android TV (à prendre en cas de doute).
+- `replaytv-*-arm64-v8a.apk` : box 64 bits (Google TV Streamer, Shield…), plus léger.
+- `replaytv-*-armeabi-v7a.apk` : box 32 bits (Chromecast with Google TV…).
+- `replaytv-*-x86_64.apk` : émulateur Android TV.
+
+Si l'installateur affiche « application non compatible avec votre téléviseur », c'est que l'APK ne
+contient pas l'architecture de la box : prendre l'APK universel.
 
 **Installation**
 ```bash
 adb connect <ip-de-la-box>:5555
-adb install -r replaytv-<version>-arm64-v8a.apk
+adb install -r replaytv-<version>-universal.apk
 ```
 
 **Fonctionnalités**

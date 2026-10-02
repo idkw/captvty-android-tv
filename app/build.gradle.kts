@@ -15,18 +15,19 @@ android {
         applicationId = "dev.valentin.replaytv"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.1.1"
     }
 
-    // Un APK par architecture : arm64-v8a pour la box (Google TV Streamer), x86_64 pour l'émulateur.
-    // L'environnement Python de yt-dlp pèse ~30 Mo par architecture, d'où le découpage.
+    // Un APK par architecture (arm64-v8a : box 64 bits, armeabi-v7a : box 32 bits, x86_64 : émulateur)
+    // plus un APK universel qui s'installe partout. L'environnement Python de yt-dlp pèse ~30 Mo
+    // par architecture, d'où le découpage.
     splits {
         abi {
             isEnable = true
             reset()
-            include("arm64-v8a", "x86_64")
-            isUniversalApk = false
+            include("arm64-v8a", "armeabi-v7a", "x86_64")
+            isUniversalApk = true
         }
     }
 

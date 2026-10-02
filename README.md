@@ -80,7 +80,7 @@ Composants principaux :
 ## Télécharger l'APK
 
 Les APK sont publiés dans les [releases GitHub](https://github.com/idkw/captvty-android-tv/releases)
-(`replaytv-<version>-arm64-v8a.apk` pour la box). Pousser un tag `vX.Y.Z` déclenche la
+(`replaytv-<version>-universal.apk` s'installe sur toute box ; les variantes `arm64-v8a`, `armeabi-v7a` et `x86_64` sont plus légères). Pousser un tag `vX.Y.Z` déclenche la
 construction et la publication par GitHub Actions (`.github/workflows/release.yml`).
 
 ## Compiler
@@ -89,7 +89,7 @@ construction et la publication par GitHub Actions (`.github/workflows/release.ym
 
 ```bash
 scripts/build-docker.sh                 # assembleDebug
-ls app/build/outputs/apk/debug/         # app-arm64-v8a-debug.apk, app-x86_64-debug.apk
+ls app/build/outputs/apk/debug/         # app-universal-debug.apk, app-arm64-v8a-debug.apk, …
 ```
 
 Premier lancement long (téléchargement de Gradle, du SDK Android et des dépendances) ;
@@ -107,7 +107,7 @@ Ouvrir le dossier, laisser le SDK 36 s'installer, `Run` sur un appareil Android 
 
 ```bash
 adb connect <ip-de-la-box>:5555
-adb install -r app/build/outputs/apk/debug/app-arm64-v8a-debug.apk
+adb install -r app/build/outputs/apk/debug/app-universal-debug.apk
 ```
 
 L'application apparaît dans le lanceur Google TV sous « Replay TV ».
