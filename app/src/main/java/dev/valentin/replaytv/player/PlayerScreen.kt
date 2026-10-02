@@ -38,8 +38,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -61,7 +63,7 @@ fun PlayerScreen(player: ExoPlayer, ui: PlayerUiState, title: String, onTick: ()
             ui.durationMs = player.duration.coerceAtLeast(0)
             if (++ticks % SAVE_EVERY_TICKS == 0) onTick()
             val idleFor = SystemClock.uptimeMillis() - ui.lastInteractionAt
-            if (ui.controlsVisible && ui.isPlaying && ui.seekTargetMs == null && !ui.ended && idleFor > HIDE_DELAY_MS) {
+            if (ui.controlsVisible && ui.isPlaying && ui.seekTargetMs == null && !ui.menuOpen && !ui.ended && idleFor > HIDE_DELAY_MS) {
                 ui.controlsVisible = false
             }
             delay(TICK_MS)
@@ -75,14 +77,98 @@ fun PlayerScreen(player: ExoPlayer, ui: PlayerUiState, title: String, onTick: ()
                     this.player = player
                     useController = false
                     keepScreenOn = true
+                    // Les sous-titres sont rendus par la surcouche Compose, en bas au centre.
+                    subtitleView?.visibility = android.view.View.GONE
                 }
             },
             modifier = Modifier.fillMaxSize(),
         )
 
+        Subtitles(ui, modifier = Modifier.align(Alignment.BottomCenter))
+
         AnimatedVisibility(visible = ui.controlsVisible, enter = fadeIn(), exit = fadeOut()) {
             Overlay(ui, title)
         }
+
+        AnimatedVisibility(visible = ui.menuOpen, enter = fadeIn(), exit = fadeOut(), modifier = Modifier.align(Alignment.CenterEnd)) {
+            TrackMenu(ui)
+        }
+    }
+}
+
+@Composable
+private fun Subtitles(ui: PlayerUiState, modifier: Modifier) {
+    if (ui.cues.isEmpty()) return
+    val bottomPadding = if (ui.controlsVisible) 130.dp else 56.dp
+    Column(
+        modifier = modifier.padding(bottom = bottomPadding).padding(horizontal = 160.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        ui.cues.forEach { cue ->
+            Text(
+                cue,
+                color = Color.White,
+                fontSize = PlayerPrefs.SUBTITLE_SIZE_SP[ui.subtitleSizeIndex].sp,
+                lineHeight = (PlayerPrefs.SUBTITLE_SIZE_SP[ui.subtitleSizeIndex] * 1.25f).sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(Color.Black.copy(alpha = 0.7f), RoundedCornerShape(6.dp))
+                    .padding(horizontal = 14.dp, vertical = 6.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun TrackMenu(ui: PlayerUiState) {
+    Column(
+        modifier = Modifier
+            .padding(end = 48.dp)
+            .width(460.dp)
+            .background(Color(0xE6141C2B), RoundedCornerShape(16.dp))
+            .padding(vertical = 20.dp, horizontal = 8.dp),
+    ) {
+        var lastSection: String? = null
+        ui.menuItems.forEachIndexed { index, item ->
+            if (item.section != lastSection) {
+                lastSection = item.section
+                Text(
+                    item.section,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(start = 20.dp, top = if (index == 0) 0.dp else 16.dp, bottom = 6.dp),
+                )
+            }
+            val focused = index == ui.menuIndex
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(if (focused) Color.White else Color.Transparent, RoundedCornerShape(10.dp))
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+            ) {
+                Text(
+                    if (item.selected) "●" else "○",
+                    color = if (focused) Color(0xFF141C2B) else Color.White,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Spacer(Modifier.width(14.dp))
+                Text(
+                    item.label,
+                    color = if (focused) Color(0xFF141C2B) else Color.White,
+                    style = MaterialTheme.typography.bodyLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+        Text(
+            "OK : choisir   Retour : fermer",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.White.copy(alpha = 0.6f),
+            modifier = Modifier.padding(start = 20.dp, top = 16.dp),
+        )
     }
 }
 
@@ -132,20 +218,16 @@ private fun Overlay(ui: PlayerUiState, title: String) {
             Spacer(Modifier.height(10.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 val target = ui.seekTargetMs
-                val timeText = if (target != null) {
-                    val delta = (target - ui.positionMs) / 1000
-                    "${formatClock(target)}  (${if (delta >= 0) "+" else "−"}${formatClock(kotlin.math.abs(delta) * 1000)})"
-                } else {
-                    formatClock(ui.positionMs)
-                }
+                val delta = target?.let { (it - ui.positionMs) / 1000 }
+                val deltaText = delta?.let { "  (${if (it >= 0) "+" else "−"}${formatClock(kotlin.math.abs(it) * 1000)})" } ?: ""
                 Text(
-                    "$timeText / ${formatClock(ui.durationMs)}",
+                    "${formatClock(target ?: ui.positionMs)} / ${formatClock(ui.durationMs)}$deltaText",
                     style = MaterialTheme.typography.titleMedium,
                     color = if (target != null) MaterialTheme.colorScheme.primary else Color.White,
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
-                    "OK : lecture / pause   ◀ ▶ : −10 s / +10 s (maintenir pour accélérer)   Retour : masquer",
+                    "OK : lecture / pause   ◀ ▶ : ±10 s (maintenir pour accélérer)   ▲ : sous-titres et audio   Retour : masquer",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.7f),
                 )

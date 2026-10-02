@@ -21,6 +21,14 @@ class PlayerUiState {
     var resumedFromMs by mutableLongStateOf(0L)
     var error by mutableStateOf<String?>(null)
 
+    /** Sous-titres courants, rendus par la surcouche (et non par Media3, dont le positionnement sort de l'écran). */
+    var cues by mutableStateOf<List<String>>(emptyList())
+    var subtitleSizeIndex by mutableStateOf(1)
+
+    var menuOpen by mutableStateOf(false)
+    var menuIndex by mutableStateOf(0)
+    var menuItems by mutableStateOf<List<MenuItem>>(emptyList())
+
     fun showControls() {
         controlsVisible = true
         lastInteractionAt = SystemClock.uptimeMillis()

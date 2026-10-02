@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Build debug uniquement : le lecteur est exporté pour pouvoir le lancer avec `adb shell am start`
+     et tester un flux donné sans passer par le catalogue. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <activity
+            android:name=".player.PlayerActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+    </application>
+</manifest>

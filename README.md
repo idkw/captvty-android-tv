@@ -21,7 +21,8 @@ depuis la télévision, sans ordinateur.
 | Lecteur télécommande : Retour masque la surcouche avant de quitter, ◀ ▶ = ±10 s (accéléré si maintenu), reprise à la dernière position | OK |
 | TF1+ / M6+ | **Non** : les flux sont protégés par DRM (Widevine). yt-dlp refuse, et il n'existe pas de moyen légal de les télécharger. Captvty bute sur la même limite. |
 | Navigation à la télécommande (D-pad, Retour) | OK, Compose for TV |
-| Recherche, reprise de téléchargement, sous-titres | Pas encore |
+| Sous-titres (menu ▲ : piste, taille, version audio), désactivés par défaut | OK |
+| Recherche, reprise de téléchargement interrompu | Pas encore |
 
 Testé en amont (poste de travail, yt-dlp 2026.08.19) : France TV et Arte fournissent des
 flux HLS 1080p **sans DRM** ; TF1 renvoie `This video is DRM protected`.
@@ -122,7 +123,7 @@ L'application apparaît dans le lanceur Google TV sous « Replay TV ».
 - Pas de permission de stockage demandée : les fichiers sont dans le dossier privé de l'app
   (supprimés à la désinstallation). Pour les voir depuis un autre lecteur, il faudra passer par
   `MediaStore` ou un dossier public.
-- Pas encore : recherche, mise à jour de yt-dlp depuis l'UI, sous-titres, reprise après coupure,
+- Pas encore : recherche, mise à jour de yt-dlp depuis l'UI, reprise après coupure,
   limite d'espace disque.
 - Les téléchargements tournent dans un service au premier plan ; l'application peut rester en
   arrière-plan pendant ce temps.

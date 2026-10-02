@@ -11,7 +11,11 @@ import androidx.activity.compose.setContent
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
+import androidx.media3.common.C
 import androidx.media3.common.Player
+import androidx.media3.common.TrackSelectionOverride
+import androidx.media3.common.Tracks
+import androidx.media3.common.text.CueGroup
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
@@ -30,6 +34,7 @@ class PlayerActivity : ComponentActivity() {
 
     private var player: ExoPlayer? = null
     private lateinit var positions: PlaybackPositions
+    private lateinit var prefs: PlayerPrefs
     private val ui = PlayerUiState()
     private var resumeKey = ""
     private var seekHoldStartedAt = 0L
@@ -45,6 +50,8 @@ class PlayerActivity : ComponentActivity() {
         val title = intent.getStringExtra(EXTRA_TITLE) ?: ""
         resumeKey = intent.getStringExtra(EXTRA_RESUME_KEY) ?: uri
         positions = PlaybackPositions(this)
+        prefs = PlayerPrefs(this)
+        ui.subtitleSizeIndex = prefs.subtitleSize
 
         val exoPlayer = buildPlayer(uri, title)
         val saved = positions.get(resumeKey)
@@ -59,7 +66,11 @@ class PlayerActivity : ComponentActivity() {
         // Retour (touche ou geste prédictif, Android 16 passe par ce dispatcher) : masque d'abord la
         // surcouche ; ne quitte la vidéo que si elle est déjà masquée, ou si la lecture est finie/en erreur.
         onBackPressedDispatcher.addCallback(this) {
-            if (ui.controlsVisible && !ui.ended && ui.error == null) ui.controlsVisible = false else finish()
+            when {
+                ui.menuOpen -> ui.menuOpen = false
+                ui.controlsVisible && !ui.ended && ui.error == null -> ui.controlsVisible = false
+                else -> finish()
+            }
         }
 
         setContent {
@@ -82,7 +93,21 @@ class PlayerActivity : ComponentActivity() {
                 .setMediaMetadata(MediaMetadata.Builder().setTitle(title).build())
                 .build(),
         )
+        // Sous-titres désactivés par défaut ; sinon la langue choisie la dernière fois.
+        val wanted = prefs.subtitleLanguage
+        exoPlayer.trackSelectionParameters = exoPlayer.trackSelectionParameters.buildUpon()
+            .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, wanted == null)
+            .setPreferredTextLanguage(wanted)
+            .build()
         exoPlayer.addListener(object : Player.Listener {
+            override fun onCues(cueGroup: CueGroup) {
+                ui.cues = cueGroup.cues.mapNotNull { it.text?.toString()?.trim()?.takeIf { t -> t.isNotEmpty() } }
+            }
+
+            override fun onTracksChanged(tracks: Tracks) {
+                rebuildMenu(exoPlayer)
+            }
+
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 ui.isPlaying = isPlaying
                 if (!isPlaying) ui.showControls()
@@ -115,6 +140,8 @@ class PlayerActivity : ComponentActivity() {
         }
         if (event.action != KeyEvent.ACTION_DOWN) return super.dispatchKeyEvent(event)
 
+        if (ui.menuOpen) return handleMenuKey(exoPlayer, event)
+
         return when (event.keyCode) {
             in SEEK_BACK_KEYS -> { stepSeek(exoPlayer, -1, event); true }
             in SEEK_FORWARD_KEYS -> { stepSeek(exoPlayer, +1, event); true }
@@ -126,9 +153,85 @@ class PlayerActivity : ComponentActivity() {
 
             KeyEvent.KEYCODE_MEDIA_PLAY -> { exoPlayer.play(); ui.showControls(); true }
             KeyEvent.KEYCODE_MEDIA_PAUSE -> { exoPlayer.pause(); ui.showControls(); true }
-            KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN -> { ui.showControls(); true }
+            KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_MENU, KeyEvent.KEYCODE_CAPTIONS -> { openMenu(exoPlayer); true }
+            KeyEvent.KEYCODE_DPAD_DOWN -> { ui.showControls(); true }
             else -> super.dispatchKeyEvent(event)
         }
+    }
+
+    private fun openMenu(exoPlayer: ExoPlayer) {
+        rebuildMenu(exoPlayer)
+        if (ui.menuItems.isEmpty()) return
+        ui.menuIndex = ui.menuItems.indexOfFirst { it.selected }.coerceAtLeast(0)
+        ui.menuOpen = true
+        ui.showControls()
+    }
+
+    private fun handleMenuKey(exoPlayer: ExoPlayer, event: KeyEvent): Boolean {
+        ui.showControls()
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_DPAD_UP -> ui.menuIndex = (ui.menuIndex - 1).coerceAtLeast(0)
+            KeyEvent.KEYCODE_DPAD_DOWN -> ui.menuIndex = (ui.menuIndex + 1).coerceAtMost(ui.menuItems.lastIndex)
+            KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                ui.menuItems.getOrNull(ui.menuIndex)?.action?.invoke()
+                rebuildMenu(exoPlayer)
+            }
+            KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> ui.menuOpen = false
+            KeyEvent.KEYCODE_BACK -> return super.dispatchKeyEvent(event)
+            else -> return super.dispatchKeyEvent(event)
+        }
+        return true
+    }
+
+    /** Construit le menu à partir des pistes de la vidéo : sous-titres, taille, versions audio. */
+    private fun rebuildMenu(exoPlayer: ExoPlayer) {
+        val tracks = exoPlayer.currentTracks
+        val params = exoPlayer.trackSelectionParameters
+        val items = mutableListOf<MenuItem>()
+
+        val textGroups = tracks.groupsOfType(C.TRACK_TYPE_TEXT)
+        if (textGroups.isNotEmpty()) {
+            val textDisabled = params.disabledTrackTypes.contains(C.TRACK_TYPE_TEXT)
+            items += MenuItem(SECTION_SUBTITLES, "Désactivés", textDisabled || textGroups.none { it.isSelected }) {
+                exoPlayer.trackSelectionParameters = params.buildUpon()
+                    .clearOverridesOfType(C.TRACK_TYPE_TEXT)
+                    .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true)
+                    .build()
+                prefs.subtitleLanguage = null
+                ui.cues = emptyList()
+            }
+            textGroups.forEachIndexed { index, group ->
+                val format = group.getTrackFormat(0)
+                items += MenuItem(SECTION_SUBTITLES, trackLabel(format, "Piste ${index + 1}"), !textDisabled && group.isSelected) {
+                    exoPlayer.trackSelectionParameters = exoPlayer.trackSelectionParameters.buildUpon()
+                        .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, false)
+                        .setOverrideForType(TrackSelectionOverride(group.mediaTrackGroup, 0))
+                        .build()
+                    prefs.subtitleLanguage = format.language ?: "und"
+                }
+            }
+            PlayerPrefs.SUBTITLE_SIZES.forEachIndexed { index, label ->
+                items += MenuItem(SECTION_SUBTITLE_SIZE, label, ui.subtitleSizeIndex == index) {
+                    ui.subtitleSizeIndex = index
+                    prefs.subtitleSize = index
+                }
+            }
+        }
+
+        val audioGroups = tracks.groupsOfType(C.TRACK_TYPE_AUDIO)
+        if (audioGroups.size > 1) {
+            audioGroups.forEachIndexed { index, group ->
+                val format = group.getTrackFormat(0)
+                items += MenuItem(SECTION_AUDIO, trackLabel(format, "Version ${index + 1}"), group.isSelected) {
+                    exoPlayer.trackSelectionParameters = exoPlayer.trackSelectionParameters.buildUpon()
+                        .setOverrideForType(TrackSelectionOverride(group.mediaTrackGroup, 0))
+                        .build()
+                }
+            }
+        }
+
+        ui.menuItems = items
+        if (ui.menuIndex > items.lastIndex) ui.menuIndex = items.lastIndex.coerceAtLeast(0)
     }
 
     private fun togglePlayPause(exoPlayer: ExoPlayer) {
