@@ -18,6 +18,7 @@ depuis la télévision, sans ordinateur.
 | Lecture en streaming (HLS, jusqu'en 1080p) | OK, Media3/ExoPlayer |
 | Téléchargement en MP4 dans la box, avec progression et notification | OK, yt-dlp + ffmpeg embarqués, service au premier plan |
 | Lecture des fichiers téléchargés | OK |
+| Lecteur télécommande : Retour masque la surcouche avant de quitter, ◀ ▶ = ±10 s (accéléré si maintenu), reprise à la dernière position | OK |
 | TF1+ / M6+ | **Non** : les flux sont protégés par DRM (Widevine). yt-dlp refuse, et il n'existe pas de moyen légal de les télécharger. Captvty bute sur la même limite. |
 | Navigation à la télécommande (D-pad, Retour) | OK, Compose for TV |
 | Recherche, reprise de téléchargement, sous-titres | Pas encore |

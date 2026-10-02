@@ -32,7 +32,7 @@ import dev.valentin.replaytv.download.DownloadStatus
 import dev.valentin.replaytv.model.formatDuration
 
 @Composable
-fun DownloadsScreen(app: ReplayTvApp, onPlay: (uri: String, title: String) -> Unit) {
+fun DownloadsScreen(app: ReplayTvApp, onPlay: (uri: String, title: String, resumeKey: String) -> Unit) {
     val entries by app.downloads.entries.collectAsStateWithLifecycle()
     val firstFocus = remember { FocusRequester() }
 
@@ -64,7 +64,7 @@ fun DownloadsScreen(app: ReplayTvApp, onPlay: (uri: String, title: String) -> Un
 }
 
 @Composable
-private fun DownloadRow(app: ReplayTvApp, entry: DownloadEntry, onPlay: (String, String) -> Unit, firstButton: Modifier = Modifier) {
+private fun DownloadRow(app: ReplayTvApp, entry: DownloadEntry, onPlay: (String, String, String) -> Unit, firstButton: Modifier = Modifier) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -87,7 +87,7 @@ private fun DownloadRow(app: ReplayTvApp, entry: DownloadEntry, onPlay: (String,
         }
         when (entry.status) {
             DownloadStatus.Done -> {
-                Button(onClick = { onPlay(entry.file.toURI().toString(), entry.meta.title) }, modifier = firstButton) { Text("Lire") }
+                Button(onClick = { onPlay(entry.file.toURI().toString(), entry.meta.title, entry.meta.sourceUrl) }, modifier = firstButton) { Text("Lire") }
                 Button(onClick = { app.downloads.delete(entry) }) { Text("Supprimer") }
             }
             is DownloadStatus.Failed -> Button(onClick = { app.downloads.delete(entry) }, modifier = firstButton) { Text("Retirer") }

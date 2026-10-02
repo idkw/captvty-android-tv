@@ -19,6 +19,7 @@ adb install -r replaytv-<version>-universal.apk
 - Catalogue France TV (documentaires, séries, films, info, …) et Arte (à la une, documentaires, séries, films, …).
 - Lecture en streaming HLS jusqu'en 1080p (ExoPlayer).
 - Téléchargement en MP4 sur la box (yt-dlp + ffmpeg embarqués), notification de progression, lecture hors ligne.
+- Lecteur pensé pour la télécommande : OK = lecture/pause, ◀ ▶ = −10 s / +10 s (pas qui grandit si la touche est maintenue), Retour masque la surcouche puis quitte, reprise automatique à la dernière position.
 
 **Limites**
 - TF1+ et M6+ : flux protégés par DRM, pas de lecture ni de téléchargement possibles.

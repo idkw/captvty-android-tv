@@ -17,6 +17,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import dev.valentin.replaytv.player.PlaybackPositions
+import dev.valentin.replaytv.player.formatClock
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -36,7 +41,7 @@ import dev.valentin.replaytv.model.formatDuration
 import dev.valentin.replaytv.ytdlp.MediaInfo
 
 @Composable
-fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: String, title: String) -> Unit) {
+fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: String, title: String, resumeKey: String) -> Unit) {
     var info by remember(video.url) { mutableStateOf<LoadState<MediaInfo>>(LoadState.Loading) }
     val downloads by app.downloads.entries.collectAsStateWithLifecycle()
     val entry = downloads.firstOrNull { it.meta.sourceUrl == video.url }
@@ -50,6 +55,15 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
 
     val media = (info as? LoadState.Loaded)?.value
     val primaryFocus = remember(video.url) { FocusRequester() }
+    val context = LocalContext.current
+    val positions = remember { PlaybackPositions(context) }
+    var resumeAtMs by remember(video.url) { mutableLongStateOf(positions.get(video.url)) }
+    // Relu à chaque retour du lecteur, pour afficher la position de reprise à jour.
+    LifecycleResumeEffect(video.url) {
+        resumeAtMs = positions.get(video.url)
+        onPauseOrDispose { }
+    }
+    val playLabel = if (resumeAtMs > 0) "Reprendre à ${formatClock(resumeAtMs)}" else "Lire en direct"
 
     LaunchedEffect(media) {
         if (media != null) {
@@ -100,10 +114,10 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Button(
-                    onClick = { media?.streamUrl?.let { onPlay(it, media.title) } },
+                    onClick = { media?.streamUrl?.let { onPlay(it, media.title, video.url) } },
                     enabled = media?.streamUrl != null && media.hasDrm.not(),
                     modifier = Modifier.focusRequester(primaryFocus),
-                ) { Text("Lire en direct") }
+                ) { Text(playLabel) }
 
                 if (entry == null) {
                     Button(
@@ -118,8 +132,8 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
                             Text("${status.progress.toInt()} % · annuler")
                         }
 
-                        DownloadStatus.Done -> Button(onClick = { onPlay(entry.file.toURI().toString(), entry.meta.title) }) {
-                            Text("Lire le fichier téléchargé")
+                        DownloadStatus.Done -> Button(onClick = { onPlay(entry.file.toURI().toString(), entry.meta.title, video.url) }) {
+                            Text(if (resumeAtMs > 0) "Reprendre le fichier téléchargé" else "Lire le fichier téléchargé")
                         }
 
                         is DownloadStatus.Failed -> Button(onClick = {

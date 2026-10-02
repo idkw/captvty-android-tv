@@ -41,8 +41,8 @@ fun ReplayTvRoot(app: ReplayTvApp) {
         is CatalogItem.Collection -> push(Screen.Collection(item))
     }
 
-    fun play(uri: String, title: String) {
-        context.startActivity(PlayerActivity.intent(context, uri, title))
+    fun play(uri: String, title: String, resumeKey: String) {
+        context.startActivity(PlayerActivity.intent(context, uri, title, resumeKey))
     }
 
     Surface(
