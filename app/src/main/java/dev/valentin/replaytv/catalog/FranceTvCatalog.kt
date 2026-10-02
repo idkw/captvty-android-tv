@@ -24,6 +24,21 @@ class FranceTvCatalog(private val http: OkHttpClient) {
         }
     }
 
+    /**
+     * Page d'une chaîne (`/france-2/`) : une rangée par titre de section (`<h2>`), le direct exclu.
+     * Si la page n'a pas de sections, on retombe sur le découpage vidéos / programmes.
+     */
+    suspend fun channelPage(path: String): List<CatalogRow> {
+        val html = http.getString(BASE + path, accept = "text/html")
+        val rows = HEADING.split(html).drop(1).mapNotNull { chunk ->
+            val title = unescape(TAG.replace(chunk.substringBefore("</h2>"), "")).trim()
+            if (title.isEmpty() || title.equals("En direct", ignoreCase = true)) return@mapNotNull null
+            val items = parseCards(chunk.substringAfter("</h2>"))
+            if (items.isEmpty()) null else CatalogRow(title, items)
+        }
+        return rows.ifEmpty { page(path) }
+    }
+
     internal fun parseCards(html: String): List<CatalogItem> {
         val seen = HashSet<String>()
         return CARD.findAll(html).mapNotNull { match ->
@@ -62,5 +77,7 @@ class FranceTvCatalog(private val http: OkHttpClient) {
         private val SPAN = Regex("""<span[^>]*>([^<]*)</span>""")
         private val IMG = Regex("""<img[^>]*\ssrc="([^"]+)"""")
         private val VIDEO_PATH = Regex("""/\d+-[^/]+\.html$""")
+        private val HEADING = Regex("<h2[^>]*>")
+        private val TAG = Regex("<[^>]+>")
     }
 }

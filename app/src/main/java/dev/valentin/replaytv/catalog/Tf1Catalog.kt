@@ -40,6 +40,22 @@ class Tf1Catalog(private val http: OkHttpClient) {
         }.awaitAll().filterNotNull()
     }
 
+    /** Tous les programmes d'une chaîne qui ont au moins un replay, groupés par catégorie principale. */
+    suspend fun channel(slug: String): List<CatalogRow> {
+        val byCategory = linkedMapOf<String, MutableList<CatalogItem>>()
+        programs(slug)
+            .filter { (it.obj("replay").int("total") ?: 0) > 0 }
+            .forEach { program ->
+                val label = program.arr("categories").firstOrNull { it.bool("main") == true }?.str("label")
+                    ?: program.arr("categories").firstOrNull().str("label")
+                    ?: "Autres programmes"
+                program(program)?.let { byCategory.getOrPut(label) { mutableListOf() }.add(it) }
+            }
+        return byCategory.entries
+            .sortedByDescending { it.value.size }
+            .map { (label, items) -> CatalogRow(label, items.sortedBy { it.title.lowercase() }) }
+    }
+
     suspend fun program(url: String): List<CatalogRow> {
         val slug = PROGRAM_SLUG.find(url)?.groupValues?.get(1) ?: return emptyList()
         val variables = buildJsonObject {

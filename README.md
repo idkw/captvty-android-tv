@@ -14,6 +14,7 @@ seulement.
 
 | Fonction | État |
 |---|---|
+| Accueil par chaîne (TF1, France 2 à 5, M6, Arte, puis TMC, TFX, TF1 Séries Films, LCI, W9, 6ter, franceinfo) : les replays de la chaîne par rubrique, avec recherche « contient » sur les programmes et collections | OK |
 | Catalogue France TV (documentaires, séries, films, info, …, programmes et épisodes) | OK, par lecture des pages HTML de france.tv |
 | Catalogue Arte (à la une, documentaires, séries, films, …, collections) | OK, via l'API publique EMAC d'Arte |
 | Lecture en streaming (HLS, jusqu'en 1080p) | OK, Media3/ExoPlayer |

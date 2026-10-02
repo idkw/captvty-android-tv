@@ -48,21 +48,12 @@ fun BrowseScreen(
     onOpen: (CatalogItem) -> Unit,
 ) {
     var state by remember(key) { mutableStateOf<LoadState<List<CatalogRow>>>(LoadState.Loading) }
-    val firstCardFocus = remember(key) { FocusRequester() }
 
     LaunchedEffect(key) {
         state = runCatching { load() }.fold(
             onSuccess = { LoadState.Loaded(it) },
             onFailure = { LoadState.Error(it.message ?: it.toString()) },
         )
-    }
-
-    // À l'arrivée sur l'écran rien n'a le focus : la télécommande serait inerte sans ceci.
-    LaunchedEffect(state) {
-        if (state is LoadState.Loaded) {
-            withFrameNanos { }
-            runCatching { firstCardFocus.requestFocus() }
-        }
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
@@ -76,24 +67,38 @@ fun BrowseScreen(
             }
             is LoadState.Error -> Message("Erreur : ${s.message}", error = true)
             is LoadState.Loaded ->
-                if (s.value.isEmpty()) {
-                    Message("Rien à afficher ici.")
-                } else {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(24.dp),
-                        contentPadding = PaddingValues(bottom = 48.dp),
-                    ) {
-                        itemsIndexed(s.value, key = { index, row -> "$index-${row.title}" }) { index, row ->
-                            CardRow(row, onOpen, firstCardFocus.takeIf { index == 0 })
-                        }
-                    }
-                }
+                if (s.value.isEmpty()) Message("Rien à afficher ici.") else RowsList(s.value, key, onOpen)
+        }
+    }
+}
+
+/**
+ * Rangées de cartes, avec le focus posé sur la première carte à l'affichage : à l'arrivée sur
+ * l'écran rien n'a le focus et la télécommande serait inerte sans cela.
+ */
+@Composable
+fun RowsList(rows: List<CatalogRow>, key: Any, onOpen: (CatalogItem) -> Unit, requestFocus: Boolean = true) {
+    val firstCardFocus = remember(key) { FocusRequester() }
+
+    LaunchedEffect(key, rows, requestFocus) {
+        if (requestFocus && rows.isNotEmpty()) {
+            withFrameNanos { }
+            runCatching { firstCardFocus.requestFocus() }
+        }
+    }
+
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(24.dp),
+        contentPadding = PaddingValues(bottom = 48.dp),
+    ) {
+        itemsIndexed(rows, key = { index, row -> "$index-${row.title}" }) { index, row ->
+            CardRow(row, onOpen, firstCardFocus.takeIf { index == 0 })
         }
     }
 }
 
 @Composable
-private fun Message(text: String, error: Boolean = false) {
+fun Message(text: String, error: Boolean = false) {
     Text(
         text,
         style = MaterialTheme.typography.bodyLarge,

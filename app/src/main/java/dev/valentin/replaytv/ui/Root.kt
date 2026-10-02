@@ -13,11 +13,14 @@ import androidx.tv.material3.SurfaceDefaults
 import dev.valentin.replaytv.ReplayTvApp
 import dev.valentin.replaytv.drm.DrmStream
 import dev.valentin.replaytv.model.CatalogItem
+import dev.valentin.replaytv.model.Channel
 import dev.valentin.replaytv.model.Section
 import dev.valentin.replaytv.player.PlayerActivity
 
 sealed interface Screen {
     data object Home : Screen
+    data class ChannelReplays(val channel: Channel) : Screen
+    data object Themes : Screen
     data class Browse(val section: Section) : Screen
     data class Collection(val item: CatalogItem.Collection) : Screen
     data class Detail(val video: CatalogItem.Video) : Screen
@@ -58,10 +61,19 @@ fun ReplayTvRoot(app: ReplayTvApp) {
         when (current) {
             Screen.Home -> HomeScreen(
                 app = app,
-                onSection = { push(Screen.Browse(it)) },
+                onChannel = { push(Screen.ChannelReplays(it)) },
+                onThemes = { push(Screen.Themes) },
                 onDownloads = { push(Screen.Downloads) },
                 onAccounts = { push(Screen.Accounts) },
             )
+
+            is Screen.ChannelReplays -> ChannelScreen(
+                channel = current.channel,
+                load = { app.catalog.channel(current.channel) },
+                onOpen = ::open,
+            )
+
+            Screen.Themes -> ThemesScreen(onSection = { push(Screen.Browse(it)) })
 
             is Screen.Browse -> BrowseScreen(
                 title = "${current.section.source.label} · ${current.section.label}",

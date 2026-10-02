@@ -46,6 +46,14 @@ class ArteCatalog(private val http: OkHttpClient, private val ytDlp: YtDlp) {
         }
     }
 
+    /** Vue « chaîne » : la une et la liste des émissions, chargées en parallèle. */
+    suspend fun channel(): List<CatalogRow> = coroutineScope {
+        listOf("HOME", "EMI")
+            .map { code -> async { runCatching { page(code) }.getOrDefault(emptyList()) } }
+            .awaitAll()
+            .flatten()
+    }
+
     suspend fun collection(url: String): List<CatalogRow> = coroutineScope {
         val gate = Semaphore(4)
         val episodes = ytDlp.listPlaylist(url)

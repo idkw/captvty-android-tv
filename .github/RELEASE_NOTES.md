@@ -16,6 +16,7 @@ adb install -r replaytv-<version>-universal.apk
 ```
 
 **Fonctionnalités**
+- Accueil par chaîne (TF1, France 2, 3, 4, 5, M6, Arte, puis TMC, TFX, TF1 Séries Films, LCI, W9, 6ter, franceinfo) : les replays de la chaîne classés par rubrique, et une recherche qui filtre programmes et collections (correspondance « contient », accents ignorés). Le bouton « Par thème » garde la navigation par genre.
 - Catalogue France TV (documentaires, séries, films, info, …) et Arte (à la une, documentaires, séries, films, …).
 - Lecture en streaming HLS jusqu'en 1080p (ExoPlayer).
 - Téléchargement en MP4 sur la box (yt-dlp + ffmpeg embarqués), notification de progression, lecture hors ligne.

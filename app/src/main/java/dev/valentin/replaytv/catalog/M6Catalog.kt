@@ -22,6 +22,37 @@ class M6Catalog(private val http: OkHttpClient) {
         return if (items.isEmpty()) emptyList() else listOf(CatalogRow("Programmes", items))
     }
 
+    /**
+     * Tous les programmes d'une chaîne du groupe (`m6replay`, `w9replay`, `6terreplay`), par pages
+     * de 100 (maximum accepté par l'API), groupés par type (séries, téléfilms, émissions…).
+     */
+    suspend fun channel(service: String): List<CatalogRow> {
+        val programs = mutableListOf<JsonElement>()
+        var offset = 0
+        while (true) {
+            val page = (get("$SERVICES/$service/programs?limit=$PAGE_SIZE&offset=$offset&csa=6") as? JsonArray).orEmpty()
+            programs += page
+            if (page.size < PAGE_SIZE || offset >= 2000) break
+            offset += PAGE_SIZE
+        }
+        val byType = linkedMapOf<String, MutableList<CatalogItem>>()
+        programs
+            .filter { (it.obj("count_by_type").obj("video").int("content") ?: 0) > 0 }
+            .forEach { p ->
+                val wording = p.obj("program_type_wording")
+                // « épisodes » désigne en fait les séries dans la nomenclature de M6.
+                val label = when (wording.str("code")) {
+                    "episode" -> "Séries"
+                    null -> "Autres programmes"
+                    else -> wording.str("plural")?.replaceFirstChar { c -> c.uppercase() } ?: "Autres programmes"
+                }
+                program(p)?.let { byType.getOrPut(label) { mutableListOf() }.add(it) }
+            }
+        return byType.entries
+            .sortedByDescending { it.value.size }
+            .map { (label, items) -> CatalogRow(label, items.sortedBy { it.title.lowercase() }) }
+    }
+
     suspend fun program(url: String): List<CatalogRow> {
         val programId = PROGRAM_ID.find(url)?.groupValues?.get(1) ?: return emptyList()
         val videos = get("$MIDDLEWARE/programs/$programId/videos?csa=6&with=clips,freemiumpacks&type=vi&limit=100&offset=0")
@@ -71,8 +102,9 @@ class M6Catalog(private val http: OkHttpClient) {
         json.parseToJsonElement(http.getString(url, accept = "application/json", headers = mapOf("x-customer-name" to "m6web")))
 
     companion object {
-        private const val MIDDLEWARE =
-            "https://android.middleware.6play.fr/6play/v2/platforms/m6group_androidmob/services/6play"
+        private const val SERVICES = "https://android.middleware.6play.fr/6play/v2/platforms/m6group_androidmob/services"
+        private const val MIDDLEWARE = "$SERVICES/6play"
+        private const val PAGE_SIZE = 100
         private const val SITE = "https://www.6play.fr"
         private val PROGRAM_ID = Regex("""-p_(\d+)""")
     }
