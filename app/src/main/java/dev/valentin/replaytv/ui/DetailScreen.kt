@@ -92,6 +92,10 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (info is LoadState.Error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            if (info is LoadState.Loading) {
+                Spacer(Modifier.height(8.dp))
+                LoadingBar(modifier = Modifier.width(360.dp))
+            }
             Spacer(Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {

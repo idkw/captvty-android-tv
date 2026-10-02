@@ -69,7 +69,11 @@ fun BrowseScreen(
         Text(title, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 48.dp))
         Spacer(Modifier.height(16.dp))
         when (val s = state) {
-            LoadState.Loading -> Message("Chargement…")
+            LoadState.Loading -> {
+                Message("Chargement…")
+                Spacer(Modifier.height(8.dp))
+                LoadingBar(modifier = Modifier.padding(horizontal = 48.dp).width(480.dp))
+            }
             is LoadState.Error -> Message("Erreur : ${s.message}", error = true)
             is LoadState.Loaded ->
                 if (s.value.isEmpty()) {
