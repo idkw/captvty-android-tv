@@ -69,12 +69,16 @@ object Sections {
         Section(Source.ARTE, "EMI", "Les émissions"),
     )
 
+    // Slugs de catégories du catalogue tf1.fr (`/programmes-tv/<slug>`).
     val tf1 = listOf(
-        Section(Source.TF1, "GT_SERIES_AND_FICTIONS", "Séries et fictions"),
-        Section(Source.TF1, "GT_ENTERTAINMENT", "Divertissements"),
-        Section(Source.TF1, "GT_MOVIES", "Cinéma"),
-        Section(Source.TF1, "GT_INFOS_MAG_AND_SPORT", "Infos, magazines et sport"),
-        Section(Source.TF1, "GT_YOUTH", "Jeunesse"),
+        Section(Source.TF1, "series", "Séries"),
+        Section(Source.TF1, "telefilms", "Téléfilms"),
+        Section(Source.TF1, "films", "Films"),
+        Section(Source.TF1, "divertissement", "Divertissement"),
+        Section(Source.TF1, "info", "Info"),
+        Section(Source.TF1, "reportages", "Docs et reportages"),
+        Section(Source.TF1, "sport", "Sport"),
+        Section(Source.TF1, "jeunesse", "Jeunesse"),
     )
 
     // Identifiants des dossiers du service « 6play » de l'API middleware M6.

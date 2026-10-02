@@ -1,0 +1,909 @@
+{
+ "data": {
+  "sliderOfPrograms": {
+   "items": [
+    {
+     "program": {
+      "decoration": {
+       "description": "À l'hôpital Saint-Clair, les drames ne sont jamais très loin. Florent Chanvalois, rescapé d'un accident, voit son état empirer de manière inexplicable. Sa médecin, Victoire, découvre avec stupeur qu'il a été empoisonné, et que quelqu'un cherche délibérément à l'éliminer. Si les soupçons se portent d'abord sur un rival, une vérité bien plus troublante se dessine peu à peu : Aaron, un chirurgien brillant mais énigmatique, semble lié à ces événements.\rEntre silences, coïncidences troublantes et nouveaux incidents, Victoire commence à douter de ses certitudes. Aaron cache-t-il quelque chose... ou est-il lui aussi pris dans un engrenage qui le dépasse ?",
+       "thumbnail": {
+        "id": "program-card-landscape-fc50ca",
+        "sourcesWithScales": [
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-419d6c-0@1x.jpg",
+          "height": "720",
+          "scale": 1,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-71197b-0@2x.jpg",
+          "height": "720",
+          "scale": 2,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-e2fc27-0@3x.jpg",
+          "height": "720",
+          "scale": 3,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-f69db7-0@1x.webp",
+          "height": "720",
+          "scale": 1,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-e947da-0@2x.webp",
+          "height": "720",
+          "scale": 2,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-db1cfe-0@3x.webp",
+          "height": "720",
+          "scale": 3,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-98d694-0@1x.avif",
+          "height": "720",
+          "scale": 1,
+          "type": "avif",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-ec4f92-0@2x.avif",
+          "height": "720",
+          "scale": 2,
+          "type": "avif",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-fc50ca-6abf02-0@3x.avif",
+          "height": "720",
+          "scale": 3,
+          "type": "avif",
+          "width": "1280"
+         }
+        ]
+       },
+       "logo": {
+        "id": "logo-programme-7b2f8c",
+        "sourcesWithScales": [
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-ddd9f0-0@1x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-51f4d3-0@2x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-74e16f-0@3x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-1589f2-0@1x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-f21a2c-0@2x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-7f5d9f-0@3x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-3aa583-0@1x.avif"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-7954fa-0@2x.avif"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-7b2f8c-868744-0@3x.avif"
+         }
+        ]
+       },
+       "catchPhrase": "Le poison du doute",
+       "portrait": {
+        "id": "program-card-portrait-3-383bbe",
+        "sourcesWithScales": [
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-72c18a-0@1x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-8f24b6-0@2x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-77efed-0@3x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-2a4263-0@1x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-68f758-0@2x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-1bc62c-0@3x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-2d5eb0-0@1x.avif",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-b0ff0c-0@2x.avif",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-ec9506-0@3x.avif",
+          "width": "217"
+         }
+        ]
+       },
+       "label": "Demain nous appartient",
+       "subLabel": "11 saisons"
+      },
+      "id": "5874bb3b-9fba-4ac9-9d27-86c2a10708de",
+      "initialChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "label": "TF1",
+       "slug": "tf1",
+       "type": "TV"
+      },
+      "mainChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "label": "TF1",
+       "slug": "tf1"
+      },
+      "name": "Demain nous appartient",
+      "releaseYear": "",
+      "requirements": [],
+      "sliderOfVideos": {
+       "items": [],
+       "total": 5312
+      },
+      "slug": "demain-nous-appartient",
+      "topics": [
+       "Drame",
+       "Policier"
+      ],
+      "typology": "Série",
+      "__typename": "Program",
+      "rating": null,
+      "isAVOD": false,
+      "publisher": {
+       "id": "19753076-185a-40a3-8152-78cd4377e28f",
+       "slug": "mytf1"
+      },
+      "hasFrenchAudioTrack": {
+       "total": 0
+      },
+      "hasOriginalAudioTrack": {
+       "total": 0
+      },
+      "hasDescriptionTrack": {
+       "total": 0
+      },
+      "hasFrenchDeafSubtitles": {
+       "total": 0
+      },
+      "hasFrenchSubtitles": {
+       "total": 0
+      }
+     },
+     "id": "5874bb3b-9fba-4ac9-9d27-86c2a10708de",
+     "thumbnail": {
+      "id": "program-card-portrait-3-383bbe",
+      "sourcesWithScales": [
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-72c18a-0@1x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-8f24b6-0@2x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-77efed-0@3x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-2a4263-0@1x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-68f758-0@2x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-1bc62c-0@3x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-2d5eb0-0@1x.avif",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-b0ff0c-0@2x.avif",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-3-383bbe-ec9506-0@3x.avif",
+        "width": "217"
+       }
+      ]
+     },
+     "badges": [],
+     "editorBadges": [],
+     "purchaseBadges": []
+    },
+    {
+     "program": {
+      "decoration": {
+       "description": "Un an après l'effondrement du quartier du Mistral, ses anciens habitants ont dû repartir à zéro dans un tout nouveau quartier. Nouveaux voisins, nouveaux lieux et nouvelles habitudes... Leur vie a doucement pris un nouveau départ dans le Panier.",
+       "thumbnail": {
+        "id": "flux-program-card-landscape-jpg-53d86b-5196b7",
+        "sourcesWithScales": [
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-49d2d5-0@1x.jpg",
+          "height": "720",
+          "scale": 1,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-4943ac-0@2x.jpg",
+          "height": "720",
+          "scale": 2,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-3953a7-0@3x.jpg",
+          "height": "720",
+          "scale": 3,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-0b812a-0@1x.webp",
+          "height": "720",
+          "scale": 1,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-337bf6-0@2x.webp",
+          "height": "720",
+          "scale": 2,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-b8725a-0@3x.webp",
+          "height": "720",
+          "scale": 3,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-b5f436-0@1x.avif",
+          "height": "720",
+          "scale": 1,
+          "type": "avif",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-805e8c-0@2x.avif",
+          "height": "720",
+          "scale": 2,
+          "type": "avif",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/flux-program-card-landscape-jpg-53d86b-5196b7-c91a4e-0@3x.avif",
+          "height": "720",
+          "scale": 3,
+          "type": "avif",
+          "width": "1280"
+         }
+        ]
+       },
+       "logo": {
+        "id": "logo-programme-png-1-fb2a1e",
+        "sourcesWithScales": [
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-9ec69e-0@1x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-579918-0@2x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-db951b-0@3x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-10b5c3-0@1x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-cf8640-0@2x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-f09ad9-0@3x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-f98781-0@1x.avif"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-d4e9c4-0@2x.avif"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-png-1-fb2a1e-115197-0@3x.avif"
+         }
+        ]
+       },
+       "catchPhrase": "Le passé refait surface",
+       "portrait": {
+        "id": "program-card-portrait-1-png-1a22bd",
+        "sourcesWithScales": [
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-1d576a-0@1x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-323795-0@2x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-7f48a9-0@3x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-ac8dec-0@1x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-4abb8b-0@2x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-2cc317-0@3x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-07a926-0@1x.avif",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-82cc17-0@2x.avif",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-a214bc-0@3x.avif",
+          "width": "217"
+         }
+        ]
+       },
+       "label": "Plus belle la vie, encore plus belle",
+       "subLabel": "3 saisons"
+      },
+      "id": "46185460-8c5c-483e-554b-76364571c3bf",
+      "initialChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "label": "TF1",
+       "slug": "tf1",
+       "type": "TV"
+      },
+      "mainChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "label": "TF1",
+       "slug": "tf1"
+      },
+      "name": "Plus belle la vie, encore plus belle",
+      "releaseYear": "",
+      "requirements": [],
+      "sliderOfVideos": {
+       "items": [],
+       "total": 2004
+      },
+      "slug": "plus-belle-la-vie",
+      "topics": [
+       "Drame",
+       "Quotidienne"
+      ],
+      "typology": "Série",
+      "__typename": "Program",
+      "rating": null,
+      "isAVOD": false,
+      "publisher": {
+       "id": "19753076-185a-40a3-8152-78cd4377e28f",
+       "slug": "mytf1"
+      },
+      "hasFrenchAudioTrack": {
+       "total": 0
+      },
+      "hasOriginalAudioTrack": {
+       "total": 0
+      },
+      "hasDescriptionTrack": {
+       "total": 0
+      },
+      "hasFrenchDeafSubtitles": {
+       "total": 0
+      },
+      "hasFrenchSubtitles": {
+       "total": 0
+      }
+     },
+     "id": "46185460-8c5c-483e-554b-76364571c3bf",
+     "thumbnail": {
+      "id": "program-card-portrait-1-png-1a22bd",
+      "sourcesWithScales": [
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-1d576a-0@1x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-323795-0@2x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-7f48a9-0@3x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-ac8dec-0@1x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-4abb8b-0@2x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-2cc317-0@3x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-07a926-0@1x.avif",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-82cc17-0@2x.avif",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-1-png-1a22bd-a214bc-0@3x.avif",
+        "width": "217"
+       }
+      ]
+     },
+     "badges": [],
+     "editorBadges": [],
+     "purchaseBadges": []
+    },
+    {
+     "program": {
+      "decoration": {
+       "description": "Ce docu-réalité plonge dans le quotidien extraordinaire de plusieurs familles nombreuses. Bien que différentes, elles partagent toutes une vie à grande échelle. Découvrez les défis et les joies de ces foyers où chaque aspect prend une dimension XXL. Entre organisation millimétrée et moments de complicité, ces familles hors-norme nous ouvrent leurs portes pour partager leur réalité unique. ",
+       "thumbnail": {
+        "id": "lame-mob-famille-perronnet-02-4e5dc1",
+        "sourcesWithScales": [
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-89e424-0@1x.jpg",
+          "height": "720",
+          "scale": 1,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-cef39a-0@2x.jpg",
+          "height": "720",
+          "scale": 2,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-2ca090-0@3x.jpg",
+          "height": "720",
+          "scale": 3,
+          "type": "jpg",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-6bdeab-0@1x.webp",
+          "height": "720",
+          "scale": 1,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-5f5766-0@2x.webp",
+          "height": "720",
+          "scale": 2,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-6a9744-0@3x.webp",
+          "height": "720",
+          "scale": 3,
+          "type": "webp",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-78910d-0@1x.avif",
+          "height": "720",
+          "scale": 1,
+          "type": "avif",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-253f26-0@2x.avif",
+          "height": "720",
+          "scale": 2,
+          "type": "avif",
+          "width": "1280"
+         },
+         {
+          "url": "https://photos.tf1.fr/1280/720/lame-mob-famille-perronnet-02-4e5dc1-f67a32-0@3x.avif",
+          "height": "720",
+          "scale": 3,
+          "type": "avif",
+          "width": "1280"
+         }
+        ]
+       },
+       "logo": {
+        "id": "logo-programme-famille-xxl-s8_baudrand-0d0c9c",
+        "sourcesWithScales": [
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-fbb7de-0@1x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-0ff5fc-0@2x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-8c7f56-0@3x.png"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-92bf2f-0@1x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-43d4dd-0@2x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-70022c-0@3x.webp"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-b7b145-0@1x.avif"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-14f3e4-0@2x.avif"
+         },
+         {
+          "url": "https://photos.tf1.fr/220/110/logo-programme-famille-xxl-s8_baudrand-0d0c9c-5e6a56-0@3x.avif"
+         }
+        ]
+       },
+       "catchPhrase": "Les familles sont de retour !",
+       "portrait": {
+        "id": "program-card-portrait-2-famille-perronnet-02-5e78ca",
+        "sourcesWithScales": [
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-af839d-0@1x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-4e8bec-0@2x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-2fdb75-0@3x.jpg",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-e2976b-0@1x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-1874eb-0@2x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-6bdb16-0@3x.webp",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 1,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-e9deb9-0@1x.avif",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 2,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-bd2251-0@2x.avif",
+          "width": "217"
+         },
+         {
+          "height": "289",
+          "scale": 3,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-a5e2a3-0@3x.avif",
+          "width": "217"
+         }
+        ]
+       },
+       "label": "Familles nombreuses : la vie en XXL",
+       "subLabel": "1236 Épisodes"
+      },
+      "id": "f46e6535-e212-4b74-70e4-6c9a4201f14d",
+      "initialChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "label": "TF1",
+       "slug": "tf1",
+       "type": "TV"
+      },
+      "mainChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "label": "TF1",
+       "slug": "tf1"
+      },
+      "name": "Familles nombreuses : la vie en XXL",
+      "releaseYear": "",
+      "requirements": [],
+      "sliderOfVideos": {
+       "items": [],
+       "total": 1459
+      },
+      "slug": "les-familles-nombreuses-la-vie-en-xxl",
+      "topics": [
+       "Famille",
+       "Lifestyle"
+      ],
+      "typology": "Émission",
+      "__typename": "Program",
+      "rating": null,
+      "isAVOD": false,
+      "publisher": {
+       "id": "19753076-185a-40a3-8152-78cd4377e28f",
+       "slug": "mytf1"
+      },
+      "hasFrenchAudioTrack": {
+       "total": 0
+      },
+      "hasOriginalAudioTrack": {
+       "total": 0
+      },
+      "hasDescriptionTrack": {
+       "total": 0
+      },
+      "hasFrenchDeafSubtitles": {
+       "total": 0
+      },
+      "hasFrenchSubtitles": {
+       "total": 0
+      }
+     },
+     "id": "f46e6535-e212-4b74-70e4-6c9a4201f14d",
+     "thumbnail": {
+      "id": "program-card-portrait-2-famille-perronnet-02-5e78ca",
+      "sourcesWithScales": [
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-af839d-0@1x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-4e8bec-0@2x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "jpg",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-2fdb75-0@3x.jpg",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-e2976b-0@1x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-1874eb-0@2x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "webp",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-6bdb16-0@3x.webp",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 1,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-e9deb9-0@1x.avif",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 2,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-bd2251-0@2x.avif",
+        "width": "217"
+       },
+       {
+        "height": "289",
+        "scale": 3,
+        "type": "avif",
+        "url": "https://photos.tf1.fr/217/289/program-card-portrait-2-famille-perronnet-02-5e78ca-a5e2a3-0@3x.avif",
+        "width": "217"
+       }
+      ]
+     },
+     "badges": [
+      {
+       "__typename": "BadgeOfLabel",
+       "id": "NEW_EPISODE",
+       "label": "Nouvel épisode",
+       "type": "NEW_EPISODE"
+      }
+     ],
+     "editorBadges": [],
+     "purchaseBadges": []
+    }
+   ],
+   "total": 2508,
+   "__typename": "SliderOfProgram",
+   "id": "slider-of-programs"
+  }
+ }
+}

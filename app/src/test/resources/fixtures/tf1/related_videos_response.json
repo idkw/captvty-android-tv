@@ -1,0 +1,823 @@
+{
+ "data": {
+  "programBySlug": {
+   "decoration": {
+    "labelByVideoTypes": [
+     {
+      "label": "Émission",
+      "type": "REPLAY"
+     },
+     {
+      "label": "Exclu",
+      "type": "BONUS"
+     },
+     {
+      "label": "Extrait",
+      "type": "EXTRACT"
+     }
+    ]
+   },
+   "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+   "sliderOfVideos": {
+    "items": [
+     {
+      "id": "e73e8eed-7799-48a3-b232-4dd061bf79a9",
+      "editorBadges": [],
+      "image": {
+       "sourcesWithScales": [
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-709956-0@1x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-d22e4f-0@2x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-f96bce-0@3x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-40da48-0@1x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-9e166a-0@2x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-20f935-0@3x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-429458-0@1x.avif",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-5bd6e0-0@2x.avif",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-c7506f-0@3x.avif",
+         "width": "330"
+        }
+       ]
+      },
+      "video": {
+       "__typename": "Video",
+       "decoration": {
+        "label": "Koh Lanta All Stars - Moments cultes - Ugo",
+        "shortLabel": "Ugo",
+        "showPayBadge": false
+       },
+       "id": "e73e8eed-7799-48a3-b232-4dd061bf79a9",
+       "playingInfos": {
+        "duration": 115
+       },
+       "program": {
+        "initialChannel": {
+         "slug": "tf1",
+         "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94"
+        },
+        "name": "Koh-Lanta",
+        "slug": "koh-lanta",
+        "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+        "isAVOD": false,
+        "mainChannel": {
+         "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+         "slug": "tf1"
+        },
+        "publisher": {
+         "id": "19753076-185a-40a3-8152-78cd4377e28f",
+         "slug": "mytf1"
+        },
+        "requirements": [],
+        "topics": [
+         "Aventure",
+         "Divertissement"
+        ],
+        "typology": "Émission"
+       },
+       "rating": "CSA_ALL",
+       "slug": "koh-lanta-all-stars-moments-cultes-ugo-15500377",
+       "broadcastChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "slug": "tf1"
+       },
+       "date": "2026-10-01T18:49:12Z",
+       "emId": "2151180",
+       "episode": 14,
+       "published": "2026-10-01T18:49:12Z",
+       "rights": [
+        "BASIC",
+        "MAX"
+       ],
+       "season": 9001,
+       "tags": [
+        {
+         "slug": "equipe-jaune"
+        },
+        {
+         "slug": "aventure"
+        },
+        {
+         "slug": "tania-koh-lanta-all-star-96647429"
+        },
+        {
+         "slug": "epreuves"
+        },
+        {
+         "slug": "denis-brogniard"
+        },
+        {
+         "slug": "ugo-koh-lanta-all-star-82948393"
+        },
+        {
+         "slug": "tele-realite"
+        },
+        {
+         "slug": "camille-koh-lanta-all-star-57193057"
+        },
+        {
+         "slug": "koh-lanta-25887986"
+        },
+        {
+         "slug": "koh-lanta"
+        },
+        {
+         "slug": "laure-koh-lanta-all-star-52931382"
+        },
+        {
+         "slug": "lola-koh-lanta-all-star-20274030"
+        },
+        {
+         "slug": "christina-koh-lanta-all-star-68837602"
+        },
+        {
+         "slug": "aventuriers"
+        },
+        {
+         "slug": "nicolas-koh-lanta-all-star-44056169"
+        },
+        {
+         "slug": "fredy-koh-lanta-all-star-33780610"
+        },
+        {
+         "slug": "vincent-koh-lanta-all-star-46482764"
+        },
+        {
+         "slug": "all-star-51856952"
+        },
+        {
+         "slug": "maxime-koh-lanta-all-star-96228270"
+        },
+        {
+         "slug": "charlotte-koh-lanta-all-star-51443004"
+        },
+        {
+         "slug": "dorian-koh-lanta-all-star-74832246"
+        },
+        {
+         "slug": "equipe-rouge"
+        },
+        {
+         "slug": "clementine-koh-lanta-all-star-86790318"
+        },
+        {
+         "slug": "yassin-koh-lanta-all-star-49934749"
+        }
+       ],
+       "type": "REPLAY",
+       "isPreview": false,
+       "offers": [
+        {
+         "accessKey": "basic",
+         "attributes": [],
+         "featuresCorrelationKey": null,
+         "id": "66d697ce-756e-4e91-940b-0a3838b6e231",
+         "isPremium": false,
+         "prices": [],
+         "purchaseSuccessDecoration": {
+          "label": ""
+         },
+         "slug": "basic",
+         "type": "FREE"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS"
+         ],
+         "featuresCorrelationKey": "no-ads-24h",
+         "id": "bfc771af-a8e7-4364-b6da-b0e2fe5e43e0",
+         "isPremium": false,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "1,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": "Regardez vos programmes sans pub dès maintenant"
+         },
+         "slug": "sans-pub-24h-18890903",
+         "type": "ONE_TIME"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS",
+          "HD"
+         ],
+         "featuresCorrelationKey": "premium",
+         "id": "66d697ce-756e-4e91-940b-0a3838b6e230",
+         "isPremium": true,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "5,99 €"
+          },
+          {
+           "discount": null,
+           "formattedAmount": "59,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": ""
+         },
+         "slug": "premium",
+         "type": "SVOD"
+        }
+       ]
+      },
+      "badges": []
+     },
+     {
+      "id": "80065fc8-76ba-459c-85c2-4fa1dbc456b5",
+      "editorBadges": [],
+      "image": {
+       "sourcesWithScales": [
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-709956-0@1x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-d22e4f-0@2x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-f96bce-0@3x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-40da48-0@1x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-9e166a-0@2x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-20f935-0@3x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-429458-0@1x.avif",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-5bd6e0-0@2x.avif",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/program-card-landscape-a80d17-c7506f-0@3x.avif",
+         "width": "330"
+        }
+       ]
+      },
+      "video": {
+       "__typename": "Video",
+       "decoration": {
+        "label": "Koh Lanta All Stars - Moments cultes - Lola",
+        "shortLabel": "Lola",
+        "showPayBadge": false
+       },
+       "id": "80065fc8-76ba-459c-85c2-4fa1dbc456b5",
+       "playingInfos": {
+        "duration": 103
+       },
+       "program": {
+        "initialChannel": {
+         "slug": "tf1",
+         "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94"
+        },
+        "name": "Koh-Lanta",
+        "slug": "koh-lanta",
+        "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+        "isAVOD": false,
+        "mainChannel": {
+         "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+         "slug": "tf1"
+        },
+        "publisher": {
+         "id": "19753076-185a-40a3-8152-78cd4377e28f",
+         "slug": "mytf1"
+        },
+        "requirements": [],
+        "topics": [
+         "Aventure",
+         "Divertissement"
+        ],
+        "typology": "Émission"
+       },
+       "rating": "CSA_ALL",
+       "slug": "koh-lanta-all-stars-moments-cultes-lola-68462357",
+       "broadcastChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "slug": "tf1"
+       },
+       "date": "2026-09-30T19:04:53Z",
+       "emId": "2151179",
+       "episode": 13,
+       "published": "2026-09-30T19:04:53Z",
+       "rights": [
+        "MAX"
+       ],
+       "season": 9001,
+       "tags": [
+        {
+         "slug": "equipe-jaune"
+        },
+        {
+         "slug": "aventure"
+        },
+        {
+         "slug": "tania-koh-lanta-all-star-96647429"
+        },
+        {
+         "slug": "epreuves"
+        },
+        {
+         "slug": "denis-brogniard"
+        },
+        {
+         "slug": "ugo-koh-lanta-all-star-82948393"
+        },
+        {
+         "slug": "tele-realite"
+        },
+        {
+         "slug": "camille-koh-lanta-all-star-57193057"
+        },
+        {
+         "slug": "koh-lanta-25887986"
+        },
+        {
+         "slug": "koh-lanta"
+        },
+        {
+         "slug": "laure-koh-lanta-all-star-52931382"
+        },
+        {
+         "slug": "lola-koh-lanta-all-star-20274030"
+        },
+        {
+         "slug": "christina-koh-lanta-all-star-68837602"
+        },
+        {
+         "slug": "aventuriers"
+        },
+        {
+         "slug": "nicolas-koh-lanta-all-star-44056169"
+        },
+        {
+         "slug": "fredy-koh-lanta-all-star-33780610"
+        },
+        {
+         "slug": "vincent-koh-lanta-all-star-46482764"
+        },
+        {
+         "slug": "all-star-51856952"
+        },
+        {
+         "slug": "maxime-koh-lanta-all-star-96228270"
+        },
+        {
+         "slug": "charlotte-koh-lanta-all-star-51443004"
+        },
+        {
+         "slug": "dorian-koh-lanta-all-star-74832246"
+        },
+        {
+         "slug": "equipe-rouge"
+        },
+        {
+         "slug": "clementine-koh-lanta-all-star-86790318"
+        },
+        {
+         "slug": "yassin-koh-lanta-all-star-49934749"
+        }
+       ],
+       "type": "REPLAY",
+       "isPreview": false,
+       "offers": [
+        {
+         "accessKey": "basic",
+         "attributes": [],
+         "featuresCorrelationKey": null,
+         "id": "66d697ce-756e-4e91-940b-0a3838b6e231",
+         "isPremium": false,
+         "prices": [],
+         "purchaseSuccessDecoration": {
+          "label": ""
+         },
+         "slug": "basic",
+         "type": "FREE"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS"
+         ],
+         "featuresCorrelationKey": "no-ads-24h",
+         "id": "bfc771af-a8e7-4364-b6da-b0e2fe5e43e0",
+         "isPremium": false,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "1,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": "Regardez vos programmes sans pub dès maintenant"
+         },
+         "slug": "sans-pub-24h-18890903",
+         "type": "ONE_TIME"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS",
+          "HD"
+         ],
+         "featuresCorrelationKey": "premium",
+         "id": "66d697ce-756e-4e91-940b-0a3838b6e230",
+         "isPremium": true,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "5,99 €"
+          },
+          {
+           "discount": null,
+           "formattedAmount": "59,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": ""
+         },
+         "slug": "premium",
+         "type": "SVOD"
+        }
+       ]
+      },
+      "badges": []
+     },
+     {
+      "id": "29918014-ffaa-431d-8a6d-7e0fc18ba9f1",
+      "editorBadges": [],
+      "image": {
+       "sourcesWithScales": [
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-a6dda9-0@1x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-5990e0-0@2x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "jpg",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-9ba851-0@3x.jpg",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-bc4032-0@1x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-144b23-0@2x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "webp",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-5c44d7-0@3x.webp",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 1,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-53f250-0@1x.avif",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 2,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-871ba9-0@2x.avif",
+         "width": "330"
+        },
+        {
+         "height": "186",
+         "scale": 3,
+         "type": "avif",
+         "url": "https://photos.tf1.fr/330/186/1183458_klas7confortjaunes-549e6a-cecbd4-0@3x.avif",
+         "width": "330"
+        }
+       ]
+      },
+      "video": {
+       "__typename": "Video",
+       "decoration": {
+        "label": "Koh Lanta All Stars - Emission 6 (Partie 2)",
+        "shortLabel": "Emission 6 (Partie 2)",
+        "showPayBadge": false
+       },
+       "id": "29918014-ffaa-431d-8a6d-7e0fc18ba9f1",
+       "playingInfos": {
+        "duration": 2110
+       },
+       "program": {
+        "initialChannel": {
+         "slug": "tf1",
+         "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94"
+        },
+        "name": "Koh-Lanta",
+        "slug": "koh-lanta",
+        "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+        "isAVOD": false,
+        "mainChannel": {
+         "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+         "slug": "tf1"
+        },
+        "publisher": {
+         "id": "19753076-185a-40a3-8152-78cd4377e28f",
+         "slug": "mytf1"
+        },
+        "requirements": [],
+        "topics": [
+         "Aventure",
+         "Divertissement"
+        ],
+        "typology": "Émission"
+       },
+       "rating": "CSA_ALL",
+       "slug": "koh-lanta-koh-lanta-all-stars-emission-6-partie-2-50925027",
+       "broadcastChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "slug": "tf1"
+       },
+       "date": "2026-09-29T20:30:49Z",
+       "emId": "2148593",
+       "episode": 6,
+       "published": "2026-09-29T21:22:52Z",
+       "rights": [
+        "BASIC",
+        "MAX"
+       ],
+       "season": 34,
+       "tags": [
+        {
+         "slug": "equipe-jaune"
+        },
+        {
+         "slug": "aventure"
+        },
+        {
+         "slug": "tania-koh-lanta-all-star-96647429"
+        },
+        {
+         "slug": "epreuves"
+        },
+        {
+         "slug": "denis-brogniard"
+        },
+        {
+         "slug": "ugo-koh-lanta-all-star-82948393"
+        },
+        {
+         "slug": "tele-realite"
+        },
+        {
+         "slug": "camille-koh-lanta-all-star-57193057"
+        },
+        {
+         "slug": "koh-lanta-25887986"
+        },
+        {
+         "slug": "koh-lanta"
+        },
+        {
+         "slug": "laure-koh-lanta-all-star-52931382"
+        },
+        {
+         "slug": "lola-koh-lanta-all-star-20274030"
+        },
+        {
+         "slug": "christina-koh-lanta-all-star-68837602"
+        },
+        {
+         "slug": "aventuriers"
+        },
+        {
+         "slug": "nicolas-koh-lanta-all-star-44056169"
+        },
+        {
+         "slug": "fredy-koh-lanta-all-star-33780610"
+        },
+        {
+         "slug": "vincent-koh-lanta-all-star-46482764"
+        },
+        {
+         "slug": "all-star-51856952"
+        },
+        {
+         "slug": "maxime-koh-lanta-all-star-96228270"
+        },
+        {
+         "slug": "charlotte-koh-lanta-all-star-51443004"
+        },
+        {
+         "slug": "dorian-koh-lanta-all-star-74832246"
+        },
+        {
+         "slug": "equipe-rouge"
+        },
+        {
+         "slug": "clementine-koh-lanta-all-star-86790318"
+        },
+        {
+         "slug": "yassin-koh-lanta-all-star-49934749"
+        }
+       ],
+       "type": "REPLAY",
+       "isPreview": false,
+       "offers": [
+        {
+         "accessKey": "basic",
+         "attributes": [],
+         "featuresCorrelationKey": null,
+         "id": "66d697ce-756e-4e91-940b-0a3838b6e231",
+         "isPremium": false,
+         "prices": [],
+         "purchaseSuccessDecoration": {
+          "label": ""
+         },
+         "slug": "basic",
+         "type": "FREE"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS"
+         ],
+         "featuresCorrelationKey": "no-ads-divertissement_f9792451-b523-4b3a-889c-ed42ffeac684_34_6",
+         "id": "4f07db01-4f8d-4dd9-8a9e-04a83758acb8",
+         "isPremium": false,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "0,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": "Regardez votre émission sans pub dès maintenant !"
+         },
+         "slug": "no-ads-l2-divertissement",
+         "type": "ONE_TIME"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS"
+         ],
+         "featuresCorrelationKey": "no-ads-24h",
+         "id": "bfc771af-a8e7-4364-b6da-b0e2fe5e43e0",
+         "isPremium": false,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "1,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": "Regardez vos programmes sans pub dès maintenant"
+         },
+         "slug": "sans-pub-24h-18890903",
+         "type": "ONE_TIME"
+        },
+        {
+         "accessKey": "",
+         "attributes": [
+          "NO_ADS"
+         ],
+         "featuresCorrelationKey": "premium",
+         "id": "66d697ce-756e-4e91-940b-0a3838b6e230",
+         "isPremium": true,
+         "prices": [
+          {
+           "discount": null,
+           "formattedAmount": "5,99 €"
+          },
+          {
+           "discount": null,
+           "formattedAmount": "59,99 €"
+          }
+         ],
+         "purchaseSuccessDecoration": {
+          "label": ""
+         },
+         "slug": "premium",
+         "type": "SVOD"
+        }
+       ]
+      },
+      "badges": []
+     }
+    ]
+   },
+   "slug": "koh-lanta"
+  }
+ }
+}

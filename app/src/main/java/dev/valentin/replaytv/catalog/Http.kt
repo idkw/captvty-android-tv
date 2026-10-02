@@ -32,6 +32,20 @@ suspend fun OkHttpClient.postJson(url: String, body: String): String =
 
 private val JSON = "application/json".toMediaType()
 
+/** Réponse brute : code HTTP et corps, pour les API qui signalent une erreur métier par un 4xx. */
+class HttpResult(val code: Int, val body: String) {
+    val isSuccessful: Boolean get() = code in 200..299
+}
+
+suspend fun OkHttpClient.getWithStatus(
+    url: String,
+    accept: String = "*/*",
+    headers: Map<String, String> = emptyMap(),
+): HttpResult = withContext(Dispatchers.IO) {
+    val request = Request.Builder().url(url).header("Accept", accept).headers(headers).build()
+    newCall(request).execute().use { response -> HttpResult(response.code, response.body.string()) }
+}
+
 private fun Request.Builder.headers(headers: Map<String, String>): Request.Builder =
     apply { headers.forEach { (name, value) -> header(name, value) } }
 

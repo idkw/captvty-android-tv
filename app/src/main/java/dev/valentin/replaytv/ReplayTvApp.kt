@@ -2,8 +2,13 @@ package dev.valentin.replaytv
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import dev.valentin.replaytv.catalog.CatalogRepository
 import dev.valentin.replaytv.catalog.M6Catalog
+import dev.valentin.replaytv.catalog.Tf1Catalog
+import dev.valentin.replaytv.catalog.Tf1QueryResolver
+import dev.valentin.replaytv.catalog.getString
+import java.io.File
 import dev.valentin.replaytv.download.DownloadManager
 import dev.valentin.replaytv.download.DownloadService
 import dev.valentin.replaytv.drm.Accounts
@@ -50,7 +55,8 @@ class ReplayTvApp : Application() {
         super.onCreate()
         ytDlp = YtDlp(this, scope)
         val m6Catalog = M6Catalog(http)
-        catalog = CatalogRepository(http, ytDlp, m6Catalog)
+        val tf1Queries = Tf1QueryResolver(File(filesDir, "tf1_queries.json"), fetch = { url -> http.getString(url) }, log = { Log.i("Tf1Queries", it) })
+        catalog = CatalogRepository(http, ytDlp, m6Catalog, Tf1Catalog(http, tf1Queries))
         accounts = Accounts(this)
         drm = DrmPlayback(accounts, Tf1Playback(http, accounts), M6Playback(http, accounts, m6Catalog))
         downloads = DownloadManager(this, ytDlp, scope)

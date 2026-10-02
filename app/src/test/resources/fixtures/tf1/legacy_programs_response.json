@@ -1,0 +1,578 @@
+{
+ "data": {
+  "programs": {
+   "total": 2508,
+   "items": [
+    {
+     "id": "5874bb3b-9fba-4ac9-9d27-86c2a10708de",
+     "slug": "demain-nous-appartient",
+     "name": "Demain nous appartient",
+     "isFullyDigital": false,
+     "editor": "mytf1",
+     "mainChannel": {
+      "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+      "slug": "tf1",
+      "label": "TF1",
+      "__typename": "Channel"
+     },
+     "initialChannel": {
+      "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+      "slug": "tf1",
+      "label": "TF1",
+      "__typename": "Channel"
+     },
+     "categories": [
+      {
+       "id": "GT_SERIES_AND_FICTIONS",
+       "label": "Séries & Fictions",
+       "main": true,
+       "slug": "series-et-fictions",
+       "type": "MAIN_SERIES_AND_FICTIONS",
+       "__typename": "Category"
+      },
+      {
+       "id": "SGT_SERIES",
+       "label": "Séries",
+       "main": false,
+       "slug": "series",
+       "type": "SUB_SERIES",
+       "__typename": "Category"
+      }
+     ],
+     "freemium": null,
+     "decoration": {
+      "image": {
+       "id": "program-card-portrait-3-383bbe",
+       "type": "PORTRAIT",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/700/933/program-card-portrait-3-383bbe-11cb7e-0@1x.jpg",
+         "width": "700",
+         "height": "933",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/350/466/program-card-portrait-3-383bbe-0ce2e9-0@1x.jpg",
+         "width": "350",
+         "height": "466",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/233/311/program-card-portrait-3-383bbe-94685c-0@1x.jpg",
+         "width": "233",
+         "height": "311",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/700/933/program-card-portrait-3-383bbe-e45381-0@1x.webp",
+         "width": "700",
+         "height": "933",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/350/466/program-card-portrait-3-383bbe-a4ffbe-0@1x.webp",
+         "width": "350",
+         "height": "466",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/233/311/program-card-portrait-3-383bbe-8a8ffa-0@1x.webp",
+         "width": "233",
+         "height": "311",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/700/933/program-card-portrait-3-383bbe-5b1cfa-0@1x.avif",
+         "width": "700",
+         "height": "933",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/350/466/program-card-portrait-3-383bbe-dc77b0-0@1x.avif",
+         "width": "350",
+         "height": "466",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/233/311/program-card-portrait-3-383bbe-660a8c-0@1x.avif",
+         "width": "233",
+         "height": "311",
+         "type": "avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      },
+      "background": {
+       "id": "cover-hp-ott-27b382",
+       "type": "BACKGROUND",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/1920/1080/cover-hp-ott-27b382-d8a975-0@1x.jpg",
+         "width": "1920",
+         "height": "1080",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/960/540/cover-hp-ott-27b382-ff43c8-0@1x.jpg",
+         "width": "960",
+         "height": "540",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/640/360/cover-hp-ott-27b382-ecc756-0@1x.jpg",
+         "width": "640",
+         "height": "360",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1920/1080/cover-hp-ott-27b382-37a3c6-0@1x.webp",
+         "width": "1920",
+         "height": "1080",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/960/540/cover-hp-ott-27b382-ddf144-0@1x.webp",
+         "width": "960",
+         "height": "540",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/640/360/cover-hp-ott-27b382-6443d3-0@1x.webp",
+         "width": "640",
+         "height": "360",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1920/1080/cover-hp-ott-27b382-c10122-0@1x.avif",
+         "width": "1920",
+         "height": "1080",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/960/540/cover-hp-ott-27b382-a1e0a2-0@1x.avif",
+         "width": "960",
+         "height": "540",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/640/360/cover-hp-ott-27b382-ec68ab-0@1x.avif",
+         "width": "640",
+         "height": "360",
+         "type": "avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      },
+      "__typename": "Decoration",
+      "description": "À l'hôpital Saint-Clair, les drames ne sont jamais très loin. Florent Chanvalois, rescapé d'un accident, voit son état empirer de manière inexplicable. Sa médecin, Victoire, découvre avec stupeur qu'il a été empoisonné, et que quelqu'un cherche délibérément à l'éliminer. Si les soupçons se portent d'abord sur un rival, une vérité bien plus troublante se dessine peu à peu : Aaron, un chirurgien brillant mais énigmatique, semble lié à ces événements.\rEntre silences, coïncidences troublantes et nouveaux incidents, Victoire commence à douter de ses certitudes. Aaron cache-t-il quelque chose... ou est-il lui aussi pris dans un engrenage qui le dépasse ?",
+      "thumbnail": {
+       "id": "program-card-landscape-fc50ca",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/1200/720/program-card-landscape-fc50ca-cb668b-0@1x.jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/600/360/program-card-landscape-fc50ca-ae852f-0@1x.jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/400/240/program-card-landscape-fc50ca-a4df59-0@1x.jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1200/720/program-card-landscape-fc50ca-651cd7-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/600/360/program-card-landscape-fc50ca-e84a04-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/400/240/program-card-landscape-fc50ca-d4b223-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1200/720/program-card-landscape-fc50ca-a33107-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/600/360/program-card-landscape-fc50ca-51e930-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/400/240/program-card-landscape-fc50ca-0d1a75-0@1x.avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      },
+      "logo": {
+       "id": "logo-programme-7b2f8c",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/450/225/logo-programme-7b2f8c-bf7a13-0@1x.png",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/225/112/logo-programme-7b2f8c-3e71dc-0@1x.png",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/150/75/logo-programme-7b2f8c-074b4b-0@1x.png",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/450/225/logo-programme-7b2f8c-d6d90d-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/225/112/logo-programme-7b2f8c-d0bbc0-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/150/75/logo-programme-7b2f8c-590a6b-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/450/225/logo-programme-7b2f8c-586510-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/225/112/logo-programme-7b2f8c-f8abf8-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/150/75/logo-programme-7b2f8c-8ab98c-0@1x.avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      }
+     },
+     "replay": {
+      "total": 2312,
+      "__typename": "VideosConnector"
+     },
+     "replayRecent": {
+      "total": 3,
+      "__typename": "VideosConnector"
+     },
+     "allVideos": {
+      "total": 5312,
+      "__typename": "VideosConnector"
+     },
+     "allVideosRecent": {
+      "total": 3,
+      "__typename": "VideosConnector"
+     },
+     "__typename": "Program",
+     "releaseYear": ""
+    },
+    {
+     "id": "46185460-8c5c-483e-554b-76364571c3bf",
+     "slug": "plus-belle-la-vie",
+     "name": "Plus belle la vie, encore plus belle",
+     "isFullyDigital": false,
+     "editor": "mytf1",
+     "mainChannel": {
+      "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+      "slug": "tf1",
+      "label": "TF1",
+      "__typename": "Channel"
+     },
+     "initialChannel": {
+      "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+      "slug": "tf1",
+      "label": "TF1",
+      "__typename": "Channel"
+     },
+     "categories": [
+      {
+       "id": "GT_SERIES_AND_FICTIONS",
+       "label": "Séries & Fictions",
+       "main": true,
+       "slug": "series-et-fictions",
+       "type": "MAIN_SERIES_AND_FICTIONS",
+       "__typename": "Category"
+      },
+      {
+       "id": "SGT_SERIES",
+       "label": "Séries",
+       "main": false,
+       "slug": "series",
+       "type": "SUB_SERIES",
+       "__typename": "Category"
+      }
+     ],
+     "freemium": null,
+     "decoration": {
+      "image": {
+       "id": "program-card-portrait-1-png-1a22bd",
+       "type": "PORTRAIT",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/700/933/program-card-portrait-1-png-1a22bd-ded2aa-0@1x.jpg",
+         "width": "700",
+         "height": "933",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/350/466/program-card-portrait-1-png-1a22bd-9941be-0@1x.jpg",
+         "width": "350",
+         "height": "466",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/233/311/program-card-portrait-1-png-1a22bd-496962-0@1x.jpg",
+         "width": "233",
+         "height": "311",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/700/933/program-card-portrait-1-png-1a22bd-d04944-0@1x.webp",
+         "width": "700",
+         "height": "933",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/350/466/program-card-portrait-1-png-1a22bd-90779a-0@1x.webp",
+         "width": "350",
+         "height": "466",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/233/311/program-card-portrait-1-png-1a22bd-a0296d-0@1x.webp",
+         "width": "233",
+         "height": "311",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/700/933/program-card-portrait-1-png-1a22bd-dd4fb4-0@1x.avif",
+         "width": "700",
+         "height": "933",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/350/466/program-card-portrait-1-png-1a22bd-b7f7d7-0@1x.avif",
+         "width": "350",
+         "height": "466",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/233/311/program-card-portrait-1-png-1a22bd-bad5ef-0@1x.avif",
+         "width": "233",
+         "height": "311",
+         "type": "avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      },
+      "background": {
+       "id": "background-ott-jpg-5a59b3",
+       "type": "BACKGROUND",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/1920/1080/background-ott-jpg-5a59b3-ca6a95-0@1x.jpg",
+         "width": "1920",
+         "height": "1080",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/960/540/background-ott-jpg-5a59b3-cadda8-0@1x.jpg",
+         "width": "960",
+         "height": "540",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/640/360/background-ott-jpg-5a59b3-e9d902-0@1x.jpg",
+         "width": "640",
+         "height": "360",
+         "type": "jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1920/1080/background-ott-jpg-5a59b3-96f438-0@1x.webp",
+         "width": "1920",
+         "height": "1080",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/960/540/background-ott-jpg-5a59b3-fe97bc-0@1x.webp",
+         "width": "960",
+         "height": "540",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/640/360/background-ott-jpg-5a59b3-de34b3-0@1x.webp",
+         "width": "640",
+         "height": "360",
+         "type": "webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1920/1080/background-ott-jpg-5a59b3-696973-0@1x.avif",
+         "width": "1920",
+         "height": "1080",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/960/540/background-ott-jpg-5a59b3-669043-0@1x.avif",
+         "width": "960",
+         "height": "540",
+         "type": "avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/640/360/background-ott-jpg-5a59b3-db197f-0@1x.avif",
+         "width": "640",
+         "height": "360",
+         "type": "avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      },
+      "__typename": "Decoration",
+      "description": "Un an après l'effondrement du quartier du Mistral, ses anciens habitants ont dû repartir à zéro dans un tout nouveau quartier. Nouveaux voisins, nouveaux lieux et nouvelles habitudes... Leur vie a doucement pris un nouveau départ dans le Panier.",
+      "thumbnail": {
+       "id": "flux-program-card-landscape-jpg-53d86b-5196b7",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/1200/720/flux-program-card-landscape-jpg-53d86b-5196b7-825603-0@1x.jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/600/360/flux-program-card-landscape-jpg-53d86b-5196b7-f2eb7b-0@1x.jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/400/240/flux-program-card-landscape-jpg-53d86b-5196b7-1b3fda-0@1x.jpg",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1200/720/flux-program-card-landscape-jpg-53d86b-5196b7-f4435f-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/600/360/flux-program-card-landscape-jpg-53d86b-5196b7-d3b08b-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/400/240/flux-program-card-landscape-jpg-53d86b-5196b7-457ded-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/1200/720/flux-program-card-landscape-jpg-53d86b-5196b7-19d00d-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/600/360/flux-program-card-landscape-jpg-53d86b-5196b7-0ebc5b-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/400/240/flux-program-card-landscape-jpg-53d86b-5196b7-5f54bf-0@1x.avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      },
+      "logo": {
+       "id": "logo-programme-png-1-fb2a1e",
+       "sources": [
+        {
+         "url": "https://photos.tf1.fr/450/225/logo-programme-png-1-fb2a1e-dc0248-0@1x.png",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/225/112/logo-programme-png-1-fb2a1e-583e17-0@1x.png",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/150/75/logo-programme-png-1-fb2a1e-80b3a1-0@1x.png",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/450/225/logo-programme-png-1-fb2a1e-ce2608-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/225/112/logo-programme-png-1-fb2a1e-af2d2e-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/150/75/logo-programme-png-1-fb2a1e-2e295b-0@1x.webp",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/450/225/logo-programme-png-1-fb2a1e-695ba0-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/225/112/logo-programme-png-1-fb2a1e-ccef7d-0@1x.avif",
+         "__typename": "SrcSet"
+        },
+        {
+         "url": "https://photos.tf1.fr/150/75/logo-programme-png-1-fb2a1e-37bf64-0@1x.avif",
+         "__typename": "SrcSet"
+        }
+       ],
+       "__typename": "Image"
+      }
+     },
+     "replay": {
+      "total": 686,
+      "__typename": "VideosConnector"
+     },
+     "replayRecent": {
+      "total": 3,
+      "__typename": "VideosConnector"
+     },
+     "allVideos": {
+      "total": 2004,
+      "__typename": "VideosConnector"
+     },
+     "allVideosRecent": {
+      "total": 3,
+      "__typename": "VideosConnector"
+     },
+     "__typename": "Program",
+     "releaseYear": ""
+    }
+   ],
+   "__typename": "ProgramsConnector"
+  }
+ }
+}

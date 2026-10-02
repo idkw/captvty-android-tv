@@ -1,0 +1,1504 @@
+{
+ "data": {
+  "programBySlug": {
+   "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+   "slug": "koh-lanta",
+   "name": "Koh-Lanta",
+   "isFullyDigital": false,
+   "editor": "mytf1",
+   "mainChannel": {
+    "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+    "slug": "tf1",
+    "label": "TF1",
+    "__typename": "Channel"
+   },
+   "initialChannel": {
+    "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+    "slug": "tf1",
+    "label": "TF1",
+    "__typename": "Channel"
+   },
+   "categories": [
+    {
+     "id": "GT_ENTERTAINMENT",
+     "label": "Divertissements",
+     "main": true,
+     "slug": "divertissements",
+     "type": "MAIN_ENTERTAINEMENT",
+     "__typename": "Category"
+    },
+    {
+     "id": "SGT_ENTERTAINMENT",
+     "label": "Divertissements",
+     "main": false,
+     "slug": "divertissements",
+     "type": "SUB_ENTERTAINEMENT",
+     "__typename": "Category"
+    }
+   ],
+   "freemium": null,
+   "decoration": {
+    "image": {
+     "id": "program-card-portrait-1-jpg-0d9257",
+     "type": "PORTRAIT",
+     "sources": [
+      {
+       "url": "https://photos.tf1.fr/700/933/program-card-portrait-1-jpg-0d9257-39b93d-0@1x.jpg",
+       "width": "700",
+       "height": "933",
+       "type": "jpg",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/350/466/program-card-portrait-1-jpg-0d9257-0ade08-0@1x.jpg",
+       "width": "350",
+       "height": "466",
+       "type": "jpg",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/233/311/program-card-portrait-1-jpg-0d9257-e74dec-0@1x.jpg",
+       "width": "233",
+       "height": "311",
+       "type": "jpg",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/700/933/program-card-portrait-1-jpg-0d9257-b2d678-0@1x.webp",
+       "width": "700",
+       "height": "933",
+       "type": "webp",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/350/466/program-card-portrait-1-jpg-0d9257-1b9c5c-0@1x.webp",
+       "width": "350",
+       "height": "466",
+       "type": "webp",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/233/311/program-card-portrait-1-jpg-0d9257-51175c-0@1x.webp",
+       "width": "233",
+       "height": "311",
+       "type": "webp",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/700/933/program-card-portrait-1-jpg-0d9257-ec5ac7-0@1x.avif",
+       "width": "700",
+       "height": "933",
+       "type": "avif",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/350/466/program-card-portrait-1-jpg-0d9257-ecbac8-0@1x.avif",
+       "width": "350",
+       "height": "466",
+       "type": "avif",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/233/311/program-card-portrait-1-jpg-0d9257-c52ae2-0@1x.avif",
+       "width": "233",
+       "height": "311",
+       "type": "avif",
+       "__typename": "SrcSet"
+      }
+     ],
+     "__typename": "Image"
+    },
+    "background": {
+     "id": "background-ott-jpg-a72446",
+     "type": "BACKGROUND",
+     "sources": [
+      {
+       "url": "https://photos.tf1.fr/1920/1080/background-ott-jpg-a72446-24441c-0@1x.jpg",
+       "width": "1920",
+       "height": "1080",
+       "type": "jpg",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/960/540/background-ott-jpg-a72446-73a561-0@1x.jpg",
+       "width": "960",
+       "height": "540",
+       "type": "jpg",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/640/360/background-ott-jpg-a72446-c8783f-0@1x.jpg",
+       "width": "640",
+       "height": "360",
+       "type": "jpg",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/1920/1080/background-ott-jpg-a72446-4f0b54-0@1x.webp",
+       "width": "1920",
+       "height": "1080",
+       "type": "webp",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/960/540/background-ott-jpg-a72446-ec8768-0@1x.webp",
+       "width": "960",
+       "height": "540",
+       "type": "webp",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/640/360/background-ott-jpg-a72446-90e0fd-0@1x.webp",
+       "width": "640",
+       "height": "360",
+       "type": "webp",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/1920/1080/background-ott-jpg-a72446-93331a-0@1x.avif",
+       "width": "1920",
+       "height": "1080",
+       "type": "avif",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/960/540/background-ott-jpg-a72446-7a5209-0@1x.avif",
+       "width": "960",
+       "height": "540",
+       "type": "avif",
+       "__typename": "SrcSet"
+      },
+      {
+       "url": "https://photos.tf1.fr/640/360/background-ott-jpg-a72446-b06af7-0@1x.avif",
+       "width": "640",
+       "height": "360",
+       "type": "avif",
+       "__typename": "SrcSet"
+      }
+     ],
+     "__typename": "Image"
+    },
+    "__typename": "Decoration"
+   },
+   "replay": {
+    "total": 399,
+    "__typename": "VideosConnector"
+   },
+   "replayRecent": {
+    "total": 1,
+    "__typename": "VideosConnector"
+   },
+   "allVideos": {
+    "total": 980,
+    "__typename": "VideosConnector"
+   },
+   "allVideosRecent": {
+    "total": 1,
+    "__typename": "VideosConnector"
+   },
+   "__typename": "Program",
+   "videos": {
+    "total": 399,
+    "items": [
+     {
+      "id": "e73e8eed-7799-48a3-b232-4dd061bf79a9",
+      "slug": "koh-lanta-all-stars-moments-cultes-ugo-15500377",
+      "emId": "2151180",
+      "type": "REPLAY",
+      "rating": "CSA_ALL",
+      "date": "2026-10-01T18:49:12Z",
+      "episode": 14,
+      "season": 9001,
+      "authEnabled": true,
+      "isRecent": true,
+      "published": "2026-10-01T18:49:12Z",
+      "url": "https://www.tf1.fr/tf1/koh-lanta/videos/koh-lanta-all-stars-moments-cultes-ugo-15500377.html",
+      "broadcastChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "slug": "tf1",
+       "__typename": "Channel"
+      },
+      "tags": [
+       {
+        "slug": "equipe-jaune",
+        "label": "equipe jaune",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "aventure",
+        "label": "aventure",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "tania-koh-lanta-all-star-96647429",
+        "label": "Tania Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "epreuves",
+        "label": "Epreuves",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "denis-brogniard",
+        "label": "denis brogniart",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "ugo-koh-lanta-all-star-82948393",
+        "label": "Ugo Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "tele-realite",
+        "label": "télé-réalité",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "camille-koh-lanta-all-star-57193057",
+        "label": "Camille Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "koh-lanta-25887986",
+        "label": "Koh Lanta",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "koh-lanta",
+        "label": "Koh Lanta",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "laure-koh-lanta-all-star-52931382",
+        "label": "Laure Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "lola-koh-lanta-all-star-20274030",
+        "label": "Lola Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "christina-koh-lanta-all-star-68837602",
+        "label": "Christina Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "aventuriers",
+        "label": "aventuriers",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "nicolas-koh-lanta-all-star-44056169",
+        "label": "Nicolas Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "fredy-koh-lanta-all-star-33780610",
+        "label": "Fredy Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "vincent-koh-lanta-all-star-46482764",
+        "label": "Vincent Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "all-star-51856952",
+        "label": "all star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "maxime-koh-lanta-all-star-96228270",
+        "label": "Maxime Koh Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "charlotte-koh-lanta-all-star-51443004",
+        "label": "Charlotte Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "dorian-koh-lanta-all-star-74832246",
+        "label": "Dorian Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "equipe-rouge",
+        "label": "equipe rouge",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "clementine-koh-lanta-all-star-86790318",
+        "label": "Clémentine Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "yassin-koh-lanta-all-star-49934749",
+        "label": "Yassin Koh-Lanta All Star",
+        "__typename": "Tag"
+       }
+      ],
+      "playingInfos": {
+       "duration": 115,
+       "remainingDays": 822,
+       "freeRemainingDays": 822,
+       "__typename": "PlayingInfos"
+      },
+      "decoration": {
+       "description": "18 aventuriers emblématiques débarquent sur un îlot du Pacifique pour une saison totalement inédite. L'aventure commence en \"Destins Liés\" avec des surprises dès les premières minutes. Performances hors normes, techniques de survie inédites et retournements de situation vont marquer l'histoire.",
+       "hook": "",
+       "label": "Koh Lanta All Stars - Moments cultes - Ugo",
+       "programLabel": "Koh-Lanta",
+       "subLabel": "du jeudi 01 octobre 2026 à 20h49",
+       "images": [
+        {
+         "id": "preview_e73e8eed-7799-48a3-b232-4dd061bf79a9",
+         "type": "PREVIEW",
+         "sources": [
+          {
+           "url": "https://vidpreviews.tf1.fr/video/27a30154a2be942d8586799fd7cc3631b9e14395017517c55e3cfa0e9e812c04.mp4",
+           "width": "0",
+           "height": "0",
+           "type": "mp4",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        {
+         "id": "program-card-landscape-a80d17",
+         "type": "THUMBNAIL",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/396/222/program-card-landscape-a80d17-a7eb3f-0@1x.jpg",
+           "width": "396",
+           "height": "222",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/program-card-landscape-a80d17-6001c8-0@1x.jpg",
+           "width": "198",
+           "height": "111",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/program-card-landscape-a80d17-b587cb-0@1x.jpg",
+           "width": "132",
+           "height": "74",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/396/222/program-card-landscape-a80d17-66cc7f-0@1x.webp",
+           "width": "396",
+           "height": "222",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/program-card-landscape-a80d17-2722b0-0@1x.webp",
+           "width": "198",
+           "height": "111",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/program-card-landscape-a80d17-a15660-0@1x.webp",
+           "width": "132",
+           "height": "74",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/396/222/program-card-landscape-a80d17-d52239-0@1x.avif",
+           "width": "396",
+           "height": "222",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/program-card-landscape-a80d17-54e5c9-0@1x.avif",
+           "width": "198",
+           "height": "111",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/program-card-landscape-a80d17-5f94fd-0@1x.avif",
+           "width": "132",
+           "height": "74",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        {
+         "id": "program-card-landscape-a80d17",
+         "type": "THUMBNAIL_LARGE",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/1200/720/program-card-landscape-a80d17-e512a1-0@1x.jpg",
+           "width": "1200",
+           "height": "720",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/program-card-landscape-a80d17-5358f6-0@1x.jpg",
+           "width": "600",
+           "height": "360",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/program-card-landscape-a80d17-8e1182-0@1x.jpg",
+           "width": "400",
+           "height": "240",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/1200/720/program-card-landscape-a80d17-98fc71-0@1x.webp",
+           "width": "1200",
+           "height": "720",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/program-card-landscape-a80d17-6fbc66-0@1x.webp",
+           "width": "600",
+           "height": "360",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/program-card-landscape-a80d17-402a43-0@1x.webp",
+           "width": "400",
+           "height": "240",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/1200/720/program-card-landscape-a80d17-e39ac6-0@1x.avif",
+           "width": "1200",
+           "height": "720",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/program-card-landscape-a80d17-7e805a-0@1x.avif",
+           "width": "600",
+           "height": "360",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/program-card-landscape-a80d17-728481-0@1x.avif",
+           "width": "400",
+           "height": "240",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        }
+       ],
+       "__typename": "Decoration"
+      },
+      "program": {
+       "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+       "slug": "koh-lanta",
+       "name": "Koh-Lanta",
+       "editor": "mytf1",
+       "isFullyDigital": false,
+       "initialChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "slug": "tf1",
+        "label": "TF1",
+        "__typename": "Channel"
+       },
+       "mainChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "label": "TF1",
+        "slug": "tf1",
+        "__typename": "Channel"
+       },
+       "categories": [
+        {
+         "id": "GT_ENTERTAINMENT",
+         "main": true,
+         "slug": "divertissements",
+         "__typename": "Category"
+        },
+        {
+         "id": "SGT_ENTERTAINMENT",
+         "main": false,
+         "slug": "divertissements",
+         "__typename": "Category"
+        }
+       ],
+       "__typename": "Program",
+       "showSeasons": true,
+       "decoration": {
+        "image": {
+         "id": "logo-programme-png-aee50c",
+         "type": "LOGO",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-e421c6-0@1x.png",
+           "width": "450",
+           "height": "225",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-11b2eb-0@1x.png",
+           "width": "225",
+           "height": "112",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-71fc4b-0@1x.png",
+           "width": "150",
+           "height": "75",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-75e421-0@1x.webp",
+           "width": "450",
+           "height": "225",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-5ecf0c-0@1x.webp",
+           "width": "225",
+           "height": "112",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-641f16-0@1x.webp",
+           "width": "150",
+           "height": "75",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-88d076-0@1x.avif",
+           "width": "450",
+           "height": "225",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-5bf715-0@1x.avif",
+           "width": "225",
+           "height": "112",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-1fc131-0@1x.avif",
+           "width": "150",
+           "height": "75",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        "__typename": "Decoration"
+       }
+      },
+      "accessibilityAttributes": {
+       "hasFrenchAudioTrack": true,
+       "hasOriginalAudioTrack": false,
+       "hasDescriptionTrack": false,
+       "hasFrenchDeafSubtitles": true,
+       "hasFrenchSubtitles": false,
+       "__typename": "AccessibilityAttributes"
+      },
+      "rights": [
+       "BASIC",
+       "MAX"
+      ],
+      "__typename": "Video"
+     },
+     {
+      "id": "80065fc8-76ba-459c-85c2-4fa1dbc456b5",
+      "slug": "koh-lanta-all-stars-moments-cultes-lola-68462357",
+      "emId": "2151179",
+      "type": "REPLAY",
+      "rating": "CSA_ALL",
+      "date": "2026-09-30T19:04:53Z",
+      "episode": 13,
+      "season": 9001,
+      "authEnabled": true,
+      "isRecent": false,
+      "published": "2026-09-30T19:04:53Z",
+      "url": "https://www.tf1.fr/tf1/koh-lanta/videos/koh-lanta-all-stars-moments-cultes-lola-68462357.html",
+      "broadcastChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "slug": "tf1",
+       "__typename": "Channel"
+      },
+      "tags": [
+       {
+        "slug": "equipe-jaune",
+        "label": "equipe jaune",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "aventure",
+        "label": "aventure",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "tania-koh-lanta-all-star-96647429",
+        "label": "Tania Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "epreuves",
+        "label": "Epreuves",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "denis-brogniard",
+        "label": "denis brogniart",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "ugo-koh-lanta-all-star-82948393",
+        "label": "Ugo Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "tele-realite",
+        "label": "télé-réalité",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "camille-koh-lanta-all-star-57193057",
+        "label": "Camille Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "koh-lanta-25887986",
+        "label": "Koh Lanta",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "koh-lanta",
+        "label": "Koh Lanta",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "laure-koh-lanta-all-star-52931382",
+        "label": "Laure Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "lola-koh-lanta-all-star-20274030",
+        "label": "Lola Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "christina-koh-lanta-all-star-68837602",
+        "label": "Christina Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "aventuriers",
+        "label": "aventuriers",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "nicolas-koh-lanta-all-star-44056169",
+        "label": "Nicolas Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "fredy-koh-lanta-all-star-33780610",
+        "label": "Fredy Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "vincent-koh-lanta-all-star-46482764",
+        "label": "Vincent Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "all-star-51856952",
+        "label": "all star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "maxime-koh-lanta-all-star-96228270",
+        "label": "Maxime Koh Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "charlotte-koh-lanta-all-star-51443004",
+        "label": "Charlotte Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "dorian-koh-lanta-all-star-74832246",
+        "label": "Dorian Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "equipe-rouge",
+        "label": "equipe rouge",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "clementine-koh-lanta-all-star-86790318",
+        "label": "Clémentine Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "yassin-koh-lanta-all-star-49934749",
+        "label": "Yassin Koh-Lanta All Star",
+        "__typename": "Tag"
+       }
+      ],
+      "playingInfos": {
+       "duration": 103,
+       "remainingDays": 822,
+       "freeRemainingDays": 822,
+       "__typename": "PlayingInfos"
+      },
+      "decoration": {
+       "description": "18 aventuriers emblématiques débarquent sur un îlot du Pacifique pour une saison totalement inédite. L'aventure commence en \"Destins Liés\" avec des surprises dès les premières minutes. Performances hors normes, techniques de survie inédites et retournements de situation vont marquer l'histoire.",
+       "hook": "",
+       "label": "Koh Lanta All Stars - Moments cultes - Lola",
+       "programLabel": "Koh-Lanta",
+       "subLabel": "du mercredi 30 septembre 2026 à 21h04",
+       "images": [
+        {
+         "id": "preview_80065fc8-76ba-459c-85c2-4fa1dbc456b5",
+         "type": "PREVIEW",
+         "sources": [
+          {
+           "url": "https://vidpreviews.tf1.fr/video/8442d088d380b71a8d7e09425e7ede8838fd9cf732520be150abbce45d8257a4.mp4",
+           "width": "0",
+           "height": "0",
+           "type": "mp4",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        {
+         "id": "program-card-landscape-a80d17",
+         "type": "THUMBNAIL",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/396/222/program-card-landscape-a80d17-a7eb3f-0@1x.jpg",
+           "width": "396",
+           "height": "222",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/program-card-landscape-a80d17-6001c8-0@1x.jpg",
+           "width": "198",
+           "height": "111",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/program-card-landscape-a80d17-b587cb-0@1x.jpg",
+           "width": "132",
+           "height": "74",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/396/222/program-card-landscape-a80d17-66cc7f-0@1x.webp",
+           "width": "396",
+           "height": "222",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/program-card-landscape-a80d17-2722b0-0@1x.webp",
+           "width": "198",
+           "height": "111",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/program-card-landscape-a80d17-a15660-0@1x.webp",
+           "width": "132",
+           "height": "74",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/396/222/program-card-landscape-a80d17-d52239-0@1x.avif",
+           "width": "396",
+           "height": "222",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/program-card-landscape-a80d17-54e5c9-0@1x.avif",
+           "width": "198",
+           "height": "111",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/program-card-landscape-a80d17-5f94fd-0@1x.avif",
+           "width": "132",
+           "height": "74",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        {
+         "id": "program-card-landscape-a80d17",
+         "type": "THUMBNAIL_LARGE",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/1200/720/program-card-landscape-a80d17-e512a1-0@1x.jpg",
+           "width": "1200",
+           "height": "720",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/program-card-landscape-a80d17-5358f6-0@1x.jpg",
+           "width": "600",
+           "height": "360",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/program-card-landscape-a80d17-8e1182-0@1x.jpg",
+           "width": "400",
+           "height": "240",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/1200/720/program-card-landscape-a80d17-98fc71-0@1x.webp",
+           "width": "1200",
+           "height": "720",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/program-card-landscape-a80d17-6fbc66-0@1x.webp",
+           "width": "600",
+           "height": "360",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/program-card-landscape-a80d17-402a43-0@1x.webp",
+           "width": "400",
+           "height": "240",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/1200/720/program-card-landscape-a80d17-e39ac6-0@1x.avif",
+           "width": "1200",
+           "height": "720",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/program-card-landscape-a80d17-7e805a-0@1x.avif",
+           "width": "600",
+           "height": "360",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/program-card-landscape-a80d17-728481-0@1x.avif",
+           "width": "400",
+           "height": "240",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        }
+       ],
+       "__typename": "Decoration"
+      },
+      "program": {
+       "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+       "slug": "koh-lanta",
+       "name": "Koh-Lanta",
+       "editor": "mytf1",
+       "isFullyDigital": false,
+       "initialChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "slug": "tf1",
+        "label": "TF1",
+        "__typename": "Channel"
+       },
+       "mainChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "label": "TF1",
+        "slug": "tf1",
+        "__typename": "Channel"
+       },
+       "categories": [
+        {
+         "id": "GT_ENTERTAINMENT",
+         "main": true,
+         "slug": "divertissements",
+         "__typename": "Category"
+        },
+        {
+         "id": "SGT_ENTERTAINMENT",
+         "main": false,
+         "slug": "divertissements",
+         "__typename": "Category"
+        }
+       ],
+       "__typename": "Program",
+       "showSeasons": true,
+       "decoration": {
+        "image": {
+         "id": "logo-programme-png-aee50c",
+         "type": "LOGO",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-e421c6-0@1x.png",
+           "width": "450",
+           "height": "225",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-11b2eb-0@1x.png",
+           "width": "225",
+           "height": "112",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-71fc4b-0@1x.png",
+           "width": "150",
+           "height": "75",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-75e421-0@1x.webp",
+           "width": "450",
+           "height": "225",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-5ecf0c-0@1x.webp",
+           "width": "225",
+           "height": "112",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-641f16-0@1x.webp",
+           "width": "150",
+           "height": "75",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-88d076-0@1x.avif",
+           "width": "450",
+           "height": "225",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-5bf715-0@1x.avif",
+           "width": "225",
+           "height": "112",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-1fc131-0@1x.avif",
+           "width": "150",
+           "height": "75",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        "__typename": "Decoration"
+       }
+      },
+      "accessibilityAttributes": {
+       "hasFrenchAudioTrack": true,
+       "hasOriginalAudioTrack": false,
+       "hasDescriptionTrack": false,
+       "hasFrenchDeafSubtitles": true,
+       "hasFrenchSubtitles": false,
+       "__typename": "AccessibilityAttributes"
+      },
+      "rights": [
+       "BASIC",
+       "MAX"
+      ],
+      "__typename": "Video"
+     },
+     {
+      "id": "29918014-ffaa-431d-8a6d-7e0fc18ba9f1",
+      "slug": "koh-lanta-koh-lanta-all-stars-emission-6-partie-2-50925027",
+      "emId": "2148593",
+      "type": "REPLAY",
+      "rating": "CSA_ALL",
+      "date": "2026-09-29T20:30:49Z",
+      "episode": 6,
+      "season": 34,
+      "authEnabled": true,
+      "isRecent": false,
+      "published": "2026-09-29T21:22:52Z",
+      "url": "https://www.tf1.fr/tf1/koh-lanta/videos/koh-lanta-koh-lanta-all-stars-emission-6-partie-2-50925027.html",
+      "broadcastChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "slug": "tf1",
+       "__typename": "Channel"
+      },
+      "tags": [
+       {
+        "slug": "equipe-jaune",
+        "label": "equipe jaune",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "aventure",
+        "label": "aventure",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "tania-koh-lanta-all-star-96647429",
+        "label": "Tania Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "epreuves",
+        "label": "Epreuves",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "denis-brogniard",
+        "label": "denis brogniart",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "ugo-koh-lanta-all-star-82948393",
+        "label": "Ugo Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "tele-realite",
+        "label": "télé-réalité",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "camille-koh-lanta-all-star-57193057",
+        "label": "Camille Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "koh-lanta-25887986",
+        "label": "Koh Lanta",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "koh-lanta",
+        "label": "Koh Lanta",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "laure-koh-lanta-all-star-52931382",
+        "label": "Laure Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "lola-koh-lanta-all-star-20274030",
+        "label": "Lola Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "christina-koh-lanta-all-star-68837602",
+        "label": "Christina Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "aventuriers",
+        "label": "aventuriers",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "nicolas-koh-lanta-all-star-44056169",
+        "label": "Nicolas Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "fredy-koh-lanta-all-star-33780610",
+        "label": "Fredy Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "vincent-koh-lanta-all-star-46482764",
+        "label": "Vincent Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "all-star-51856952",
+        "label": "all star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "maxime-koh-lanta-all-star-96228270",
+        "label": "Maxime Koh Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "charlotte-koh-lanta-all-star-51443004",
+        "label": "Charlotte Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "dorian-koh-lanta-all-star-74832246",
+        "label": "Dorian Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "equipe-rouge",
+        "label": "equipe rouge",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "clementine-koh-lanta-all-star-86790318",
+        "label": "Clémentine Koh-Lanta All Star",
+        "__typename": "Tag"
+       },
+       {
+        "slug": "yassin-koh-lanta-all-star-49934749",
+        "label": "Yassin Koh-Lanta All Star",
+        "__typename": "Tag"
+       }
+      ],
+      "playingInfos": {
+       "duration": 2110,
+       "remainingDays": 822,
+       "freeRemainingDays": 822,
+       "__typename": "PlayingInfos"
+      },
+      "decoration": {
+       "description": "Le rush final commence pour les aventuriers : quatre d'entre eux sont encore en lice. Maxime et Doran pour les Rouges, et Camille et Yassin pour les Jaunes. Plus le temps passe, plus l'épreuve devient compliquée et énergivore. C'est finalement une troisième défaite consécutive pour les Jaunes ! Cette défaite sème la zizanie sur le camp des Taboga. Tous les aventuriers partent à la recherche d'un collier, d'autant plus que, grâce au confort, Vincent et Yassin ont trouvé des avantages stratégiques pour le Conseil qui approche. Qui rejoindra Lola et Charlotte, qui sont dans le dur sur l'île des Bannis ? Koh-Lanta All Stars - Émission 6, partie 2",
+       "hook": "",
+       "label": "Koh Lanta All Stars - Emission 6 (Partie 2)",
+       "programLabel": "Koh-Lanta",
+       "subLabel": "du mardi 29 septembre 2026 à 22h30",
+       "images": [
+        {
+         "id": "preview_29918014-ffaa-431d-8a6d-7e0fc18ba9f1",
+         "type": "PREVIEW",
+         "sources": [
+          {
+           "url": "https://vidpreviews.tf1.fr/video/532a22a8a00f741d8623e984bc389974c9a201bd95af34e4bee52cdfa7116784.mp4",
+           "width": "0",
+           "height": "0",
+           "type": "mp4",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        {
+         "id": "1183458_klas7confortjaunes-549e6a",
+         "type": "THUMBNAIL",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/396/222/1183458_klas7confortjaunes-549e6a-2c16ed-0@1x.jpg",
+           "width": "396",
+           "height": "222",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/1183458_klas7confortjaunes-549e6a-dd8a80-0@1x.jpg",
+           "width": "198",
+           "height": "111",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/1183458_klas7confortjaunes-549e6a-cd7690-0@1x.jpg",
+           "width": "132",
+           "height": "74",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/396/222/1183458_klas7confortjaunes-549e6a-fa074d-0@1x.webp",
+           "width": "396",
+           "height": "222",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/1183458_klas7confortjaunes-549e6a-90eb24-0@1x.webp",
+           "width": "198",
+           "height": "111",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/1183458_klas7confortjaunes-549e6a-38f8ae-0@1x.webp",
+           "width": "132",
+           "height": "74",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/396/222/1183458_klas7confortjaunes-549e6a-80da61-0@1x.avif",
+           "width": "396",
+           "height": "222",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/198/111/1183458_klas7confortjaunes-549e6a-7a26eb-0@1x.avif",
+           "width": "198",
+           "height": "111",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/132/74/1183458_klas7confortjaunes-549e6a-f0330a-0@1x.avif",
+           "width": "132",
+           "height": "74",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        {
+         "id": "1183458_klas7confortjaunes-549e6a",
+         "type": "THUMBNAIL_LARGE",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/1200/720/1183458_klas7confortjaunes-549e6a-9482a3-0@1x.jpg",
+           "width": "1200",
+           "height": "720",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/1183458_klas7confortjaunes-549e6a-d336ee-0@1x.jpg",
+           "width": "600",
+           "height": "360",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/1183458_klas7confortjaunes-549e6a-db7a0c-0@1x.jpg",
+           "width": "400",
+           "height": "240",
+           "type": "jpg",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/1200/720/1183458_klas7confortjaunes-549e6a-8f5240-0@1x.webp",
+           "width": "1200",
+           "height": "720",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/1183458_klas7confortjaunes-549e6a-d4702c-0@1x.webp",
+           "width": "600",
+           "height": "360",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/1183458_klas7confortjaunes-549e6a-6b6ae6-0@1x.webp",
+           "width": "400",
+           "height": "240",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/1200/720/1183458_klas7confortjaunes-549e6a-d12a17-0@1x.avif",
+           "width": "1200",
+           "height": "720",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/600/360/1183458_klas7confortjaunes-549e6a-7af085-0@1x.avif",
+           "width": "600",
+           "height": "360",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/400/240/1183458_klas7confortjaunes-549e6a-da7906-0@1x.avif",
+           "width": "400",
+           "height": "240",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        }
+       ],
+       "__typename": "Decoration"
+      },
+      "program": {
+       "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+       "slug": "koh-lanta",
+       "name": "Koh-Lanta",
+       "editor": "mytf1",
+       "isFullyDigital": false,
+       "initialChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "slug": "tf1",
+        "label": "TF1",
+        "__typename": "Channel"
+       },
+       "mainChannel": {
+        "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+        "label": "TF1",
+        "slug": "tf1",
+        "__typename": "Channel"
+       },
+       "categories": [
+        {
+         "id": "GT_ENTERTAINMENT",
+         "main": true,
+         "slug": "divertissements",
+         "__typename": "Category"
+        },
+        {
+         "id": "SGT_ENTERTAINMENT",
+         "main": false,
+         "slug": "divertissements",
+         "__typename": "Category"
+        }
+       ],
+       "__typename": "Program",
+       "showSeasons": true,
+       "decoration": {
+        "image": {
+         "id": "logo-programme-png-aee50c",
+         "type": "LOGO",
+         "sources": [
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-e421c6-0@1x.png",
+           "width": "450",
+           "height": "225",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-11b2eb-0@1x.png",
+           "width": "225",
+           "height": "112",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-71fc4b-0@1x.png",
+           "width": "150",
+           "height": "75",
+           "type": "png",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-75e421-0@1x.webp",
+           "width": "450",
+           "height": "225",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-5ecf0c-0@1x.webp",
+           "width": "225",
+           "height": "112",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-641f16-0@1x.webp",
+           "width": "150",
+           "height": "75",
+           "type": "webp",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/450/225/logo-programme-png-aee50c-88d076-0@1x.avif",
+           "width": "450",
+           "height": "225",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/225/112/logo-programme-png-aee50c-5bf715-0@1x.avif",
+           "width": "225",
+           "height": "112",
+           "type": "avif",
+           "__typename": "SrcSet"
+          },
+          {
+           "url": "https://photos.tf1.fr/150/75/logo-programme-png-aee50c-1fc131-0@1x.avif",
+           "width": "150",
+           "height": "75",
+           "type": "avif",
+           "__typename": "SrcSet"
+          }
+         ],
+         "__typename": "Image"
+        },
+        "__typename": "Decoration"
+       }
+      },
+      "accessibilityAttributes": {
+       "hasFrenchAudioTrack": true,
+       "hasOriginalAudioTrack": false,
+       "hasDescriptionTrack": false,
+       "hasFrenchDeafSubtitles": true,
+       "hasFrenchSubtitles": false,
+       "__typename": "AccessibilityAttributes"
+      },
+      "rights": [
+       "BASIC",
+       "MAX"
+      ],
+      "__typename": "Video"
+     }
+    ],
+    "__typename": "VideosConnector"
+   }
+  }
+ }
+}

@@ -42,9 +42,28 @@ Android. Au moment de lire :
 - M6+ : connexion Gigya (`login-gigya.m6.fr`) → JWT 6cloud → jeton « upfront » par vidéo, présenté
   à la licence DRMtoday ; le manifeste DASH vient de la fiche publique de la vidéo.
 
-Ces API ne sont pas documentées : les identifiants de requêtes GraphQL de TF1 et les clés Gigya
-viennent du code des sites web et peuvent changer sans préavis. Leur usage par une application
-tierce n'est probablement pas autorisé par les conditions d'utilisation des deux plateformes.
+Ces API ne sont pas documentées : les clés Gigya viennent du code des sites web et peuvent
+changer sans préavis. Leur usage par une application tierce n'est probablement pas autorisé par
+les conditions d'utilisation des deux plateformes.
+
+**Requêtes GraphQL de TF1+.** Le serveur `tf1.fr/graphql/web` n'accepte que des requêtes
+persistées désignées par un identifiant. Le catalogue (`Tf1Catalog`) ne dépend plus d'identifiants
+figés :
+
+1. `Tf1QueryResolver` retrouve la table nom → empreinte (`"ProgramCatalogDocument",0,{__meta__:
+   {hash:"sha256:…"}}`) publiée dans les scripts du site (page `/programmes-tv` → chemins
+   `static/chunks/*.js` → scripts, un niveau de plus si besoin), la met en cache sur disque
+   sept jours, et la redécouvre quand le serveur répond `no queries to execute` à un identifiant
+   (au plus une découverte à la fois, pas de nouvel essai pendant une heure après un échec) ;
+2. les requêtes nommées utilisées sont `ProgramCatalogDocument` (programmes, filtre par chaîne ou
+   catégorie) et `VideoContainer_RelatedVideosListDocument` (replays d'un programme) ;
+3. en dernier recours, les identifiants de l'ancienne version du site (`483ce0f`, `a6f9cf0e`),
+   encore acceptés, avec leur propre forme de réponse.
+
+Si toute la chaîne échoue, l'écran affiche « Le catalogue TF1+ a changé, une mise à jour de
+l'application est nécessaire ». L'analyse des réponses (`app/src/test`) est couverte par des
+tests unitaires sur des extraits réels (`app/src/test/resources/fixtures/tf1`). Le flux de lecture
+(mediainfo, Gigya, licence) ne dépend pas de ces identifiants.
 
 ## Aperçu
 
@@ -75,7 +94,8 @@ app/src/main/java/dev/valentin/replaytv/
 ├── catalog/
 │   ├── FranceTvCatalog.kt    Lecture des cartes <a data-card-link> des pages france.tv
 │   ├── ArteCatalog.kt        API EMAC (pages), API player (métadonnées), yt-dlp (collections)
-│   ├── Tf1Catalog.kt         API GraphQL tf1.fr : programmes par chaîne et catégorie, replays gratuits
+│   ├── Tf1Catalog.kt         API GraphQL tf1.fr : requêtes nommées puis anciens identifiants
+│   ├── Tf1Queries.kt         Découverte et cache des identifiants de requêtes persistées
 │   ├── M6Catalog.kt          API middleware M6 : dossiers, programmes, épisodes gratuits, fiche vidéo
 │   └── CatalogRepository.kt  Dispatch par source
 ├── ytdlp/YtDlp.kt            Façade youtubedl-android : init, `-J` (analyse), `--flat-playlist`, téléchargement

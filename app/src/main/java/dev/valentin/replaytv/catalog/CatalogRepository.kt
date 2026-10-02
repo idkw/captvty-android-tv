@@ -8,11 +8,10 @@ import dev.valentin.replaytv.model.Source
 import dev.valentin.replaytv.ytdlp.YtDlp
 import okhttp3.OkHttpClient
 
-class CatalogRepository(http: OkHttpClient, ytDlp: YtDlp, private val m6: M6Catalog) {
+class CatalogRepository(http: OkHttpClient, ytDlp: YtDlp, private val m6: M6Catalog, private val tf1: Tf1Catalog) {
 
     private val franceTv = FranceTvCatalog(http)
     private val arte = ArteCatalog(http, ytDlp)
-    private val tf1 = Tf1Catalog(http)
 
     suspend fun section(section: Section): List<CatalogRow> = when (section.source) {
         Source.FRANCE_TV -> franceTv.page(section.code)
