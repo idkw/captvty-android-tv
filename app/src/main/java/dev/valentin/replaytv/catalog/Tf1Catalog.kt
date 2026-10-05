@@ -92,22 +92,29 @@ class Tf1Catalog(private val http: OkHttpClient, private val queries: Tf1QueryRe
         return perChannel.filterNotNull().flatten()
     }
 
-    /** `ProgramCatalogDocument` : `data.sliderOfPrograms.items[].program`, par pages de [PAGE_SIZE]. */
-    private suspend fun catalogPrograms(filter: JsonObject, maxPages: Int): List<Program>? {
-        val programs = mutableListOf<Program>()
-        for (page in 0 until maxPages) {
-            val variables = buildJsonObject {
-                put("limit", PAGE_SIZE)
-                put("offset", page * PAGE_SIZE)
-                put("filter", filter)
-            }
-            val response = named(QUERY_PROGRAM_CATALOG, variables) ?: return null
-            val root = response.obj("data").obj("sliderOfPrograms") ?: return if (page == 0) null else programs
-            programs += parseCatalogPrograms(response)
-            val total = root.int("total") ?: 0
-            if (programs.size >= total || root.arr("items").size < PAGE_SIZE) break
+    /**
+     * `ProgramCatalogDocument` : `data.sliderOfPrograms.items[].program`. `offset` est un numéro de
+     * page (comme sur le site), pas un nombre d'éléments. La première page donne le total ; les
+     * suivantes sont chargées en parallèle, dans la limite de [maxPages] (3 Mo par page).
+     */
+    private suspend fun catalogPrograms(filter: JsonObject, maxPages: Int): List<Program>? = coroutineScope {
+        val first = named(QUERY_PROGRAM_CATALOG, catalogVariables(filter, page = 0)) ?: return@coroutineScope null
+        val slider = first.obj("data").obj("sliderOfPrograms") ?: return@coroutineScope null
+        val programs = parseCatalogPrograms(first).toMutableList()
+        val total = slider.int("total") ?: programs.size
+        val pages = ((total + PAGE_SIZE - 1) / PAGE_SIZE).coerceAtMost(maxPages)
+        if (pages > 1 && programs.size >= PAGE_SIZE) {
+            (1 until pages).map { page ->
+                async { named(QUERY_PROGRAM_CATALOG, catalogVariables(filter, page))?.let(::parseCatalogPrograms).orEmpty() }
+            }.awaitAll().forEach { programs += it }
         }
-        return programs
+        programs
+    }
+
+    private fun catalogVariables(filter: JsonObject, page: Int): JsonObject = buildJsonObject {
+        put("limit", PAGE_SIZE)
+        put("offset", page)
+        put("filter", filter)
     }
 
     /** Ancienne requête `483ce0f` : `data.programs.items[]`, filtrée sur une chaîne. */
@@ -198,7 +205,7 @@ class Tf1Catalog(private val http: OkHttpClient, private val queries: Tf1QueryRe
         const val LEGACY_QUERY_PROGRAMS = "483ce0f"
         const val LEGACY_QUERY_PROGRAM_VIDEOS = "a6f9cf0e"
         private const val PAGE_SIZE = 500
-        private const val CHANNEL_PAGES = 3
+        private const val CHANNEL_PAGES = 2
         private const val VIDEOS_LIMIT = 60
         private val HEADERS = mapOf("Content-Type" to "application/json")
         private val PROGRAM_SLUG = Regex("""tf1\.fr/[^/]+/([^/]+)/videos""")
