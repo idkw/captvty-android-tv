@@ -15,8 +15,9 @@ android {
         applicationId = "dev.valentin.replaytv"
         minSdk = 24
         targetSdk = 36
-        versionCode = 9
-        versionName = "0.3.3"
+        versionCode = 10
+        // -Preplaytv.versionName=… permet de construire une version « ancienne » pour tester les mises à jour.
+        versionName = (project.findProperty("replaytv.versionName") as String?) ?: "0.4.0"
     }
 
     // Un APK par architecture (arm64-v8a : box 64 bits, armeabi-v7a : box 32 bits, x86_64 : émulateur)
@@ -31,10 +32,27 @@ android {
         }
     }
 
+    // Clé de release : fournie par l'environnement (secrets GitHub en CI, .env en local) ; à défaut,
+    // la clé de debug, et les mises à jour en place depuis l'application ne fonctionneront pas.
+    val releaseKeystorePath = System.getenv("RELEASE_KEYSTORE_PATH")
+    val releaseKeystorePassword = System.getenv("RELEASE_KEYSTORE_PASSWORD")
+    val releaseKeyAlias = System.getenv("RELEASE_KEY_ALIAS")
+    val releaseKeyPassword = System.getenv("RELEASE_KEY_PASSWORD")
+    val releaseSigningConfigured = listOf(releaseKeystorePath, releaseKeystorePassword, releaseKeyAlias, releaseKeyPassword).all { !it.isNullOrBlank() }
+    if (releaseSigningConfigured) {
+        signingConfigs.create("release") {
+            val keystore = File(releaseKeystorePath!!)
+            storeFile = if (keystore.isAbsolute) keystore else rootProject.file(releaseKeystorePath)
+            storePassword = releaseKeystorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(if (releaseSigningConfigured) "release" else "debug")
         }
     }
 
@@ -45,6 +63,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {

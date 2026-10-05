@@ -1,0 +1,43 @@
+{
+ "tag_name": "v0.3.3",
+ "name": "Replay TV v0.3.3",
+ "html_url": "https://github.com/idkw/captvty-android-tv/releases/tag/v0.3.3",
+ "published_at": "2026-10-05T13:35:44Z",
+ "draft": false,
+ "prerelease": false,
+ "body": "Prototype d'application Android TV pour parcourir, lire et télécharger les replays de France TV et d'Arte directement sur la box.\n\n**Fonctionnalités**\n- Accueil par chaîne.\n- Lecture en streaming HLS.\n",
+ "assets": [
+  {
+   "name": "replaytv-v0.3.3-arm64-v8a.apk",
+   "size": 65616226,
+   "state": "uploaded",
+   "content_type": "application/vnd.android.package-archive",
+   "browser_download_url": "https://github.com/idkw/captvty-android-tv/releases/download/v0.3.3/replaytv-v0.3.3-arm64-v8a.apk",
+   "digest": "sha256:97e021f41218c6e13ab82ced620655c224da97352044579916610d609ef0ef10"
+  },
+  {
+   "name": "replaytv-v0.3.3-armeabi-v7a.apk",
+   "size": 58963096,
+   "state": "uploaded",
+   "content_type": "application/vnd.android.package-archive",
+   "browser_download_url": "https://github.com/idkw/captvty-android-tv/releases/download/v0.3.3/replaytv-v0.3.3-armeabi-v7a.apk",
+   "digest": "sha256:6cf250a2a03feb80ac137f8a8b1934889934e22a617219bceda5cc21da35ca7a"
+  },
+  {
+   "name": "replaytv-v0.3.3-universal.apk",
+   "size": 211000951,
+   "state": "uploaded",
+   "content_type": "application/vnd.android.package-archive",
+   "browser_download_url": "https://github.com/idkw/captvty-android-tv/releases/download/v0.3.3/replaytv-v0.3.3-universal.apk",
+   "digest": "sha256:f4cc6ae9e65370ccef880b7839d24bc3adce88e15875f66bd2f15ee09165fa0f"
+  },
+  {
+   "name": "replaytv-v0.3.3-x86_64.apk",
+   "size": 68608225,
+   "state": "uploaded",
+   "content_type": "application/vnd.android.package-archive",
+   "browser_download_url": "https://github.com/idkw/captvty-android-tv/releases/download/v0.3.3/replaytv-v0.3.3-x86_64.apk",
+   "digest": "sha256:13b885b12dfacd40031c935f0e58c5dc608633f55145150500ebb1f5db908b93"
+  }
+ ]
+}

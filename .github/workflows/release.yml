@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -19,6 +21,16 @@ jobs:
           java-version: "17"
       # SDK Android préinstallé sur ubuntu-latest (licences acceptées) ; AGP télécharge le reste.
       - uses: gradle/actions/setup-gradle@v4
+      - name: Prepare release signing
+        env:
+          HAS_KEYSTORE: ${{ secrets.RELEASE_KEYSTORE_BASE64 != '' }}
+        if: env.HAS_KEYSTORE == 'true'
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.jks"
+          echo "RELEASE_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          echo "RELEASE_KEYSTORE_PASSWORD=${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> "$GITHUB_ENV"
       - run: ./gradlew --no-daemon assembleRelease
       - name: Rename APKs
         run: |
@@ -27,6 +39,11 @@ jobs:
             cp "app/build/outputs/apk/release/app-${abi}-release.apk" "dist/replaytv-${GITHUB_REF_NAME}-${abi}.apk"
           done
           ls -la dist
+      # Attestation de provenance : prouve que ces APK sortent de ce workflow, dans ce dépôt
+      # (vérifiable avec `gh attestation verify <apk> --owner idkw`).
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*.apk
       - uses: softprops/action-gh-release@v2
         with:
           name: Replay TV ${{ github.ref_name }}

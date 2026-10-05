@@ -25,6 +25,7 @@ import androidx.tv.material3.Button
 import androidx.tv.material3.Card
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import dev.valentin.replaytv.BuildConfig
 import dev.valentin.replaytv.ReplayTvApp
 import dev.valentin.replaytv.model.Channel
 import dev.valentin.replaytv.model.Channels
@@ -37,6 +38,7 @@ fun HomeScreen(
     onThemes: () -> Unit,
     onDownloads: () -> Unit,
     onAccounts: () -> Unit,
+    onCheckUpdates: () -> Unit,
 ) {
     val ytState by app.ytDlp.state.collectAsStateWithLifecycle()
     val downloads by app.downloads.entries.collectAsStateWithLifecycle()
@@ -45,6 +47,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         withFrameNanos { }
         runCatching { firstFocus.requestFocus() }
+        app.updates.checkOnce()
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(vertical = 32.dp)) {
@@ -76,6 +79,8 @@ fun HomeScreen(
             }
             Spacer(Modifier.width(12.dp))
             Button(onClick = onAccounts) { Text("Comptes") }
+            Spacer(Modifier.width(12.dp))
+            Button(onClick = onCheckUpdates) { Text("v${BuildConfig.VERSION_NAME}") }
         }
 
         Spacer(Modifier.height(36.dp))

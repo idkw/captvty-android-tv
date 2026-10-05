@@ -29,3 +29,6 @@ captures/
 
 # Caches du build Docker
 .cache/
+
+# Clé de signature des releases (jamais versionnée ; copie en secrets GitHub)
+keystore/

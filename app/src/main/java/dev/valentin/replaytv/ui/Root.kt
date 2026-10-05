@@ -1,6 +1,7 @@
 package dev.valentin.replaytv.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -58,6 +59,21 @@ fun ReplayTvRoot(app: ReplayTvApp) {
         modifier = Modifier.fillMaxSize(),
         colors = SurfaceDefaults.colors(containerColor = MaterialTheme.colorScheme.background),
     ) {
+        Screens(app, current, ::push, ::open, ::play, ::playDrm)
+        UpdateDialog(app.updates)
+    }
+}
+
+@Composable
+private fun Screens(
+    app: ReplayTvApp,
+    current: Screen,
+    push: (Screen) -> Unit,
+    open: (CatalogItem) -> Unit,
+    play: (String, String, String) -> Unit,
+    playDrm: (DrmStream, String, String) -> Unit,
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
         when (current) {
             Screen.Home -> HomeScreen(
                 app = app,
@@ -65,12 +81,13 @@ fun ReplayTvRoot(app: ReplayTvApp) {
                 onThemes = { push(Screen.Themes) },
                 onDownloads = { push(Screen.Downloads) },
                 onAccounts = { push(Screen.Accounts) },
+                onCheckUpdates = { app.updates.check(manual = true) },
             )
 
             is Screen.ChannelReplays -> ChannelScreen(
                 channel = current.channel,
                 load = { app.catalog.channel(current.channel) },
-                onOpen = ::open,
+                onOpen = open,
             )
 
             Screen.Themes -> ThemesScreen(onSection = { push(Screen.Browse(it)) })
@@ -79,24 +96,24 @@ fun ReplayTvRoot(app: ReplayTvApp) {
                 title = "${current.section.source.label} · ${current.section.label}",
                 key = current.section,
                 load = { app.catalog.section(current.section) },
-                onOpen = ::open,
+                onOpen = open,
             )
 
             is Screen.Collection -> BrowseScreen(
                 title = current.item.title,
                 key = current.item,
                 load = { app.catalog.collection(current.item) },
-                onOpen = ::open,
+                onOpen = open,
             )
 
             is Screen.Detail ->
                 if (current.video.source.drm) {
-                    DrmDetailScreen(app = app, video = current.video, onPlay = ::playDrm, onAccounts = { push(Screen.Accounts) })
+                    DrmDetailScreen(app = app, video = current.video, onPlay = playDrm, onAccounts = { push(Screen.Accounts) })
                 } else {
-                    DetailScreen(app = app, video = current.video, onPlay = ::play)
+                    DetailScreen(app = app, video = current.video, onPlay = play)
                 }
 
-            Screen.Downloads -> DownloadsScreen(app = app, onPlay = ::play)
+            Screen.Downloads -> DownloadsScreen(app = app, onPlay = play)
 
             Screen.Accounts -> AccountsScreen(app = app)
         }

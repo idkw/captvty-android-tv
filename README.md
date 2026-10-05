@@ -131,6 +131,45 @@ Les APK sont publiés dans les [releases GitHub](https://github.com/idkw/captvty
 (`replaytv-<version>-universal.apk` s'installe sur toute box ; les variantes `arm64-v8a`, `armeabi-v7a` et `x86_64` sont plus légères). Pousser un tag `vX.Y.Z` déclenche la
 construction et la publication par GitHub Actions (`.github/workflows/release.yml`).
 
+## Mises à jour depuis l'application
+
+Au lancement, l'application interroge `api.github.com/repos/idkw/captvty-android-tv/releases/latest`.
+Si une version plus récente existe, une boîte de dialogue propose de la télécharger et de
+l'installer, de la reporter, ou de l'ignorer. Le bouton `vX.Y.Z` de l'accueil relance la
+vérification à la demande. L'APK choisi suit l'architecture de la box (`arm64-v8a`,
+`armeabi-v7a`), sinon l'universel.
+
+Avant d'ouvrir l'installateur Android, deux contrôles :
+
+1. le SHA-256 du fichier téléchargé doit être celui que l'API GitHub publie pour cet APK ;
+2. l'APK doit être signé par le même certificat que l'application installée. Le système refuserait
+   de toute façon une signature différente ; le message explique alors qu'une installation
+   manuelle (désinstaller puis installer) est nécessaire une fois.
+
+La première installation d'un APK depuis l'application demande d'autoriser Replay TV à installer
+des applications (Paramètres Android, « sources inconnues ») ; la boîte de dialogue y mène.
+
+### Clé de signature des releases
+
+Pour que les mises à jour s'installent par-dessus la version précédente, tous les APK doivent être
+signés avec la même clé. La CI la lit dans les secrets du dépôt GitHub (le keystore lui-même n'est
+pas versionné) :
+
+| Secret | Contenu |
+|---|---|
+| `RELEASE_KEYSTORE_BASE64` | le fichier `.jks` encodé en base64 (`base64 -w0 keystore/replaytv-release.jks`) |
+| `RELEASE_KEYSTORE_PASSWORD` | mot de passe du keystore |
+| `RELEASE_KEY_ALIAS` | alias de la clé (`replaytv`) |
+| `RELEASE_KEY_PASSWORD` | mot de passe de la clé |
+
+Sans ces secrets, la CI signe avec une clé de debug générée à chaque build, et chaque mise à jour
+exige une désinstallation manuelle. En local, `scripts/build-docker.sh` lit les mêmes variables
+dans `.env` (`RELEASE_KEYSTORE_PATH=keystore/replaytv-release.jks`, …).
+
+Chaque release porte aussi une attestation de provenance GitHub (`actions/attest-build-provenance`) :
+`gh attestation verify replaytv-vX.Y.Z-universal.apk --owner idkw` prouve que l'APK sort bien du
+workflow de ce dépôt.
+
 ## Compiler
 
 ### Sans Android Studio (Docker)
@@ -170,7 +209,7 @@ L'application apparaît dans le lanceur Google TV sous « Replay TV ».
 - Pas de permission de stockage demandée : les fichiers sont dans le dossier privé de l'app
   (supprimés à la désinstallation). Pour les voir depuis un autre lecteur, il faudra passer par
   `MediaStore` ou un dossier public.
-- Pas encore : recherche, mise à jour de yt-dlp depuis l'UI, reprise après coupure,
+- Pas encore : mise à jour de yt-dlp depuis l'UI, reprise après coupure,
   limite d'espace disque.
 - Les téléchargements tournent dans un service au premier plan ; l'application peut rester en
   arrière-plan pendant ce temps.

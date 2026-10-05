@@ -3,7 +3,7 @@
 # (JDK 17 + Android SDK). Les caches Gradle et SDK sont conservés dans .cache/ entre deux builds.
 #
 #   scripts/build-docker.sh                 # assembleDebug
-#   scripts/build-docker.sh assembleRelease # autre tâche Gradle
+#   scripts/build-docker.sh assembleRelease # autre tâche Gradle (plusieurs mots acceptés)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -20,7 +20,11 @@ if [ ! -d "$CACHE/android-sdk/cmdline-tools" ]; then
     bash -c "cp -a /opt/android-sdk/. /sdk/ && chown -R $(id -u):$(id -g) /sdk"
 fi
 
+ENV_FILE=()
+[ -f "$ROOT/.env" ] && ENV_FILE=(--env-file "$ROOT/.env")
+
 docker run --rm \
+  "${ENV_FILE[@]}" \
   --user "$(id -u):$(id -g)" \
   -e HOME=/home/builder \
   -e GRADLE_USER_HOME=/home/builder/.gradle \
@@ -31,7 +35,7 @@ docker run --rm \
   -v "$ROOT:/project" \
   -w /project \
   "$IMAGE" \
-  ./gradlew --no-daemon "$TASK"
+  ./gradlew --no-daemon $TASK
 
 echo
 echo "APK produits :"
