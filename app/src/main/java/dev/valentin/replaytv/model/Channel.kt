@@ -36,6 +36,3 @@ fun String.searchKey(): String =
     Normalizer.normalize(this, Normalizer.Form.NFD).replace(DIACRITICS, "").lowercase()
 
 private val DIACRITICS = Regex("\\p{Mn}+")
-
-fun CatalogItem.matches(queryKey: String): Boolean =
-    title.searchKey().contains(queryKey) || subtitle?.searchKey()?.contains(queryKey) == true

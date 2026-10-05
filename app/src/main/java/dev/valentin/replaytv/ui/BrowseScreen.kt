@@ -26,6 +26,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.tv.material3.Card
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
@@ -50,7 +52,7 @@ fun BrowseScreen(
     var state by remember(key) { mutableStateOf<LoadState<List<CatalogRow>>>(LoadState.Loading) }
 
     LaunchedEffect(key) {
-        state = runCatching { load() }.fold(
+        state = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
             onSuccess = { LoadState.Loaded(it) },
             onFailure = { LoadState.Error(it.message ?: it.toString()) },
         )
