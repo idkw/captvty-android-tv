@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.KeyEvent
+import android.view.WindowManager
+import androidx.media3.session.MediaSession
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
 import androidx.activity.compose.setContent
@@ -35,6 +37,7 @@ import dev.valentin.replaytv.ui.theme.ReplayTvTheme
 class PlayerActivity : ComponentActivity() {
 
     private var player: ExoPlayer? = null
+    private var mediaSession: MediaSession? = null
     private lateinit var positions: PlaybackPositions
     private lateinit var prefs: PlayerPrefs
     private val ui = PlayerUiState()
@@ -64,6 +67,8 @@ class PlayerActivity : ComponentActivity() {
         exoPlayer.prepare()
         exoPlayer.playWhenReady = true
         player = exoPlayer
+        // Session média : Google TV sait qu'une lecture est en cours (et les touches média du système arrivent ici).
+        mediaSession = MediaSession.Builder(this, exoPlayer).build()
 
         // Retour (touche ou geste prédictif, Android 16 passe par ce dispatcher) : masque d'abord la
         // surcouche ; ne quitte la vidéo que si elle est déjà masquée, ou si la lecture est finie/en erreur.
@@ -120,11 +125,13 @@ class PlayerActivity : ComponentActivity() {
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 ui.isPlaying = isPlaying
+                updateKeepScreenOn(exoPlayer)
                 if (!isPlaying) ui.showControls()
             }
 
             override fun onPlaybackStateChanged(playbackState: Int) {
                 ui.isBuffering = playbackState == Player.STATE_BUFFERING
+                updateKeepScreenOn(exoPlayer)
                 if (playbackState == Player.STATE_ENDED) {
                     ui.ended = true
                     positions.clear(resumeKey)
@@ -244,6 +251,18 @@ class PlayerActivity : ComponentActivity() {
         if (ui.menuIndex > items.lastIndex) ui.menuIndex = items.lastIndex.coerceAtLeast(0)
     }
 
+    /**
+     * Google TV passe en mode Ambiant après 10 minutes sans touche de la télécommande, sauf si la
+     * fenêtre demande à garder l'écran allumé. On le demande pendant la lecture et le chargement
+     * seulement : en pause ou à la fin, l'écran de veille doit pouvoir démarrer (recommandation Google).
+     */
+    private fun updateKeepScreenOn(exoPlayer: ExoPlayer) {
+        val active = exoPlayer.playWhenReady &&
+            (exoPlayer.playbackState == Player.STATE_READY || exoPlayer.playbackState == Player.STATE_BUFFERING)
+        if (active) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
     private fun togglePlayPause(exoPlayer: ExoPlayer) {
         if (ui.ended) {
             exoPlayer.seekTo(0)
@@ -294,10 +313,13 @@ class PlayerActivity : ComponentActivity() {
     override fun onStop() {
         savePosition()
         player?.pause()
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onStop()
     }
 
     override fun onDestroy() {
+        mediaSession?.release()
+        mediaSession = null
         player?.release()
         player = null
         super.onDestroy()

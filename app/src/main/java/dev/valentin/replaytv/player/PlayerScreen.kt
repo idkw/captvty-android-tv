@@ -76,7 +76,6 @@ fun PlayerScreen(player: ExoPlayer, ui: PlayerUiState, title: String, onTick: ()
                 PlayerView(context).apply {
                     this.player = player
                     useController = false
-                    keepScreenOn = true
                     // Les sous-titres sont rendus par la surcouche Compose, en bas au centre.
                     subtitleView?.visibility = android.view.View.GONE
                 }
