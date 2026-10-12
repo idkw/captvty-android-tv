@@ -149,3 +149,38 @@ private fun ProgressBar(progress: Float) {
     }
     Spacer(Modifier.height(0.dp))
 }
+
+/** Avertit quand une mise à jour de yt-dlp a été refusée parce que sa signature ou son empreinte n'est pas conforme. */
+@Composable
+fun YtDlpRejectedDialog(ytDlp: dev.valentin.replaytv.ytdlp.YtDlp) {
+    val message by ytDlp.updateRejected.collectAsStateWithLifecycle()
+    val text = message ?: return
+    BackHandler { ytDlp.dismissUpdateRejected() }
+    val focus = remember { FocusRequester() }
+    LaunchedEffect(text) {
+        withFrameNanos { }
+        runCatching { focus.requestFocus() }
+    }
+    Box(
+        modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.7f)),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            modifier = Modifier
+                .width(760.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text("Mise à jour de yt-dlp refusée", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.error)
+            Text(
+                "La nouvelle version de yt-dlp publiée sur GitHub n'a pas passé les contrôles de sécurité " +
+                    "(signature de l'équipe yt-dlp et empreinte SHA-256) : elle n'a pas été installée.",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Text("Détail : $text", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Button(onClick = { ytDlp.dismissUpdateRejected() }, modifier = Modifier.focusRequester(focus)) { Text("OK") }
+        }
+    }
+}

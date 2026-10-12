@@ -15,9 +15,9 @@ android {
         applicationId = "dev.valentin.replaytv"
         minSdk = 24
         targetSdk = 36
-        versionCode = 14
+        versionCode = 15
         // -Preplaytv.versionName=… permet de construire une version « ancienne » pour tester les mises à jour.
-        versionName = (project.findProperty("replaytv.versionName") as String?) ?: "0.5.1"
+        versionName = (project.findProperty("replaytv.versionName") as String?) ?: "0.5.2"
     }
 
     // Un APK par architecture (arm64-v8a : box 64 bits, armeabi-v7a : box 32 bits, x86_64 : émulateur)
@@ -69,6 +69,8 @@ android {
     packaging {
         // Requis par youtubedl-android : les .so (python, ffmpeg) doivent être extraits sur disque.
         jniLibs.useLegacyPackaging = true
+        // Fichiers de licence et d'index en double dans les jars BouncyCastle.
+        resources.excludes += setOf("META-INF/LICENSE.md", "META-INF/NOTICE.md", "META-INF/versions/9/OSGI-INF/MANIFEST.MF")
     }
 }
 
@@ -105,6 +107,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.bouncycastle.pg)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test.junit)

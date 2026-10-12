@@ -211,7 +211,7 @@ L'application apparaît dans le lanceur Google TV sous « Replay TV ».
 - Pas de permission de stockage demandée : les fichiers sont dans le dossier privé de l'app
   (supprimés à la désinstallation). Pour les voir depuis un autre lecteur, il faudra passer par
   `MediaStore` ou un dossier public.
-- yt-dlp se met à jour au plus une fois par jour au démarrage (dernière version stable de yt-dlp sur GitHub, qui remplace celle de l'APK).
+- yt-dlp se met à jour au plus une fois par jour au démarrage, depuis les releases GitHub de yt-dlp. Une release n'est installée que si son fichier `SHA2-256SUMS` porte une signature valide de la clé de yt-dlp embarquée dans l'APK (empreinte `AC0C BBE6 848D 6A87 3464 AF4E 57CF 6593 3B5A 7581`, épinglée dans le code) et si le fichier téléchargé a le SHA-256 signé, identique à celui annoncé par l'API GitHub. Sinon, une popup prévient l'utilisateur et la version en place reste utilisée.
 - Pas encore : reprise après coupure,
   limite d'espace disque.
 - Les téléchargements tournent dans un service au premier plan ; l'application peut rester en

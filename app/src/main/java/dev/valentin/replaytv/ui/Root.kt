@@ -65,6 +65,7 @@ fun ReplayTvRoot(app: ReplayTvApp) {
     ) {
         Screens(app, current, ::push, ::open, ::play, ::playDrm)
         UpdateDialog(app.updates)
+        YtDlpRejectedDialog(app.ytDlp)
     }
 }
 

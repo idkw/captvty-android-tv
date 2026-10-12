@@ -59,7 +59,7 @@ class ReplayTvApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ytDlp = YtDlp(this, scope)
+        ytDlp = YtDlp(this, scope, http)
         val m6Catalog = M6Catalog(http)
         val tf1Queries = Tf1QueryResolver(File(filesDir, "tf1_queries.json"), fetch = { url -> http.getString(url) }, log = { Log.i("Tf1Queries", it) })
         catalog = CatalogRepository(http, ytDlp, m6Catalog, Tf1Catalog(http, tf1Queries))

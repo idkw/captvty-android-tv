@@ -39,12 +39,22 @@ data class MediaInfo(
  * L'initialisation extrait l'environnement Python sur disque : elle prend quelques secondes
  * au premier lancement, puis est quasi instantanée.
  */
-class YtDlp(private val context: Context, private val scope: CoroutineScope) {
+class YtDlp(private val context: Context, private val scope: CoroutineScope, http: okhttp3.OkHttpClient) {
 
     sealed interface State {
         data object Initializing : State
         data class Ready(val version: String?) : State
         data class Failed(val message: String) : State
+    }
+
+    private val updater = YtDlpUpdater(context, http)
+
+    /** Message à montrer quand une release de yt-dlp a été refusée (signature ou empreinte non conforme). */
+    private val _updateRejected = MutableStateFlow<String?>(null)
+    val updateRejected: StateFlow<String?> = _updateRejected.asStateFlow()
+
+    fun dismissUpdateRejected() {
+        _updateRejected.value = null
     }
 
     private val _state = MutableStateFlow<State>(State.Initializing)
@@ -71,19 +81,25 @@ class YtDlp(private val context: Context, private val scope: CoroutineScope) {
 
     /**
      * Le yt-dlp livré dans l'APK est celui de la bibliothèque youtubedl-android et vieillit vite :
-     * les sites changent, yt-dlp suit en quelques jours. Au plus une fois par jour, on récupère la
-     * dernière version stable publiée par yt-dlp sur GitHub ; elle remplace celle de l'APK pour les
-     * appels suivants. Un échec (hors ligne, limite de l'API GitHub) est sans conséquence.
+     * les sites changent, yt-dlp suit en quelques jours. Au plus une fois par jour, on installe la
+     * dernière version stable de yt-dlp, après vérification de sa signature et de son empreinte
+     * ([YtDlpUpdater]). Une release refusée est signalée à l'utilisateur ; une erreur réseau est
+     * seulement journalisée. Dans les deux cas, la version déjà en place reste utilisée.
      */
     private fun updateIfDue() {
         val prefs = context.getSharedPreferences("ytdlp_update", Context.MODE_PRIVATE)
         val now = System.currentTimeMillis()
         if (now - prefs.getLong(KEY_LAST_CHECK, 0L) < UPDATE_INTERVAL_MS) return
+        val current = YoutubeDL.getInstance().version(context)
         try {
-            val status = YoutubeDL.getInstance().updateYoutubeDL(context, YoutubeDL.UpdateChannel.STABLE)
+            val result = updater.update(current)
             prefs.edit().putLong(KEY_LAST_CHECK, now).apply()
-            Log.i(TAG, "mise à jour de yt-dlp : $status, version ${YoutubeDL.getInstance().version(context)}")
+            Log.i(TAG, "mise à jour de yt-dlp : $result")
             _state.value = State.Ready(YoutubeDL.getInstance().version(context))
+        } catch (e: YtDlpVerificationException) {
+            prefs.edit().putLong(KEY_LAST_CHECK, now).apply()
+            Log.e(TAG, "mise à jour de yt-dlp refusée : ${e.message}")
+            _updateRejected.value = "${e.message}. La version actuelle de yt-dlp (${current ?: "celle de l'application"}) reste utilisée."
         } catch (e: Exception) {
             Log.w(TAG, "mise à jour de yt-dlp impossible : ${e.message}")
         }
