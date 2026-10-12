@@ -135,7 +135,7 @@ private fun SearchResults(matches: List<CatalogItem>, query: String, searching: 
         columns = GridCells.Adaptive(240.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(start = 48.dp, end = 48.dp, bottom = 48.dp),
+        contentPadding = PaddingValues(start = 48.dp, top = 16.dp, end = 48.dp, bottom = 48.dp),
     ) {
         itemsIndexed(matches, key = { _, item -> item.url }) { _, item -> ItemCard(item, onOpen) }
     }

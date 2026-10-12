@@ -3,6 +3,10 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.5.3
+
+- Onglets « Favoris » et « En cours », résultats de recherche : la première ligne de vignettes n'est plus rognée en haut quand une vignette est sélectionnée.
+
 ## v0.5.2
 
 - La mise à jour automatique de yt-dlp vérifie désormais chaque release avant de l'installer : signature de l'équipe yt-dlp sur le fichier d'empreintes et empreinte SHA-256 du fichier téléchargé.

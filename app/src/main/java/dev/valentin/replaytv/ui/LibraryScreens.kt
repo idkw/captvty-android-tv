@@ -165,7 +165,9 @@ private fun <T : CatalogItem> LibraryGrid(
     }
     Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
         Text(title, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 48.dp))
-        Spacer(Modifier.height(16.dp))
+        // La vignette sélectionnée est agrandie par l'effet de focus : la grille garde une marge
+        // haute pour ne pas la rogner sous le titre.
+        Spacer(Modifier.height(4.dp))
         if (items.isEmpty()) {
             Message(empty)
         } else {
@@ -173,7 +175,7 @@ private fun <T : CatalogItem> LibraryGrid(
                 columns = GridCells.Adaptive(240.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(start = 48.dp, end = 48.dp, bottom = 48.dp),
+                contentPadding = PaddingValues(start = 48.dp, top = 16.dp, end = 48.dp, bottom = 48.dp),
             ) {
                 itemsIndexed(items, key = { _, item -> item.url }) { index, item ->
                     @Suppress("UNCHECKED_CAST")
