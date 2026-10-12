@@ -32,3 +32,6 @@ captures/
 
 # Clé de signature des releases (jamais versionnée ; copie en secrets GitHub)
 keystore/
+
+# Journaux adb locaux
+*-log.txt
