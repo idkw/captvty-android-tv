@@ -16,6 +16,9 @@ adb install -r replaytv-<version>-universal.apk
 ```
 
 **Fonctionnalités**
+- Onglet « Favoris » : les collections marquées d'une étoile (« ☆ Ajouter aux favoris » en haut d'une collection).
+- Onglet « En cours » : les vidéos commencées et pas terminées, de la plus récemment regardée à la plus ancienne ; un clic propose de reprendre la lecture ou de retirer la vidéo de la liste.
+- Lecture : l'écran de veille Google TV ne coupe plus la lecture au bout de 10 minutes.
 - Mise à jour depuis l'application : vérification des releases GitHub au lancement, téléchargement de l'APK adapté à la box, contrôle du SHA-256 publié par GitHub et du certificat de signature, puis installation par-dessus la version en place (bouton `vX.Y.Z` de l'accueil pour vérifier à la demande).
 - Accueil par chaîne (TF1, France 2, 3, 4, 5, M6, Arte, puis TMC, TFX, TF1 Séries Films, LCI, W9, 6ter, franceinfo) : les replays de la chaîne classés par rubrique, et une recherche qui filtre programmes et collections (correspondance « contient », accents ignorés). Le bouton « Par thème » garde la navigation par genre.
 - Catalogue France TV (documentaires, séries, films, info, …) et Arte (à la une, documentaires, séries, films, …).

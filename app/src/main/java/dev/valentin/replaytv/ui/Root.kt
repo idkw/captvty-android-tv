@@ -4,6 +4,8 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -24,7 +26,9 @@ sealed interface Screen {
     data object Themes : Screen
     data class Browse(val section: Section) : Screen
     data class Collection(val item: CatalogItem.Collection) : Screen
-    data class Detail(val video: CatalogItem.Video) : Screen
+    data class Detail(val video: CatalogItem.Video, val autoplay: Boolean = false) : Screen
+    data object Favorites : Screen
+    data object InProgress : Screen
     data object Downloads : Screen
     data object Accounts : Screen
 }
@@ -81,6 +85,8 @@ private fun Screens(
                 onThemes = { push(Screen.Themes) },
                 onDownloads = { push(Screen.Downloads) },
                 onAccounts = { push(Screen.Accounts) },
+                onFavorites = { push(Screen.Favorites) },
+                onInProgress = { push(Screen.InProgress) },
                 onCheckUpdates = { app.updates.check(manual = true) },
             )
 
@@ -99,18 +105,27 @@ private fun Screens(
                 onOpen = open,
             )
 
-            is Screen.Collection -> BrowseScreen(
-                title = current.item.title,
-                key = current.item,
-                load = { app.catalog.collection(current.item) },
-                onOpen = open,
-            )
+            is Screen.Collection -> {
+                val favorites by app.library.favorites.collectAsStateWithLifecycle()
+                BrowseScreen(
+                    title = current.item.title,
+                    key = current.item,
+                    load = { app.catalog.collection(current.item) },
+                    onOpen = open,
+                    favorite = favorites.any { it.url == current.item.url },
+                    onToggleFavorite = { app.library.toggleFavorite(current.item) },
+                )
+            }
+
+            Screen.Favorites -> FavoritesScreen(app = app, onOpen = open)
+
+            Screen.InProgress -> InProgressScreen(app = app, onResume = { push(Screen.Detail(it, autoplay = true)) })
 
             is Screen.Detail ->
                 if (current.video.source.drm) {
-                    DrmDetailScreen(app = app, video = current.video, onPlay = playDrm, onAccounts = { push(Screen.Accounts) })
+                    DrmDetailScreen(app = app, video = current.video, onPlay = playDrm, onAccounts = { push(Screen.Accounts) }, autoplay = current.autoplay)
                 } else {
-                    DetailScreen(app = app, video = current.video, onPlay = play)
+                    DetailScreen(app = app, video = current.video, onPlay = play, autoplay = current.autoplay)
                 }
 
             Screen.Downloads -> DownloadsScreen(app = app, onPlay = play)

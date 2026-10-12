@@ -26,6 +26,8 @@ seulement.
 | Téléchargement TF1+ / M6+ | **Non** : le déchiffrement se fait dans le module DRM de la box, le fichier n'est jamais accessible en clair. Captvty bute sur la même limite. |
 | Navigation à la télécommande (D-pad, Retour) | OK, Compose for TV |
 | Sous-titres (menu ▲ : piste, taille, version audio), désactivés par défaut | OK |
+| Favoris : étoile « ☆ Ajouter aux favoris » dans une collection, onglet « Favoris » de l'accueil | OK |
+| « En cours » : vidéos commencées non terminées, de la plus récente à la plus ancienne ; reprendre ou retirer | OK |
 | Recherche, reprise de téléchargement interrompu | Pas encore |
 
 Testé en amont (poste de travail, yt-dlp 2026.08.19) : France TV et Arte fournissent des

@@ -51,6 +51,7 @@ fun DrmDetailScreen(
     video: CatalogItem.Video,
     onPlay: (stream: DrmStream, title: String, resumeKey: String) -> Unit,
     onAccounts: () -> Unit,
+    autoplay: Boolean = false,
 ) {
     val configured by app.accounts.configured.collectAsStateWithLifecycle()
     val hasAccount = video.source in configured
@@ -78,10 +79,21 @@ fun DrmDetailScreen(
         error = null
         scope.launch {
             runCatching { app.drm.stream(video) }.fold(
-                onSuccess = { onPlay(it, video.title, video.url) },
+                onSuccess = {
+                    app.library.recordPlay(video)
+                    onPlay(it, video.title, video.url)
+                },
                 onFailure = { error = it.message ?: it.toString() },
             )
             resolving = false
+        }
+    }
+
+    var autoplayDone by remember(video.url) { mutableStateOf(!autoplay) }
+    LaunchedEffect(hasAccount) {
+        if (!autoplayDone && hasAccount) {
+            autoplayDone = true
+            play()
         }
     }
 

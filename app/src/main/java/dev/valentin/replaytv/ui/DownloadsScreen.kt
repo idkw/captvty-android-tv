@@ -87,7 +87,10 @@ private fun DownloadRow(app: ReplayTvApp, entry: DownloadEntry, onPlay: (String,
         }
         when (entry.status) {
             DownloadStatus.Done -> {
-                Button(onClick = { onPlay(entry.file.toURI().toString(), entry.meta.title, entry.meta.sourceUrl) }, modifier = firstButton) { Text("Lire") }
+                Button(onClick = {
+                    entry.toVideo()?.let(app.library::recordPlay)
+                    onPlay(entry.file.toURI().toString(), entry.meta.title, entry.meta.sourceUrl)
+                }, modifier = firstButton) { Text("Lire") }
                 Button(onClick = { app.downloads.delete(entry) }) { Text("Supprimer") }
             }
             is DownloadStatus.Failed -> Button(onClick = { app.downloads.delete(entry) }, modifier = firstButton) { Text("Retirer") }
@@ -104,4 +107,10 @@ private fun statusLabel(entry: DownloadEntry): String = when (val s = entry.stat
     }
     DownloadStatus.Done -> "${entry.file.length() / (1024 * 1024)} Mo"
     is DownloadStatus.Failed -> "échec : ${s.message}"
+}
+
+/** Fiche minimale d'un téléchargement, pour l'onglet « En cours ». */
+private fun DownloadEntry.toVideo(): dev.valentin.replaytv.model.CatalogItem.Video? {
+    val source = dev.valentin.replaytv.model.Source.entries.firstOrNull { it.label == meta.source } ?: return null
+    return dev.valentin.replaytv.model.CatalogItem.Video(source, meta.title, meta.subtitle, meta.imageUrl, meta.sourceUrl, meta.durationSeconds)
 }

@@ -41,7 +41,12 @@ import dev.valentin.replaytv.model.formatDuration
 import dev.valentin.replaytv.ytdlp.MediaInfo
 
 @Composable
-fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: String, title: String, resumeKey: String) -> Unit) {
+fun DetailScreen(
+    app: ReplayTvApp,
+    video: CatalogItem.Video,
+    onPlay: (uri: String, title: String, resumeKey: String) -> Unit,
+    autoplay: Boolean = false,
+) {
     var info by remember(video.url) { mutableStateOf<LoadState<MediaInfo>>(LoadState.Loading) }
     val downloads by app.downloads.entries.collectAsStateWithLifecycle()
     val entry = downloads.firstOrNull { it.meta.sourceUrl == video.url }
@@ -64,6 +69,29 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
         onPauseOrDispose { }
     }
     val playLabel = if (resumeAtMs > 0) "Reprendre à ${formatClock(resumeAtMs)}" else "Lire en direct"
+
+    fun playStream(url: String, title: String) {
+        app.library.recordPlay(video)
+        onPlay(url, title, video.url)
+    }
+
+    fun playFile(file: java.io.File, title: String) {
+        app.library.recordPlay(video)
+        onPlay(file.toURI().toString(), title, video.url)
+    }
+
+    // Reprise depuis l'onglet « En cours » : lecture lancée seule, une fois, dès que c'est possible
+    // (fichier téléchargé en priorité, sinon flux une fois l'analyse terminée).
+    var autoplayDone by remember(video.url) { mutableStateOf(!autoplay) }
+    LaunchedEffect(media, entry?.status) {
+        if (autoplayDone) return@LaunchedEffect
+        val done = entry?.takeIf { it.status is DownloadStatus.Done }
+        when {
+            done != null -> { autoplayDone = true; playFile(done.file, done.meta.title) }
+            media?.streamUrl != null && !media.hasDrm -> { autoplayDone = true; playStream(media.streamUrl, media.title) }
+            info is LoadState.Error || media != null -> autoplayDone = true
+        }
+    }
 
     LaunchedEffect(media) {
         if (media != null) {
@@ -114,7 +142,7 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Button(
-                    onClick = { media?.streamUrl?.let { onPlay(it, media.title, video.url) } },
+                    onClick = { media?.streamUrl?.let { playStream(it, media.title) } },
                     enabled = media?.streamUrl != null && media.hasDrm.not(),
                     modifier = Modifier.focusRequester(primaryFocus),
                 ) { Text(playLabel) }
@@ -132,7 +160,7 @@ fun DetailScreen(app: ReplayTvApp, video: CatalogItem.Video, onPlay: (uri: Strin
                             Text("${status.progress.toInt()} % · annuler")
                         }
 
-                        DownloadStatus.Done -> Button(onClick = { onPlay(entry.file.toURI().toString(), entry.meta.title, video.url) }) {
+                        DownloadStatus.Done -> Button(onClick = { playFile(entry.file, entry.meta.title) }) {
                             Text(if (resumeAtMs > 0) "Reprendre le fichier téléchargé" else "Lire le fichier téléchargé")
                         }
 

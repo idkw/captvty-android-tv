@@ -39,6 +39,8 @@ fun HomeScreen(
     onDownloads: () -> Unit,
     onAccounts: () -> Unit,
     onCheckUpdates: () -> Unit,
+    onFavorites: () -> Unit,
+    onInProgress: () -> Unit,
 ) {
     val ytState by app.ytDlp.state.collectAsStateWithLifecycle()
     val downloads by app.downloads.entries.collectAsStateWithLifecycle()
@@ -64,6 +66,10 @@ fun HomeScreen(
                 color = if (ytState is YtDlp.State.Failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.weight(1f),
             )
+            Button(onClick = onInProgress) { Text("En cours") }
+            Spacer(Modifier.width(12.dp))
+            Button(onClick = onFavorites) { Text("Favoris") }
+            Spacer(Modifier.width(12.dp))
             Button(onClick = onThemes) { Text("Par thème") }
             Spacer(Modifier.width(12.dp))
             val active = downloads.count { it.isActive }

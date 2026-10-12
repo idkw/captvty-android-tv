@@ -15,6 +15,7 @@ import dev.valentin.replaytv.drm.Accounts
 import dev.valentin.replaytv.drm.DrmPlayback
 import dev.valentin.replaytv.drm.M6Playback
 import dev.valentin.replaytv.drm.Tf1Playback
+import dev.valentin.replaytv.library.Library
 import dev.valentin.replaytv.update.UpdateManager
 import dev.valentin.replaytv.ytdlp.YtDlp
 import kotlinx.coroutines.CoroutineScope
@@ -49,6 +50,8 @@ class ReplayTvApp : Application() {
         private set
     lateinit var updates: UpdateManager
         private set
+    lateinit var library: Library
+        private set
     lateinit var accounts: Accounts
         private set
     lateinit var drm: DrmPlayback
@@ -64,6 +67,7 @@ class ReplayTvApp : Application() {
         drm = DrmPlayback(accounts, Tf1Playback(http, accounts), M6Playback(http, accounts, m6Catalog))
         downloads = DownloadManager(this, ytDlp, scope)
         updates = UpdateManager(this, http, scope)
+        library = Library(this)
         DownloadService.ensureChannel(this)
         ytDlp.initAsync()
     }

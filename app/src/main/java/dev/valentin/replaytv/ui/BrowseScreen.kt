@@ -48,6 +48,8 @@ fun BrowseScreen(
     key: Any,
     load: suspend () -> List<CatalogRow>,
     onOpen: (CatalogItem) -> Unit,
+    favorite: Boolean? = null,
+    onToggleFavorite: () -> Unit = {},
 ) {
     var state by remember(key) { mutableStateOf<LoadState<List<CatalogRow>>>(LoadState.Loading) }
 
@@ -59,7 +61,18 @@ fun BrowseScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
-        Text(title, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = 48.dp))
+        androidx.compose.foundation.layout.Row(
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 48.dp),
+        ) {
+            Text(title, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f, fill = false))
+            if (favorite != null) {
+                Spacer(Modifier.width(24.dp))
+                androidx.tv.material3.Button(onClick = onToggleFavorite) {
+                    Text(if (favorite) "★ Dans mes favoris" else "☆ Ajouter aux favoris")
+                }
+            }
+        }
         Spacer(Modifier.height(16.dp))
         when (val s = state) {
             LoadState.Loading -> {
