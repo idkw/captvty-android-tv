@@ -16,6 +16,7 @@ adb install -r replaytv-<version>-universal.apk
 ```
 
 **Fonctionnalités**
+- yt-dlp se met à jour tout seul, au plus une fois par jour, depuis ses releases GitHub : les extractions suivent les changements des sites sans attendre une nouvelle version de l'application.
 - Onglet « Favoris » : les collections marquées d'une étoile (« ☆ Ajouter aux favoris » en haut d'une collection).
 - Onglet « En cours » : les vidéos commencées et pas terminées, de la plus récemment regardée à la plus ancienne ; un clic propose de reprendre la lecture ou de retirer la vidéo de la liste.
 - Lecture : l'écran de veille Google TV ne coupe plus la lecture au bout de 10 minutes.

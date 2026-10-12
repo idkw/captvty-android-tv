@@ -1,6 +1,7 @@
 package dev.valentin.replaytv.ytdlp
 
 import android.content.Context
+import android.util.Log
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
@@ -62,7 +63,29 @@ class YtDlp(private val context: Context, private val scope: CoroutineScope) {
             } catch (e: Exception) {
                 _state.value = State.Failed(e.message ?: e.toString())
                 ready.completeExceptionally(e)
+                return@launch
             }
+            updateIfDue()
+        }
+    }
+
+    /**
+     * Le yt-dlp livré dans l'APK est celui de la bibliothèque youtubedl-android et vieillit vite :
+     * les sites changent, yt-dlp suit en quelques jours. Au plus une fois par jour, on récupère la
+     * dernière version stable publiée par yt-dlp sur GitHub ; elle remplace celle de l'APK pour les
+     * appels suivants. Un échec (hors ligne, limite de l'API GitHub) est sans conséquence.
+     */
+    private fun updateIfDue() {
+        val prefs = context.getSharedPreferences("ytdlp_update", Context.MODE_PRIVATE)
+        val now = System.currentTimeMillis()
+        if (now - prefs.getLong(KEY_LAST_CHECK, 0L) < UPDATE_INTERVAL_MS) return
+        try {
+            val status = YoutubeDL.getInstance().updateYoutubeDL(context, YoutubeDL.UpdateChannel.STABLE)
+            prefs.edit().putLong(KEY_LAST_CHECK, now).apply()
+            Log.i(TAG, "mise à jour de yt-dlp : $status, version ${YoutubeDL.getInstance().version(context)}")
+            _state.value = State.Ready(YoutubeDL.getInstance().version(context))
+        } catch (e: Exception) {
+            Log.w(TAG, "mise à jour de yt-dlp impossible : ${e.message}")
         }
     }
 
@@ -137,6 +160,9 @@ class YtDlp(private val context: Context, private val scope: CoroutineScope) {
     }
 
     companion object {
+        private const val TAG = "YtDlp"
+        private const val KEY_LAST_CHECK = "last_check"
+        private const val UPDATE_INTERVAL_MS = 24L * 3600 * 1000
         private const val FORMAT =
             "bestvideo[height<=1080]+bestaudio/best[height<=1080]/best"
     }

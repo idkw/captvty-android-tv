@@ -56,14 +56,12 @@ fun HomeScreen(
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 48.dp)) {
             Text("Replay TV", style = MaterialTheme.typography.displaySmall)
             Spacer(Modifier.width(24.dp))
+            // Le moteur de téléchargement ne se signale qu'en cas de panne.
+            val failure = (ytState as? YtDlp.State.Failed)?.message
             Text(
-                text = when (val s = ytState) {
-                    YtDlp.State.Initializing -> "Initialisation du moteur de téléchargement…"
-                    is YtDlp.State.Ready -> "yt-dlp ${s.version ?: ""} prêt"
-                    is YtDlp.State.Failed -> "Moteur indisponible : ${s.message}"
-                },
+                text = failure?.let { "Moteur de téléchargement indisponible : $it" }.orEmpty(),
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (ytState is YtDlp.State.Failed) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.error,
                 modifier = Modifier.weight(1f),
             )
             Button(onClick = onInProgress) { Text("En cours") }

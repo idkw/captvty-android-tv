@@ -211,7 +211,8 @@ L'application apparaît dans le lanceur Google TV sous « Replay TV ».
 - Pas de permission de stockage demandée : les fichiers sont dans le dossier privé de l'app
   (supprimés à la désinstallation). Pour les voir depuis un autre lecteur, il faudra passer par
   `MediaStore` ou un dossier public.
-- Pas encore : mise à jour de yt-dlp depuis l'UI, reprise après coupure,
+- yt-dlp se met à jour au plus une fois par jour au démarrage (dernière version stable de yt-dlp sur GitHub, qui remplace celle de l'APK).
+- Pas encore : reprise après coupure,
   limite d'espace disque.
 - Les téléchargements tournent dans un service au premier plan ; l'application peut rester en
   arrière-plan pendant ce temps.
