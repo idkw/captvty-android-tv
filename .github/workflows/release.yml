@@ -39,6 +39,21 @@ jobs:
             cp "app/build/outputs/apk/release/app-${abi}-release.apk" "dist/replaytv-${GITHUB_REF_NAME}-${abi}.apk"
           done
           ls -la dist
+      # Description de la release : la section de cette version dans CHANGELOG.md, puis le pied commun.
+      - name: Release notes
+        run: |
+          version="${GITHUB_REF_NAME}"
+          awk -v head="## ${version}" '
+            $0 == head { found = 1; next }
+            found && /^## / { exit }
+            found { print }
+          ' CHANGELOG.md | sed -e '/./,$!d' > dist/notes.md
+          if ! grep -q '[^[:space:]]' dist/notes.md; then
+            echo "::error::Section '## ${version}' absente ou vide dans CHANGELOG.md"
+            exit 1
+          fi
+          cat .github/RELEASE_FOOTER.md >> dist/notes.md
+          cat dist/notes.md
       # Attestation de provenance : prouve que ces APK sortent de ce workflow, dans ce dépôt
       # (vérifiable avec `gh attestation verify <apk> --owner idkw`).
       - uses: actions/attest-build-provenance@v2
@@ -47,5 +62,5 @@ jobs:
       - uses: softprops/action-gh-release@v2
         with:
           name: Replay TV ${{ github.ref_name }}
-          body_path: .github/RELEASE_NOTES.md
+          body_path: dist/notes.md
           files: dist/*.apk

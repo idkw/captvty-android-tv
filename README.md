@@ -131,7 +131,9 @@ Composants principaux :
 
 Les APK sont publiés dans les [releases GitHub](https://github.com/idkw/captvty-android-tv/releases)
 (`replaytv-<version>-universal.apk` s'installe sur toute box ; les variantes `arm64-v8a`, `armeabi-v7a` et `x86_64` sont plus légères). Pousser un tag `vX.Y.Z` déclenche la
-construction et la publication par GitHub Actions (`.github/workflows/release.yml`).
+construction et la publication par GitHub Actions (`.github/workflows/release.yml`). La description de la
+release est la section `## vX.Y.Z` de `CHANGELOG.md` (les nouveautés de cette version), suivie de
+`.github/RELEASE_FOOTER.md` ; le workflow échoue si la section manque.
 
 ## Mises à jour depuis l'application
 
