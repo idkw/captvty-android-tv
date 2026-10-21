@@ -44,6 +44,8 @@ import dev.valentin.replaytv.ytdlp.MediaInfo
 fun DetailScreen(
     app: ReplayTvApp,
     video: CatalogItem.Video,
+    /** Collection d'où la fiche a été ouverte : sert à proposer les épisodes suivants. */
+    collection: CatalogItem.Collection?,
     onPlay: (uri: String, title: String, resumeKey: String) -> Unit,
     autoplay: Boolean = false,
 ) {
@@ -71,12 +73,12 @@ fun DetailScreen(
     val playLabel = if (resumeAtMs > 0) "Reprendre à ${formatClock(resumeAtMs)}" else "Lire en direct"
 
     fun playStream(url: String, title: String) {
-        app.library.recordPlay(video)
+        app.onPlaybackStarted(video, collection)
         onPlay(url, title, video.url)
     }
 
     fun playFile(file: java.io.File, title: String) {
-        app.library.recordPlay(video)
+        app.onPlaybackStarted(video, collection)
         onPlay(file.toURI().toString(), title, video.url)
     }
 

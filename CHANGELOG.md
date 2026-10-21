@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.7.0
+
+- Coche verte sur la vignette des épisodes vus jusqu'au bout. Elle est gardée en mémoire et disparaît quand on relance l'épisode depuis le début.
+- À la fin d'un épisode, l'écran propose « Revoir » et les 3 épisodes suivants, dans l'ordre : épisode 10 partie 1, puis partie 2, puis épisode 11. L'épisode choisi démarre seul. Les suggestions viennent de la collection d'où l'épisode a été ouvert, y compris en reprise depuis « En cours ».
+
 ## v0.6.1
 
 - Avance et retour rapides avec ◀ ▶ : la vidéo affiche l'image de la position visée pendant que l'on déplace le curseur, comme sur Netflix ; la lecture reprend au relâchement de la touche.

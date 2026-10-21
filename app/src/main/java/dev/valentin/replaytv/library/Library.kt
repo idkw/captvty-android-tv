@@ -22,6 +22,9 @@ data class StoredItem(
     val streamId: String? = null,
     val description: String? = null,
     val savedAt: Long = 0L,
+    /** Collection d'où la vidéo a été lancée, pour proposer les épisodes suivants. */
+    val collectionUrl: String? = null,
+    val collectionTitle: String? = null,
 ) {
     fun toVideo(): CatalogItem.Video? = sourceOrNull()?.let {
         CatalogItem.Video(it, title, subtitle, imageUrl, url, durationSeconds, streamId, description)
@@ -31,13 +34,19 @@ data class StoredItem(
         CatalogItem.Collection(it, title, subtitle, imageUrl, url)
     }
 
+    fun collection(): CatalogItem.Collection? {
+        val url = collectionUrl ?: return null
+        return sourceOrNull()?.let { CatalogItem.Collection(it, collectionTitle.orEmpty(), null, null, url) }
+    }
+
     private fun sourceOrNull(): Source? = Source.entries.firstOrNull { it.name == source }
 
     companion object {
-        fun of(item: CatalogItem, now: Long): StoredItem = when (item) {
+        fun of(item: CatalogItem, now: Long, collection: CatalogItem.Collection? = null): StoredItem = when (item) {
             is CatalogItem.Video -> StoredItem(
                 item.source.name, item.title, item.subtitle, item.imageUrl, item.url,
                 item.durationSeconds, item.streamId, item.description, now,
+                collection?.url, collection?.title,
             )
             is CatalogItem.Collection -> StoredItem(item.source.name, item.title, item.subtitle, item.imageUrl, item.url, savedAt = now)
         }
@@ -45,7 +54,12 @@ data class StoredItem(
 }
 
 /** Une vidéo commencée et pas terminée, avec sa position de reprise. */
-data class InProgress(val video: CatalogItem.Video, val positionMs: Long, val lastPlayedAt: Long)
+data class InProgress(
+    val video: CatalogItem.Video,
+    val positionMs: Long,
+    val lastPlayedAt: Long,
+    val collection: CatalogItem.Collection? = null,
+)
 
 /**
  * Bibliothèque personnelle : collections favorites et vidéos lancées. Les positions de reprise
@@ -75,10 +89,13 @@ class Library(context: Context, private val now: () -> Long = System::currentTim
     }
 
     /** À appeler au lancement d'une lecture : mémorise la fiche pour l'onglet « En cours ». */
-    fun recordPlay(video: CatalogItem.Video) {
-        val updated = listOf(StoredItem.of(video, now())) + read(KEY_PLAYED).filterNot { it.url == video.url }
+    fun recordPlay(video: CatalogItem.Video, collection: CatalogItem.Collection?) {
+        val updated = listOf(StoredItem.of(video, now(), collection)) + read(KEY_PLAYED).filterNot { it.url == video.url }
         write(KEY_PLAYED, updated.take(MAX_PLAYED))
     }
+
+    /** Collection enregistrée au dernier lancement de cette vidéo (reprise depuis « En cours » ou les téléchargements). */
+    fun collectionOf(url: String): CatalogItem.Collection? = read(KEY_PLAYED).firstOrNull { it.url == url }?.collection()
 
     fun forgetPlayed(url: String) {
         write(KEY_PLAYED, read(KEY_PLAYED).filterNot { it.url == url })
@@ -107,7 +124,7 @@ class Library(context: Context, private val now: () -> Long = System::currentTim
             played.mapNotNull { item ->
                 val position = positionOf(item.url)
                 val video = item.toVideo()
-                if (position <= 0 || video == null) null else InProgress(video, position, maxOf(watchedAt(item.url), item.savedAt))
+                if (position <= 0 || video == null) null else InProgress(video, position, maxOf(watchedAt(item.url), item.savedAt), item.collection())
             }.sortedByDescending { it.lastPlayedAt }
     }
 }

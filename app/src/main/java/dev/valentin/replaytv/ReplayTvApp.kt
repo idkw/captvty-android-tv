@@ -16,6 +16,9 @@ import dev.valentin.replaytv.drm.DrmPlayback
 import dev.valentin.replaytv.drm.M6Playback
 import dev.valentin.replaytv.drm.Tf1Playback
 import dev.valentin.replaytv.library.Library
+import dev.valentin.replaytv.model.CatalogItem
+import dev.valentin.replaytv.library.UpNext
+import dev.valentin.replaytv.library.WatchedVideos
 import dev.valentin.replaytv.update.UpdateManager
 import dev.valentin.replaytv.ytdlp.YtDlp
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +55,10 @@ class ReplayTvApp : Application() {
         private set
     lateinit var library: Library
         private set
+    lateinit var watched: WatchedVideos
+        private set
+    lateinit var upNext: UpNext
+        private set
     lateinit var accounts: Accounts
         private set
     lateinit var drm: DrmPlayback
@@ -68,8 +75,20 @@ class ReplayTvApp : Application() {
         downloads = DownloadManager(this, ytDlp, scope)
         updates = UpdateManager(this, http, scope)
         library = Library(this)
+        watched = WatchedVideos(this)
+        upNext = UpNext(catalog, watched, scope)
         DownloadService.ensureChannel(this)
         ytDlp.initAsync()
+    }
+
+    /**
+     * Lancement d'une lecture : la vidéo entre dans « En cours » et les épisodes suivants se
+     * préparent. Sans [collection] (reprise), on reprend celle notée au lancement précédent.
+     */
+    fun onPlaybackStarted(video: CatalogItem.Video, collection: CatalogItem.Collection?) {
+        val known = collection ?: library.collectionOf(video.url)
+        library.recordPlay(video, known)
+        upNext.prepare(video, known)
     }
 
     companion object {

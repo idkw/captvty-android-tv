@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.valentin.replaytv.model.CatalogItem
 
 /** État observable du lecteur, mis à jour par l'activité (touches, ExoPlayer) et lu par la surcouche Compose. */
 class PlayerUiState {
@@ -35,6 +36,10 @@ class PlayerUiState {
     /** Confirmation « Revenir au début ? » ; 0 = Annuler (choix par défaut), 1 = Revenir au début. */
     var confirmRestart by mutableStateOf(false)
     var confirmIndex by mutableStateOf(0)
+
+    /** Épisodes proposés sur l'écran de fin ; [upNextIndex] 0 = « Revoir », puis un épisode par case. */
+    var upNext by mutableStateOf<List<CatalogItem.Video>>(emptyList())
+    var upNextIndex by mutableStateOf(1)
 
     fun showControls() {
         controlsVisible = true

@@ -16,8 +16,7 @@ class PlaybackPositions(context: Context) {
     fun updatedAt(key: String): Long = prefs.getLong(key + AT_SUFFIX, 0L)
 
     fun save(key: String, positionMs: Long, durationMs: Long) {
-        val nearEnd = durationMs > 0 && positionMs >= durationMs - END_MARGIN_MS
-        if (positionMs < MIN_POSITION_MS || nearEnd) {
+        if (positionMs < MIN_POSITION_MS || isNearEnd(positionMs, durationMs)) {
             clear(key)
         } else {
             prefs.edit().putLong(key, positionMs).putLong(key + AT_SUFFIX, System.currentTimeMillis()).apply()
@@ -29,6 +28,10 @@ class PlaybackPositions(context: Context) {
     }
 
     companion object {
+        /** Dans les 15 dernières secondes (générique) : la vidéo compte comme vue jusqu'au bout. */
+        fun isNearEnd(positionMs: Long, durationMs: Long): Boolean =
+            durationMs > 0 && positionMs >= durationMs - END_MARGIN_MS
+
         private const val MIN_POSITION_MS = 5_000L
         private const val END_MARGIN_MS = 15_000L
         private const val AT_SUFFIX = "#at"

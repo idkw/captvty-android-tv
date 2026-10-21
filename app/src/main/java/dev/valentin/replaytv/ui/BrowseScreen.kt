@@ -1,6 +1,8 @@
 package dev.valentin.replaytv.ui
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -9,20 +11,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -142,12 +152,17 @@ private fun CardRow(row: CatalogRow, onOpen: (CatalogItem) -> Unit, firstCardFoc
 fun ItemCard(item: CatalogItem, onOpen: (CatalogItem) -> Unit, modifier: Modifier = Modifier) {
     Card(onClick = { onOpen(item) }, modifier = modifier.width(240.dp)) {
         Column {
-            AsyncImage(
-                model = item.imageUrl,
-                contentDescription = item.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
-            )
+            Box {
+                AsyncImage(
+                    model = item.imageUrl,
+                    contentDescription = item.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
+                )
+                if (item is CatalogItem.Video && item.url in LocalWatchedUrls.current) {
+                    WatchedBadge(modifier = Modifier.align(Alignment.TopEnd).padding(8.dp))
+                }
+            }
             Column(modifier = Modifier.padding(10.dp)) {
                 Text(item.title, style = MaterialTheme.typography.bodyLarge, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 val info = when (item) {
@@ -165,5 +180,22 @@ fun ItemCard(item: CatalogItem, onOpen: (CatalogItem) -> Unit, modifier: Modifie
                 }
             }
         }
+    }
+}
+
+/** URL des vidéos vues jusqu'au bout, fournies par l'écran racine : les cartes y lisent leur coche. */
+val LocalWatchedUrls = compositionLocalOf<Set<String>> { emptySet() }
+
+/** Coche verte posée sur la vignette d'une vidéo vue jusqu'au bout. */
+@Composable
+private fun WatchedBadge(modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(30.dp)) {
+        drawCircle(Color(0xFF2E9E4F))
+        val check = Path().apply {
+            moveTo(size.width * 0.28f, size.height * 0.52f)
+            lineTo(size.width * 0.44f, size.height * 0.68f)
+            lineTo(size.width * 0.74f, size.height * 0.36f)
+        }
+        drawPath(check, Color.White, style = Stroke(width = size.width * 0.11f, cap = StrokeCap.Round, join = StrokeJoin.Round))
     }
 }

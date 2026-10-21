@@ -49,6 +49,8 @@ import kotlinx.coroutines.launch
 fun DrmDetailScreen(
     app: ReplayTvApp,
     video: CatalogItem.Video,
+    /** Collection d'où la fiche a été ouverte : sert à proposer les épisodes suivants. */
+    collection: CatalogItem.Collection?,
     onPlay: (stream: DrmStream, title: String, resumeKey: String) -> Unit,
     onAccounts: () -> Unit,
     autoplay: Boolean = false,
@@ -80,7 +82,7 @@ fun DrmDetailScreen(
         scope.launch {
             runCatching { app.drm.stream(video) }.fold(
                 onSuccess = {
-                    app.library.recordPlay(video)
+                    app.onPlaybackStarted(video, collection)
                     onPlay(it, video.title, video.url)
                 },
                 onFailure = { error = it.message ?: it.toString() },

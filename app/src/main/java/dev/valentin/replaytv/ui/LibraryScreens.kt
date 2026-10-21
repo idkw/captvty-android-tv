@@ -62,7 +62,7 @@ fun FavoritesScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit) {
  * propose de reprendre la lecture ou de retirer la vidéo de la liste.
  */
 @Composable
-fun InProgressScreen(app: ReplayTvApp, onResume: (CatalogItem.Video) -> Unit) {
+fun InProgressScreen(app: ReplayTvApp, onResume: (InProgress) -> Unit) {
     val context = LocalContext.current
     val positions = remember { PlaybackPositions(context) }
     var entries by remember { mutableStateOf(emptyList<InProgress>()) }
@@ -98,12 +98,12 @@ fun InProgressScreen(app: ReplayTvApp, onResume: (CatalogItem.Video) -> Unit) {
                 entry = entry,
                 onResume = {
                     selected = null
-                    onResume(entry.video)
+                    onResume(entry)
                 },
                 onRestart = {
                     positions.clear(entry.video.url)
                     selected = null
-                    onResume(entry.video)
+                    onResume(entry)
                 },
                 onRemove = {
                     positions.clear(entry.video.url)

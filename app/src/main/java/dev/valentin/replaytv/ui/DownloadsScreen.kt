@@ -88,7 +88,7 @@ private fun DownloadRow(app: ReplayTvApp, entry: DownloadEntry, onPlay: (String,
         when (entry.status) {
             DownloadStatus.Done -> {
                 Button(onClick = {
-                    entry.toVideo()?.let(app.library::recordPlay)
+                    entry.toVideo()?.let { app.onPlaybackStarted(it, collection = null) }
                     onPlay(entry.file.toURI().toString(), entry.meta.title, entry.meta.sourceUrl)
                 }, modifier = firstButton) { Text("Lire") }
                 Button(onClick = { app.downloads.delete(entry) }) { Text("Supprimer") }

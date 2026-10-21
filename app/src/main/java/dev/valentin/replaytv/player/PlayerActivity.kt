@@ -10,6 +10,7 @@ import androidx.media3.session.MediaSession
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
 import androidx.activity.compose.setContent
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.MimeTypes
@@ -26,6 +27,7 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import dev.valentin.replaytv.ReplayTvApp
 import dev.valentin.replaytv.drm.DrmStream
 import dev.valentin.replaytv.ui.theme.ReplayTvTheme
+import kotlinx.coroutines.launch
 
 /**
  * Lecteur plein écran (Media3 / ExoPlayer) pour un flux HLS distant, un flux DASH chiffré en Widevine
@@ -40,6 +42,7 @@ class PlayerActivity : ComponentActivity() {
     private var mediaSession: MediaSession? = null
     private lateinit var positions: PlaybackPositions
     private lateinit var prefs: PlayerPrefs
+    private lateinit var app: ReplayTvApp
     private val ui = PlayerUiState()
     private var resumeKey = ""
     private var seekHoldStartedAt = 0L
@@ -57,6 +60,7 @@ class PlayerActivity : ComponentActivity() {
         resumeKey = intent.getStringExtra(EXTRA_RESUME_KEY) ?: uri
         positions = PlaybackPositions(this)
         prefs = PlayerPrefs(this)
+        app = ReplayTvApp.from(this)
         ui.subtitleSizeIndex = prefs.subtitleSize
 
         val exoPlayer = buildPlayer(uri, title, drmFrom(intent))
@@ -64,6 +68,9 @@ class PlayerActivity : ComponentActivity() {
         if (saved > 0) {
             exoPlayer.seekTo(saved)
             ui.resumedFromMs = saved
+        } else {
+            // Nouvelle lecture depuis le début : la coche « vue » disparaît.
+            app.watched.clear(resumeKey)
         }
         exoPlayer.prepare()
         exoPlayer.playWhenReady = true
@@ -79,6 +86,13 @@ class PlayerActivity : ComponentActivity() {
                 ui.menuOpen -> ui.menuOpen = false
                 ui.controlsVisible && !ui.ended && ui.error == null -> ui.controlsVisible = false
                 else -> finish()
+            }
+        }
+
+        // Les épisodes suivants se calculent pendant la lecture ; seuls ceux de cette vidéo comptent.
+        lifecycleScope.launch {
+            app.upNext.suggestions.collect { suggestions ->
+                ui.upNext = suggestions?.takeIf { it.forUrl == resumeKey }?.videos.orEmpty()
             }
         }
 
@@ -136,7 +150,9 @@ class PlayerActivity : ComponentActivity() {
                 updateKeepScreenOn(exoPlayer)
                 if (playbackState == Player.STATE_ENDED) {
                     ui.ended = true
+                    ui.upNextIndex = 1
                     positions.clear(resumeKey)
+                    app.watched.markWatched(resumeKey)
                     ui.showControls()
                 }
             }
@@ -161,6 +177,7 @@ class PlayerActivity : ComponentActivity() {
 
         if (ui.confirmRestart) return handleConfirmKey(exoPlayer, event)
         if (ui.menuOpen) return handleMenuKey(exoPlayer, event)
+        if (ui.ended && ui.upNext.isNotEmpty()) return handleUpNextKey(exoPlayer, event)
 
         return when (event.keyCode) {
             in SEEK_BACK_KEYS -> { stepSeek(exoPlayer, -1, event); true }
@@ -215,7 +232,29 @@ class PlayerActivity : ComponentActivity() {
         ui.resumedFromMs = 0
         ui.ended = false
         positions.clear(resumeKey)
+        app.watched.clear(resumeKey)
         exoPlayer.play()
+    }
+
+    /** Écran de fin : gauche/droite parcourt « Revoir » et les épisodes suivants, OK lance le choix. */
+    private fun handleUpNextKey(exoPlayer: ExoPlayer, event: KeyEvent): Boolean {
+        ui.showControls()
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_DPAD_LEFT -> ui.upNextIndex = (ui.upNextIndex - 1).coerceAtLeast(0)
+            KeyEvent.KEYCODE_DPAD_RIGHT -> ui.upNextIndex = (ui.upNextIndex + 1).coerceAtMost(ui.upNext.size)
+            KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                val next = ui.upNext.getOrNull(ui.upNextIndex - 1)
+                if (next == null) {
+                    restartFromBeginning(exoPlayer)
+                } else {
+                    app.upNext.choose(next)
+                    finish()
+                }
+            }
+            KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN -> Unit
+            else -> return super.dispatchKeyEvent(event)
+        }
+        return true
     }
 
     private fun handleMenuKey(exoPlayer: ExoPlayer, event: KeyEvent): Boolean {
@@ -319,9 +358,7 @@ class PlayerActivity : ComponentActivity() {
 
     private fun togglePlayPause(exoPlayer: ExoPlayer) {
         if (ui.ended) {
-            exoPlayer.seekTo(0)
-            ui.ended = false
-            exoPlayer.play()
+            restartFromBeginning(exoPlayer)
         } else if (exoPlayer.isPlaying) {
             exoPlayer.pause()
         } else {
@@ -385,6 +422,8 @@ class PlayerActivity : ComponentActivity() {
         val exoPlayer = player ?: return
         if (ui.ended) return
         positions.save(resumeKey, exoPlayer.currentPosition, exoPlayer.duration)
+        // Quitter pendant le générique compte comme une vidéo vue jusqu'au bout.
+        if (PlaybackPositions.isNearEnd(exoPlayer.currentPosition, exoPlayer.duration)) app.watched.markWatched(resumeKey)
     }
 
     override fun onStop() {

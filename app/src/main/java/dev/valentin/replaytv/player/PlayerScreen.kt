@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,6 +39,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +52,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import coil3.compose.AsyncImage
 import kotlinx.coroutines.delay
 
 private const val HIDE_DELAY_MS = 4_000L
@@ -215,6 +219,7 @@ private fun Overlay(ui: PlayerUiState, title: String) {
         Box(modifier = Modifier.align(Alignment.Center)) {
             when {
                 ui.error != null -> StatusBadge("Lecture impossible : ${ui.error}")
+                ui.ended && ui.upNext.isNotEmpty() -> UpNextGrid(ui)
                 ui.ended -> StatusBadge("Terminé · OK pour relire")
                 ui.seekTargetMs != null -> Unit
                 ui.isBuffering -> StatusBadge("Chargement…")
@@ -263,11 +268,14 @@ private fun Overlay(ui: PlayerUiState, title: String) {
                     color = if (target != null) MaterialTheme.colorScheme.primary else Color.White,
                     fontWeight = FontWeight.SemiBold,
                 )
-                Text(
-                    "OK : lecture / pause   ◀ ▶ : ±10 s (maintenir pour accélérer)   ▲ : menu (début, sous-titres, audio)   Retour : masquer",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.7f),
-                )
+                // Sur l'écran de fin, la grille « À suivre » porte sa propre aide.
+                if (!(ui.ended && ui.upNext.isNotEmpty())) {
+                    Text(
+                        "OK : lecture / pause   ◀ ▶ : ±10 s (maintenir pour accélérer)   ▲ : menu (début, sous-titres, audio)   Retour : masquer",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.7f),
+                    )
+                }
             }
         }
     }
@@ -400,4 +408,74 @@ private fun ConfirmChoice(label: String, focused: Boolean) {
             .background(if (focused) Color.White else Color.White.copy(alpha = 0.12f), RoundedCornerShape(24.dp))
             .padding(horizontal = 24.dp, vertical = 12.dp),
     )
+}
+
+/** Écran de fin : « Revoir » puis les épisodes suivants ; la case choisie est pilotée par l'activité. */
+@Composable
+private fun UpNextGrid(ui: PlayerUiState) {
+    Column(
+        modifier = Modifier
+            .offset(y = (-60).dp)
+            .background(Color.Black.copy(alpha = 0.75f), RoundedCornerShape(16.dp))
+            .padding(24.dp),
+    ) {
+        Text("À suivre", style = MaterialTheme.typography.titleLarge, color = Color.White)
+        Spacer(Modifier.height(16.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+            UpNextTile(focused = ui.upNextIndex == 0, title = "Revoir", subtitle = "depuis le début") {
+                Box(modifier = Modifier.fillMaxSize().background(Color(0xFF1E2838)), contentAlignment = Alignment.Center) {
+                    Text("↺", color = Color.White, fontSize = 44.sp)
+                }
+            }
+            ui.upNext.forEachIndexed { index, video ->
+                UpNextTile(focused = ui.upNextIndex == index + 1, title = video.title, subtitle = video.subtitle) {
+                    AsyncImage(
+                        model = video.imageUrl,
+                        contentDescription = video.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.height(14.dp))
+        Text(
+            "◀ ▶ : choisir   OK : lancer   Retour : quitter",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.White.copy(alpha = 0.7f),
+        )
+    }
+}
+
+@Composable
+private fun UpNextTile(focused: Boolean, title: String, subtitle: String?, image: @Composable () -> Unit) {
+    Column(modifier = Modifier.width(200.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(16f / 9f)
+                .clip(RoundedCornerShape(10.dp))
+                .border(if (focused) 3.dp else 0.dp, if (focused) Color.White else Color.Transparent, RoundedCornerShape(10.dp)),
+        ) {
+            image()
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (focused) Color.White else Color.White.copy(alpha = 0.7f),
+            fontWeight = if (focused) FontWeight.SemiBold else FontWeight.Normal,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+        subtitle?.let {
+            Text(
+                it,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.White.copy(alpha = 0.6f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
 }
