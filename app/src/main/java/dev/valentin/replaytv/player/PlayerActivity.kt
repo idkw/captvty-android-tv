@@ -76,7 +76,10 @@ class PlayerActivity : ComponentActivity() {
         exoPlayer.playWhenReady = true
         player = exoPlayer
         // Session média : Google TV sait qu'une lecture est en cours (et les touches média du système arrivent ici).
-        mediaSession = MediaSession.Builder(this, exoPlayer).build()
+        // Identifiant propre à ce lecteur : quand on enchaîne sur l'épisode suivant, le nouveau lecteur
+        // démarre avant que l'ancien ait libéré sa session, et deux sessions de même identifiant
+        // font planter l'application.
+        mediaSession = MediaSession.Builder(this, exoPlayer).setId("player-${SystemClock.elapsedRealtimeNanos()}").build()
 
         // Retour (touche ou geste prédictif, Android 16 passe par ce dispatcher) : masque d'abord la
         // surcouche ; ne quitte la vidéo que si elle est déjà masquée, ou si la lecture est finie/en erreur.
@@ -437,6 +440,10 @@ class PlayerActivity : ComponentActivity() {
         savePosition()
         player?.pause()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        if (isFinishing) {
+            mediaSession?.release()
+            mediaSession = null
+        }
         super.onStop()
     }
 

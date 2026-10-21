@@ -3,6 +3,10 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.7.3
+
+- Choisir l'épisode suivant à la fin d'une vidéo TF1+ ou M6+ ne ferme plus l'application : le nouveau lecteur démarrait avant que l'ancien ait libéré sa session média.
+
 ## v0.7.2
 
 - M6+ : quand un programme garde plusieurs saisons sous les mêmes titres, chaque épisode affiche son année entre parenthèses, par exemple « Épisode 10 - Partie 2 (2026) ». Les épisodes suivants proposés en fin de lecture tiennent compte de cette année : l'épisode 11 de l'an dernier ne passe plus pour la suite de l'épisode 10 de cette année.
