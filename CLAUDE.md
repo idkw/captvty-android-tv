@@ -7,7 +7,8 @@ le débogage de la box Google TV est ouvert (`adb devices` la montre en `device`
 directement la nouvelle version sur la box, sans demander :
 
 ```bash
-gh release download vX.Y.Z --repo idkw/captvty-android-tv --pattern '*-universal.apk' --dir <scratchpad>
+curl -fL -o <scratchpad>/replaytv-vX.Y.Z-universal.apk \
+  https://github.com/idkw/captvty-android-tv/releases/download/vX.Y.Z/replaytv-vX.Y.Z-universal.apk
 adb -s <box> install -r <scratchpad>/replaytv-vX.Y.Z-universal.apk
 adb -s <box> shell dumpsys package dev.valentin.replaytv | grep versionName   # vérifier la version
 ```
