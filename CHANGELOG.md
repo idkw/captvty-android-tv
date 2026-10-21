@@ -3,6 +3,10 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.6.1
+
+- Avance et retour rapides avec ◀ ▶ : la vidéo affiche l'image de la position visée pendant que l'on déplace le curseur, comme sur Netflix ; la lecture reprend au relâchement de la touche.
+
 ## v0.6.0
 
 - Revenir au début d'un épisode commencé :

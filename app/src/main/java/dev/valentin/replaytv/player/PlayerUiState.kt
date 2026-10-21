@@ -17,6 +17,9 @@ class PlayerUiState {
 
     /** Position visée pendant un déplacement à la télécommande, avant validation. */
     var seekTargetMs by mutableStateOf<Long?>(null)
+
+    /** Position au début du déplacement : la vidéo affiche déjà la cible, l'écart se calcule depuis ici. */
+    var seekFromMs by mutableStateOf<Long?>(null)
     var lastInteractionAt by mutableLongStateOf(SystemClock.uptimeMillis())
     var resumedFromMs by mutableLongStateOf(0L)
     var error by mutableStateOf<String?>(null)

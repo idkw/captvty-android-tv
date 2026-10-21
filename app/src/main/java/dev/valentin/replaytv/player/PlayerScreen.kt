@@ -216,6 +216,7 @@ private fun Overlay(ui: PlayerUiState, title: String) {
             when {
                 ui.error != null -> StatusBadge("Lecture impossible : ${ui.error}")
                 ui.ended -> StatusBadge("Terminé · OK pour relire")
+                ui.seekTargetMs != null -> Unit
                 ui.isBuffering -> StatusBadge("Chargement…")
                 !ui.isPlaying -> PauseGlyph()
             }
@@ -254,7 +255,7 @@ private fun Overlay(ui: PlayerUiState, title: String) {
             Spacer(Modifier.height(10.dp))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 val target = ui.seekTargetMs
-                val delta = target?.let { (it - ui.positionMs) / 1000 }
+                val delta = target?.let { (it - (ui.seekFromMs ?: ui.positionMs)) / 1000 }
                 val deltaText = delta?.let { "  (${if (it >= 0) "+" else "−"}${formatClock(kotlin.math.abs(it) * 1000)})" } ?: ""
                 Text(
                     "${formatClock(target ?: ui.positionMs)} / ${formatClock(ui.durationMs)}$deltaText",
@@ -277,7 +278,8 @@ private fun TimeBar(ui: PlayerUiState) {
     var widthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val duration = ui.durationMs.coerceAtLeast(1)
-    val playedFraction = (ui.positionMs.toFloat() / duration).coerceIn(0f, 1f)
+    // Pendant un déplacement, la partie « lue » reste figée à la position de départ.
+    val playedFraction = ((ui.seekFromMs ?: ui.positionMs).toFloat() / duration).coerceIn(0f, 1f)
     val targetFraction = ui.seekTargetMs?.let { (it.toFloat() / duration).coerceIn(0f, 1f) }
     val trackWidth = with(density) { widthPx.toDp() }
 

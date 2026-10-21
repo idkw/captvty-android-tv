@@ -44,6 +44,7 @@ class PlayerActivity : ComponentActivity() {
     private var resumeKey = ""
     private var seekHoldStartedAt = 0L
     private var lastSeekStepAt = 0L
+    private var resumeAfterScrub = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -208,6 +209,7 @@ class PlayerActivity : ComponentActivity() {
     }
 
     private fun restartFromBeginning(exoPlayer: ExoPlayer) {
+        stopScrubbing(exoPlayer)
         exoPlayer.seekTo(0)
         ui.seekTargetMs = null
         ui.resumedFromMs = 0
@@ -340,12 +342,34 @@ class PlayerActivity : ComponentActivity() {
             return
         }
         lastSeekStepAt = now
+        if (ui.seekTargetMs == null) startScrubbing(exoPlayer)
         val heldSeconds = ((now - seekHoldStartedAt) / 1000).coerceIn(0, 5)
         val step = SEEK_STEP_MS * (1 + heldSeconds)
         val base = ui.seekTargetMs ?: exoPlayer.currentPosition
         val max = exoPlayer.duration.takeIf { it > 0 } ?: Long.MAX_VALUE
-        ui.seekTargetMs = (base + direction * step).coerceIn(0L, max)
+        val target = (base + direction * step).coerceIn(0L, max)
+        ui.seekTargetMs = target
+        // Comme sur Netflix : l'image à la position visée s'affiche pendant le déplacement.
+        exoPlayer.seekTo(target)
         ui.showControls()
+    }
+
+    /**
+     * Début d'un déplacement : la lecture se met en pause et le lecteur passe en mode « scrubbing »
+     * (Media3), optimisé pour des sauts rapprochés qui n'affichent que l'image visée.
+     */
+    private fun startScrubbing(exoPlayer: ExoPlayer) {
+        ui.seekFromMs = exoPlayer.currentPosition
+        resumeAfterScrub = exoPlayer.playWhenReady
+        exoPlayer.pause()
+        exoPlayer.setScrubbingModeEnabled(true)
+    }
+
+    private fun stopScrubbing(exoPlayer: ExoPlayer) {
+        if (!exoPlayer.isScrubbingModeEnabled) return
+        exoPlayer.setScrubbingModeEnabled(false)
+        ui.seekFromMs = null
+        if (resumeAfterScrub) exoPlayer.play()
     }
 
     private fun commitSeek(exoPlayer: ExoPlayer) {
@@ -353,6 +377,7 @@ class PlayerActivity : ComponentActivity() {
         exoPlayer.seekTo(target)
         if (ui.ended) ui.ended = false
         ui.seekTargetMs = null
+        stopScrubbing(exoPlayer)
         ui.showControls()
     }
 
@@ -363,6 +388,13 @@ class PlayerActivity : ComponentActivity() {
     }
 
     override fun onStop() {
+        player?.let { exo ->
+            ui.seekTargetMs = null
+            if (exo.isScrubbingModeEnabled) {
+                exo.setScrubbingModeEnabled(false)
+                ui.seekFromMs = null
+            }
+        }
         savePosition()
         player?.pause()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
