@@ -35,8 +35,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import androidx.tv.material3.Card
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
@@ -61,14 +59,7 @@ fun BrowseScreen(
     favorite: Boolean? = null,
     onToggleFavorite: () -> Unit = {},
 ) {
-    // Au retour d'une fiche, les rangées déjà chargées sont réutilisées telles quelles.
-    LaunchedEffect(key) {
-        if (memory.rows is LoadState.Loaded) return@LaunchedEffect
-        memory.rows = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
-            onSuccess = { LoadState.Loaded(it) },
-            onFailure = { LoadState.Error(it.message ?: it.toString()) },
-        )
-    }
+    LaunchedEffect(key) { memory.loadRows(load) }
 
     Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
         androidx.compose.foundation.layout.Row(
@@ -105,12 +96,19 @@ fun BrowseScreen(
 @Composable
 fun RowsList(rows: List<CatalogRow>, key: Any, onOpen: (CatalogItem) -> Unit, memory: ScreenMemory, requestFocus: Boolean = true) {
     val targetFocus = remember(key) { FocusRequester() }
-    val (targetRow, targetCard) = memory.focusedCard
-        ?.takeIf { (row, card) -> row in rows.indices && card in rows[row].items.indices }
+    val (targetRow, targetCard) = rows.withIndex()
+        .firstNotNullOfOrNull { (row, r) -> r.items.indexOfFirst { it.url == memory.focusedUrl }.takeIf { it >= 0 }?.let { row to it } }
         ?: (0 to 0)
 
     LaunchedEffect(key, rows, requestFocus) {
         if (requestFocus && rows.isNotEmpty()) {
+            withFrameNanos { }
+            // Après un rechargement, la carte a pu changer de place : on l'amène à l'écran avant d'y
+            // poser le focus (une carte hors écran n'est pas composée et ne peut pas le recevoir).
+            if (memory.column.layoutInfo.visibleItemsInfo.none { it.index == targetRow }) memory.column.scrollToItem(targetRow)
+            withFrameNanos { }
+            val rowState = memory.row(targetRow)
+            if (rowState.layoutInfo.visibleItemsInfo.none { it.index == targetCard }) rowState.scrollToItem(targetCard)
             withFrameNanos { }
             runCatching { targetFocus.requestFocus() }
         }
@@ -128,7 +126,7 @@ fun RowsList(rows: List<CatalogRow>, key: Any, onOpen: (CatalogItem) -> Unit, me
                 state = memory.row(index),
                 targetCard = targetCard.takeIf { index == targetRow },
                 targetFocus = targetFocus,
-                onFocused = { card -> memory.focusedCard = index to card },
+                onFocused = { card -> memory.focusedUrl = row.items[card].url },
             )
         }
     }

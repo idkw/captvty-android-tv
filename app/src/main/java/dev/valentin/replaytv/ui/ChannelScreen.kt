@@ -57,13 +57,7 @@ fun ChannelScreen(channel: Channel, load: suspend () -> List<CatalogRow>, onOpen
     var results by remember(channel) { mutableStateOf<List<CatalogItem>?>(null) }
     var searching by remember(channel) { mutableStateOf(false) }
 
-    LaunchedEffect(channel) {
-        if (memory.rows is LoadState.Loaded) return@LaunchedEffect
-        memory.rows = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
-            onSuccess = { LoadState.Loaded(it) },
-            onFailure = { LoadState.Error(it.message ?: it.toString()) },
-        )
-    }
+    LaunchedEffect(channel) { memory.loadRows(load) }
 
     // Index précalculé une fois : la normalisation (accents, casse) ne se refait pas à chaque frappe.
     val rows = (memory.rows as? LoadState.Loaded)?.value

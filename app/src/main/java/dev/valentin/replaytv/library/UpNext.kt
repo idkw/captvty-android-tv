@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentHashMap
 
 /** Épisodes proposés à la fin de la vidéo [forUrl]. */
 data class UpNextSuggestions(val forUrl: String, val collection: CatalogItem.Collection, val videos: List<CatalogItem.Video>)
@@ -18,16 +17,16 @@ data class UpNextSuggestions(val forUrl: String, val collection: CatalogItem.Col
 data class UpNextChoice(val video: CatalogItem.Video, val collection: CatalogItem.Collection)
 
 /**
- * Épisodes suivants : calculés dès le début de la lecture, pendant que la vidéo tourne (charger une
- * collection Arte prend plusieurs secondes), puis affichés par le lecteur quand la vidéo se termine.
+ * Épisodes suivants, affichés par le lecteur quand la vidéo se termine. La collection est lue sur
+ * l'API de la chaîne au début de la lecture, puis relue à l'approche de la fin ([refresh]) : un
+ * épisode a pu paraître pendant la lecture, et charger une collection Arte prend plusieurs secondes.
  */
 class UpNext(
     private val catalog: CatalogRepository,
     private val watched: WatchedVideos,
     private val scope: CoroutineScope,
 ) {
-    // Épisodes des collections déjà affichées : évite de recharger celle qu'on vient de parcourir.
-    private val episodesByCollection = ConcurrentHashMap<String, List<CatalogItem.Video>>()
+    private var playing: Pair<CatalogItem.Video, CatalogItem.Collection>? = null
     private var job: Job? = null
 
     private val _suggestions = MutableStateFlow<UpNextSuggestions?>(null)
@@ -36,21 +35,25 @@ class UpNext(
     private val _choice = MutableStateFlow<UpNextChoice?>(null)
     val choice: StateFlow<UpNextChoice?> = _choice.asStateFlow()
 
-    fun rememberCollection(collection: CatalogItem.Collection, rows: List<CatalogRow>) {
-        episodesByCollection[collection.url] = episodesOf(rows)
-    }
-
     /** À appeler au lancement d'une lecture ; sans collection connue, rien n'est proposé. */
     fun prepare(video: CatalogItem.Video, collection: CatalogItem.Collection?) {
         job?.cancel()
         _suggestions.value = null
-        if (collection == null) return
+        playing = collection?.let { video to it }
+        refresh(video.url)
+    }
+
+    /**
+     * Relit la collection de la vidéo [forUrl] sur l'API de la chaîne et recalcule les suggestions.
+     * Si la chaîne ne répond pas, les suggestions précédentes restent.
+     */
+    fun refresh(forUrl: String) {
+        val (video, collection) = playing?.takeIf { it.first.url == forUrl } ?: return
+        job?.cancel()
         job = scope.launch {
-            val episodes = episodesByCollection[collection.url]
-                ?: runCatching { episodesOf(catalog.collection(collection)) }.getOrNull()?.also { episodesByCollection[collection.url] = it }
-                ?: return@launch
+            val episodes = runCatching { episodesOf(catalog.collection(collection)) }.getOrNull() ?: return@launch
             val videos = nextEpisodes(video, episodes, watched::isWatched)
-            if (videos.isNotEmpty()) _suggestions.value = UpNextSuggestions(video.url, collection, videos)
+            _suggestions.value = if (videos.isEmpty()) null else UpNextSuggestions(video.url, collection, videos)
         }
     }
 

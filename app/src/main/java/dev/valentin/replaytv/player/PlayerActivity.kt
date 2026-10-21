@@ -48,6 +48,7 @@ class PlayerActivity : ComponentActivity() {
     private var seekHoldStartedAt = 0L
     private var lastSeekStepAt = 0L
     private var resumeAfterScrub = false
+    private var upNextRefreshed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +102,7 @@ class PlayerActivity : ComponentActivity() {
 
         setContent {
             ReplayTvTheme {
-                PlayerScreen(player = exoPlayer, ui = ui, title = title, onTick = ::savePosition)
+                PlayerScreen(player = exoPlayer, ui = ui, title = title, onTick = ::onTick)
             }
         }
     }
@@ -156,6 +157,7 @@ class PlayerActivity : ComponentActivity() {
                     ui.upNextIndex = 1
                     positions.clear(resumeKey)
                     app.watched.markWatched(resumeKey)
+                    refreshUpNext()
                     ui.showControls()
                 }
             }
@@ -236,6 +238,7 @@ class PlayerActivity : ComponentActivity() {
         ui.ended = false
         positions.clear(resumeKey)
         app.watched.clear(resumeKey)
+        upNextRefreshed = false
         exoPlayer.play()
     }
 
@@ -421,6 +424,22 @@ class PlayerActivity : ComponentActivity() {
         ui.showControls()
     }
 
+    private fun onTick() {
+        savePosition()
+        val exoPlayer = player ?: return
+        if (exoPlayer.duration > 0 && exoPlayer.duration - exoPlayer.currentPosition <= UP_NEXT_REFRESH_BEFORE_END_MS) refreshUpNext()
+    }
+
+    /**
+     * Relit la collection une fois par lecture, à l'approche de la fin (ou à la fin si on y a sauté) :
+     * un épisode a pu être publié depuis le lancement, qui date parfois de plus d'une heure.
+     */
+    private fun refreshUpNext() {
+        if (upNextRefreshed) return
+        upNextRefreshed = true
+        app.upNext.refresh(resumeKey)
+    }
+
     private fun savePosition() {
         val exoPlayer = player ?: return
         if (ui.ended) return
@@ -463,6 +482,7 @@ class PlayerActivity : ComponentActivity() {
         private const val EXTRA_LICENSE_HEADERS = "licenseHeaders"
         private const val SEEK_STEP_MS = 10_000L
         private const val SEEK_REPEAT_INTERVAL_MS = 150L
+        private const val UP_NEXT_REFRESH_BEFORE_END_MS = 120_000L
         private val SEEK_BACK_KEYS = setOf(KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_MEDIA_REWIND)
         private val SEEK_FORWARD_KEYS = setOf(KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD)
 

@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.7.6
+
+- Épisodes suivants en fin de lecture : la collection est relue auprès de la chaîne pendant les 2 dernières minutes de l'épisode (ou à la fin si on y a sauté), pour proposer un épisode publié pendant la lecture.
+- Retour aux listes : sans lecture, la liste revient telle quelle ; après une lecture, elle se recharge pour montrer les nouveaux épisodes, et le curseur retrouve l'épisode quitté même s'il a changé de place.
+
 ## v0.7.5
 
 - Retour d'une fiche avec la touche Retour : le curseur revient sur la vignette quittée, au même défilement, sans recharger la liste. Valable dans les collections, les pages de chaîne (la recherche en cours est gardée), les rubriques par thème, les Favoris et « En cours ».

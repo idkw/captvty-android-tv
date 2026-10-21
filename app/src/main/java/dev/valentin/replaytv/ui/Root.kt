@@ -75,11 +75,15 @@ fun ReplayTvRoot(app: ReplayTvApp) {
 
     val watched by app.watched.urls.collectAsStateWithLifecycle()
 
+    // Une lecture peut durer : au retour, les listes de l'historique se rechargent, au cas où la
+    // chaîne aurait publié un épisode entre-temps.
     fun play(uri: String, title: String, resumeKey: String) {
+        memories.values.forEach { it.needsReload = true }
         context.startActivity(PlayerActivity.intent(context, uri, title, resumeKey))
     }
 
     fun playDrm(stream: DrmStream, title: String, resumeKey: String) {
+        memories.values.forEach { it.needsReload = true }
         context.startActivity(PlayerActivity.intent(context, stream, title, resumeKey))
     }
 
@@ -140,7 +144,7 @@ private fun Screens(
                 BrowseScreen(
                     title = current.item.title,
                     key = current.item,
-                    load = { app.catalog.collection(current.item).also { app.upNext.rememberCollection(current.item, it) } },
+                    load = { app.catalog.collection(current.item) },
                     onOpen = { open(it, current.item) },
                     memory = memory,
                     favorite = favorites.any { it.url == current.item.url },
