@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -139,12 +140,15 @@ private fun Screens(
 
             Screen.InProgress -> InProgressScreen(app = app, onResume = { push(Screen.Detail(it.video, autoplay = true, collection = it.collection)) })
 
-            is Screen.Detail ->
+            // Une fiche neuve par vidéo : quand l'épisode suivant remplace la fiche courante, rien de
+            // l'ancienne (bouton Lire, lecture automatique) ne doit survivre.
+            is Screen.Detail -> key(current.video.url) {
                 if (current.video.source.drm) {
                     DrmDetailScreen(app = app, video = current.video, collection = current.collection, onPlay = playDrm, onAccounts = { push(Screen.Accounts) }, autoplay = current.autoplay)
                 } else {
                     DetailScreen(app = app, video = current.video, collection = current.collection, onPlay = play, autoplay = current.autoplay)
                 }
+            }
 
             Screen.Downloads -> DownloadsScreen(app = app, onPlay = play)
 

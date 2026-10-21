@@ -54,6 +54,26 @@ class EpisodeOrderTest {
     }
 
     @Test
+    fun `should pick the part of the same season when several seasons share the numbers`() {
+        // GIVEN le programme M6, de la plus récente à la plus ancienne vidéo, avec trois saisons sans numéro de saison
+        val episodes = listOf(
+            video("Épisode 10 - Partie 1", url = "2026-10-1"),
+            video("Épisode 10 - Partie 2", url = "2026-10-2"),
+            video("Épisode 11 - Partie 2", url = "2025-11-2"),
+            video("Épisode 11 - Partie 1", url = "2025-11-1"),
+            video("Épisode 10 - Partie 2", url = "2025-10-2"),
+            video("Épisode 10 - Partie 1", url = "2025-10-1"),
+            video("Épisode 10 - Partie 2", url = "2024-10-2"),
+        )
+
+        // WHEN on termine la partie 1 de l'épisode 10 de cette année
+        val next = nextEpisodes(episodes[0], episodes)
+
+        // THEN la partie 2 est celle de la même année, et aucun numéro n'est proposé deux fois
+        assertEquals(listOf("2026-10-2", "2025-11-1", "2025-11-2"), next.map { it.url })
+    }
+
+    @Test
     fun `should use the season and episode of the subtitle`() {
         // GIVEN des épisodes TF1 : le titre est le nom de l'épisode, le sous-titre son numéro
         val episodes = listOf(

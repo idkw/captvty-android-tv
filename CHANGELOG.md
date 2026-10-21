@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.7.1
+
+- Épisode choisi à la fin d'une vidéo TF1+ ou M6+ : la fiche lance bien cet épisode, et la lecture démarre seule (elle relançait l'épisode qui venait de se terminer).
+- M6 garde plusieurs saisons d'un programme sans numéro de saison : les épisodes suivants proposés sont ceux de la même saison, sans doublon (« Épisode 10 - Partie 2 » apparaissait trois fois, une par année).
+
 ## v0.7.0
 
 - Coche verte sur la vignette des épisodes vus jusqu'au bout. Elle est gardée en mémoire et disparaît quand on relance l'épisode depuis le début.

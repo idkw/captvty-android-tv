@@ -92,7 +92,7 @@ fun DrmDetailScreen(
     }
 
     var autoplayDone by remember(video.url) { mutableStateOf(!autoplay) }
-    LaunchedEffect(hasAccount) {
+    LaunchedEffect(video.url, hasAccount) {
         if (!autoplayDone && hasAccount) {
             autoplayDone = true
             play()
@@ -135,7 +135,7 @@ fun DrmDetailScreen(
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 if (hasAccount) {
-                    Button(onClick = ::play, enabled = !resolving, modifier = Modifier.focusRequester(primaryFocus)) {
+                    Button(onClick = { play() }, enabled = !resolving, modifier = Modifier.focusRequester(primaryFocus)) {
                         Text(if (resumeAtMs > 0) "Reprendre à ${formatClock(resumeAtMs)}" else "Lire")
                     }
                     if (resumeAtMs > 0) {
