@@ -49,7 +49,6 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         withFrameNanos { }
         runCatching { firstFocus.requestFocus() }
-        app.updates.checkOnce()
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(vertical = 32.dp)) {

@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.7.4
+
+- Recherche de mise à jour à chaque retour dans Replay TV, même quand Google TV l'avait gardée en mémoire (au plus une fois toutes les 5 minutes). Avant, elle n'avait lieu qu'au démarrage de l'application.
+- Les fenêtres (mise à jour, « En cours », yt-dlp refusé) gardent le focus de la télécommande : les flèches ne passent plus aux chaînes derrière, et OK active bien le bouton sélectionné.
+
 ## v0.7.3
 
 - Choisir l'épisode suivant à la fin d'une vidéo TF1+ ou M6+ ne ferme plus l'application : le nouveau lecteur démarrait avant que l'ancien ait libéré sa session média.

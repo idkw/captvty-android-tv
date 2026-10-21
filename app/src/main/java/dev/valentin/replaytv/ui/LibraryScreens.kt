@@ -131,6 +131,7 @@ private fun InProgressDialog(entry: InProgress, onResume: () -> Unit, onRestart:
     ) {
         Column(
             modifier = Modifier
+                .trapFocus()
                 .width(760.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(MaterialTheme.colorScheme.surface)

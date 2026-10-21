@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.SystemClock
 import android.provider.Settings
 import androidx.core.content.FileProvider
 import dev.valentin.replaytv.BuildConfig
@@ -48,6 +49,7 @@ class UpdateManager(
     private val http: OkHttpClient,
     private val scope: CoroutineScope,
     private val currentVersion: String = BuildConfig.VERSION_NAME,
+    private val now: () -> Long = SystemClock::elapsedRealtime,
 ) {
     private val prefs = context.getSharedPreferences("updates", Context.MODE_PRIVATE)
 
@@ -59,13 +61,21 @@ class UpdateManager(
         .build()
     private val _state = MutableStateFlow<UpdateState>(UpdateState.Idle)
     val state: StateFlow<UpdateState> = _state.asStateFlow()
-    private var checkedOnce = false
+    private var lastAutoCheckAt: Long? = null
     private var downloadJob: Job? = null
 
-    /** Vérification automatique : une fois par lancement, silencieuse sauf si une version est disponible. */
-    fun checkOnce() {
-        if (checkedOnce) return
-        checkedOnce = true
+    /**
+     * Vérification automatique, à chaque retour dans l'application : Google TV garde souvent
+     * l'application en mémoire, et une vérification par lancement ne suffit pas. Au plus une toutes
+     * les 5 minutes (l'API GitHub limite à 60 requêtes par heure), jamais pendant qu'une mise à jour
+     * est affichée ou en cours, et silencieuse sauf si une version est disponible.
+     */
+    fun checkIfStale() {
+        val state = _state.value
+        if (state !is UpdateState.Idle && state !is UpdateState.UpToDate) return
+        val last = lastAutoCheckAt
+        if (last != null && now() - last < AUTO_CHECK_INTERVAL_MS) return
+        lastAutoCheckAt = now()
         check(manual = false)
     }
 
@@ -229,5 +239,6 @@ class UpdateManager(
 
     companion object {
         private const val KEY_IGNORED = "ignored_tag"
+        private const val AUTO_CHECK_INTERVAL_MS = 5 * 60 * 1000L
     }
 }

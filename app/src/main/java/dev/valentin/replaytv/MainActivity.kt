@@ -16,4 +16,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        ReplayTvApp.from(this).updates.checkIfStale()
+    }
 }

@@ -62,6 +62,7 @@ fun UpdateDialog(updates: UpdateManager) {
     ) {
         Column(
             modifier = Modifier
+                .trapFocus()
                 .width(760.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(MaterialTheme.colorScheme.surface)
@@ -167,6 +168,7 @@ fun YtDlpRejectedDialog(ytDlp: dev.valentin.replaytv.ytdlp.YtDlp) {
     ) {
         Column(
             modifier = Modifier
+                .trapFocus()
                 .width(760.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(MaterialTheme.colorScheme.surface)
