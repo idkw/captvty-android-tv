@@ -44,7 +44,15 @@ fun ReplayTvRoot(app: ReplayTvApp) {
     val context = LocalContext.current
     val current = backStack.last()
 
-    BackHandler(enabled = backStack.size > 1) { backStack.removeAt(backStack.lastIndex) }
+    // État de chaque écran de la pile (vignettes chargées, défilement, carte sélectionnée), oublié
+    // quand l'écran en sort.
+    val memories = remember { mutableMapOf<Screen, ScreenMemory>() }
+
+    fun pop() {
+        memories.remove(backStack.removeAt(backStack.lastIndex))
+    }
+
+    BackHandler(enabled = backStack.size > 1) { pop() }
 
     fun push(screen: Screen) {
         backStack.add(screen)
@@ -61,7 +69,7 @@ fun ReplayTvRoot(app: ReplayTvApp) {
     LaunchedEffect(choice) {
         val next = choice ?: return@LaunchedEffect
         app.upNext.consumeChoice()
-        if (backStack.last() is Screen.Detail) backStack.removeAt(backStack.lastIndex)
+        if (backStack.last() is Screen.Detail) pop()
         push(Screen.Detail(next.video, autoplay = true, collection = next.collection))
     }
 
@@ -80,7 +88,7 @@ fun ReplayTvRoot(app: ReplayTvApp) {
         colors = SurfaceDefaults.colors(containerColor = MaterialTheme.colorScheme.background),
     ) {
         CompositionLocalProvider(LocalWatchedUrls provides watched) {
-            Screens(app, current, ::push, ::open, ::play, ::playDrm)
+            Screens(app, current, memories.getOrPut(current) { ScreenMemory() }, ::push, ::open, ::play, ::playDrm)
         }
         UpdateDialog(app.updates)
         YtDlpRejectedDialog(app.ytDlp)
@@ -91,6 +99,7 @@ fun ReplayTvRoot(app: ReplayTvApp) {
 private fun Screens(
     app: ReplayTvApp,
     current: Screen,
+    memory: ScreenMemory,
     push: (Screen) -> Unit,
     open: (CatalogItem, CatalogItem.Collection?) -> Unit,
     play: (String, String, String) -> Unit,
@@ -113,6 +122,7 @@ private fun Screens(
                 channel = current.channel,
                 load = { app.catalog.channel(current.channel) },
                 onOpen = { open(it, null) },
+                memory = memory,
             )
 
             Screen.Themes -> ThemesScreen(onSection = { push(Screen.Browse(it)) })
@@ -122,6 +132,7 @@ private fun Screens(
                 key = current.section,
                 load = { app.catalog.section(current.section) },
                 onOpen = { open(it, null) },
+                memory = memory,
             )
 
             is Screen.Collection -> {
@@ -131,14 +142,15 @@ private fun Screens(
                     key = current.item,
                     load = { app.catalog.collection(current.item).also { app.upNext.rememberCollection(current.item, it) } },
                     onOpen = { open(it, current.item) },
+                    memory = memory,
                     favorite = favorites.any { it.url == current.item.url },
                     onToggleFavorite = { app.library.toggleFavorite(current.item) },
                 )
             }
 
-            Screen.Favorites -> FavoritesScreen(app = app, onOpen = { open(it, null) })
+            Screen.Favorites -> FavoritesScreen(app = app, onOpen = { open(it, null) }, memory = memory)
 
-            Screen.InProgress -> InProgressScreen(app = app, onResume = { push(Screen.Detail(it.video, autoplay = true, collection = it.collection)) })
+            Screen.InProgress -> InProgressScreen(app = app, onResume = { push(Screen.Detail(it.video, autoplay = true, collection = it.collection)) }, memory = memory)
 
             // Une fiche neuve par vidéo : quand l'épisode suivant remplace la fiche courante, rien de
             // l'ancienne (bouton Lire, lecture automatique) ne doit survivre.

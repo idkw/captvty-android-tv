@@ -14,20 +14,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
@@ -58,13 +57,14 @@ fun BrowseScreen(
     key: Any,
     load: suspend () -> List<CatalogRow>,
     onOpen: (CatalogItem) -> Unit,
+    memory: ScreenMemory,
     favorite: Boolean? = null,
     onToggleFavorite: () -> Unit = {},
 ) {
-    var state by remember(key) { mutableStateOf<LoadState<List<CatalogRow>>>(LoadState.Loading) }
-
+    // Au retour d'une fiche, les rangées déjà chargées sont réutilisées telles quelles.
     LaunchedEffect(key) {
-        state = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
+        if (memory.rows is LoadState.Loaded) return@LaunchedEffect
+        memory.rows = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
             onSuccess = { LoadState.Loaded(it) },
             onFailure = { LoadState.Error(it.message ?: it.toString()) },
         )
@@ -84,7 +84,7 @@ fun BrowseScreen(
             }
         }
         Spacer(Modifier.height(16.dp))
-        when (val s = state) {
+        when (val s = memory.rows) {
             LoadState.Loading -> {
                 Message("Chargement…")
                 Spacer(Modifier.height(8.dp))
@@ -92,32 +92,44 @@ fun BrowseScreen(
             }
             is LoadState.Error -> Message("Erreur : ${s.message}", error = true)
             is LoadState.Loaded ->
-                if (s.value.isEmpty()) Message("Rien à afficher ici.") else RowsList(s.value, key, onOpen)
+                if (s.value.isEmpty()) Message("Rien à afficher ici.") else RowsList(s.value, key, onOpen, memory)
         }
     }
 }
 
 /**
- * Rangées de cartes, avec le focus posé sur la première carte à l'affichage : à l'arrivée sur
- * l'écran rien n'a le focus et la télécommande serait inerte sans cela.
+ * Rangées de cartes, avec le focus posé à l'affichage sur la carte quittée en dernier (la première
+ * à la première visite) : à l'arrivée sur l'écran rien n'a le focus et la télécommande serait
+ * inerte sans cela. Le défilement et la carte sélectionnée sont gardés dans [memory].
  */
 @Composable
-fun RowsList(rows: List<CatalogRow>, key: Any, onOpen: (CatalogItem) -> Unit, requestFocus: Boolean = true) {
-    val firstCardFocus = remember(key) { FocusRequester() }
+fun RowsList(rows: List<CatalogRow>, key: Any, onOpen: (CatalogItem) -> Unit, memory: ScreenMemory, requestFocus: Boolean = true) {
+    val targetFocus = remember(key) { FocusRequester() }
+    val (targetRow, targetCard) = memory.focusedCard
+        ?.takeIf { (row, card) -> row in rows.indices && card in rows[row].items.indices }
+        ?: (0 to 0)
 
     LaunchedEffect(key, rows, requestFocus) {
         if (requestFocus && rows.isNotEmpty()) {
             withFrameNanos { }
-            runCatching { firstCardFocus.requestFocus() }
+            runCatching { targetFocus.requestFocus() }
         }
     }
 
     LazyColumn(
+        state = memory.column,
         verticalArrangement = Arrangement.spacedBy(24.dp),
         contentPadding = PaddingValues(bottom = 48.dp),
     ) {
         itemsIndexed(rows, key = { index, row -> "$index-${row.title}" }) { index, row ->
-            CardRow(row, onOpen, firstCardFocus.takeIf { index == 0 })
+            CardRow(
+                row = row,
+                onOpen = onOpen,
+                state = memory.row(index),
+                targetCard = targetCard.takeIf { index == targetRow },
+                targetFocus = targetFocus,
+                onFocused = { card -> memory.focusedCard = index to card },
+            )
         }
     }
 }
@@ -133,16 +145,25 @@ fun Message(text: String, error: Boolean = false) {
 }
 
 @Composable
-private fun CardRow(row: CatalogRow, onOpen: (CatalogItem) -> Unit, firstCardFocus: FocusRequester? = null) {
+private fun CardRow(
+    row: CatalogRow,
+    onOpen: (CatalogItem) -> Unit,
+    state: LazyListState,
+    targetCard: Int?,
+    targetFocus: FocusRequester,
+    onFocused: (Int) -> Unit,
+) {
     Column {
         Text(row.title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 48.dp))
         Spacer(Modifier.height(8.dp))
         LazyRow(
+            state = state,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(horizontal = 48.dp),
         ) {
             itemsIndexed(row.items, key = { index, item -> "$index-${item.url}" }) { index, item ->
-                ItemCard(item, onOpen, if (index == 0 && firstCardFocus != null) Modifier.focusRequester(firstCardFocus) else Modifier)
+                val target = if (index == targetCard) Modifier.focusRequester(targetFocus) else Modifier
+                ItemCard(item, onOpen, target.onFocusChanged { if (it.isFocused) onFocused(index) })
             }
         }
     }

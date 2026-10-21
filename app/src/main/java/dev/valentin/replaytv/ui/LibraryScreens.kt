@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,7 +47,7 @@ import dev.valentin.replaytv.player.formatClock
 
 /** Collections marquées d'une étoile, de la plus récemment ajoutée à la plus ancienne. */
 @Composable
-fun FavoritesScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit) {
+fun FavoritesScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit, memory: ScreenMemory) {
     val favorites by app.library.favorites.collectAsStateWithLifecycle()
     val items = remember(favorites) { favorites.mapNotNull { it.toCollection() } }
     LibraryGrid(
@@ -54,6 +55,7 @@ fun FavoritesScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit) {
         empty = "Aucun favori. Dans une collection d'épisodes, « ☆ Ajouter aux favoris » l'ajoute ici.",
         items = items,
         onClick = onOpen,
+        memory = memory,
     )
 }
 
@@ -62,7 +64,7 @@ fun FavoritesScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit) {
  * propose de reprendre la lecture ou de retirer la vidéo de la liste.
  */
 @Composable
-fun InProgressScreen(app: ReplayTvApp, onResume: (InProgress) -> Unit) {
+fun InProgressScreen(app: ReplayTvApp, onResume: (InProgress) -> Unit, memory: ScreenMemory) {
     val context = LocalContext.current
     val positions = remember { PlaybackPositions(context) }
     var entries by remember { mutableStateOf(emptyList<InProgress>()) }
@@ -91,6 +93,7 @@ fun InProgressScreen(app: ReplayTvApp, onResume: (InProgress) -> Unit) {
             empty = "Aucune vidéo en cours. Une vidéo commencée et pas terminée apparaît ici.",
             items = cards,
             onClick = { card -> selected = entries.firstOrNull { it.video.url == card.url } },
+            memory = memory,
             requestFocus = selected == null,
         )
         selected?.let { entry ->
@@ -161,13 +164,17 @@ private fun <T : CatalogItem> LibraryGrid(
     empty: String,
     items: List<T>,
     onClick: (T) -> Unit,
+    memory: ScreenMemory,
     requestFocus: Boolean = true,
 ) {
-    val firstFocus = remember { FocusRequester() }
+    // Focus sur la carte quittée en dernier, retrouvée par son URL (la liste « En cours » se
+    // réordonne entre deux visites), sinon sur la première.
+    val targetFocus = remember { FocusRequester() }
+    val targetIndex = items.indexOfFirst { it.url == memory.focusedUrl }.coerceAtLeast(0)
     LaunchedEffect(items.isEmpty(), requestFocus) {
         if (items.isNotEmpty() && requestFocus) {
             withFrameNanos { }
-            runCatching { firstFocus.requestFocus() }
+            runCatching { targetFocus.requestFocus() }
         }
     }
     Column(modifier = Modifier.fillMaxSize().padding(top = 32.dp)) {
@@ -179,17 +186,19 @@ private fun <T : CatalogItem> LibraryGrid(
             Message(empty)
         } else {
             LazyVerticalGrid(
+                state = memory.grid,
                 columns = GridCells.Adaptive(240.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 contentPadding = PaddingValues(start = 48.dp, top = 16.dp, end = 48.dp, bottom = 48.dp),
             ) {
                 itemsIndexed(items, key = { _, item -> item.url }) { index, item ->
+                    val target = if (index == targetIndex) Modifier.focusRequester(targetFocus) else Modifier
                     @Suppress("UNCHECKED_CAST")
                     ItemCard(
                         item,
                         { onClick(it as T) },
-                        if (index == 0) Modifier.focusRequester(firstFocus) else Modifier,
+                        target.onFocusChanged { if (it.isFocused) memory.focusedUrl = item.url },
                     )
                 }
             }

@@ -3,6 +3,10 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.7.5
+
+- Retour d'une fiche avec la touche Retour : le curseur revient sur la vignette quittée, au même défilement, sans recharger la liste. Valable dans les collections, les pages de chaîne (la recherche en cours est gardée), les rubriques par thème, les Favoris et « En cours ».
+
 ## v0.7.4
 
 - Recherche de mise à jour à chaque retour dans Replay TV, même quand Google TV l'avait gardée en mémoire (au plus une fois toutes les 5 minutes). Avant, elle n'avait lieu qu'au démarrage de l'application.

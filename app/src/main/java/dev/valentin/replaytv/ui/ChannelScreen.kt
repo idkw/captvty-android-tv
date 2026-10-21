@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.withFrameNanos
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
@@ -29,6 +30,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.MaterialTheme
@@ -44,23 +48,25 @@ import dev.valentin.replaytv.model.searchKey
  */
 @OptIn(FlowPreview::class)
 @Composable
-fun ChannelScreen(channel: Channel, load: suspend () -> List<CatalogRow>, onOpen: (CatalogItem) -> Unit) {
-    var state by remember(channel) { mutableStateOf<LoadState<List<CatalogRow>>>(LoadState.Loading) }
-    var query by remember(channel) { mutableStateOf("") }
+fun ChannelScreen(channel: Channel, load: suspend () -> List<CatalogRow>, onOpen: (CatalogItem) -> Unit, memory: ScreenMemory) {
+    // Programmes chargés et recherche en cours gardés dans [memory] : au retour d'une collection,
+    // l'écran revient tel qu'on l'a quitté.
+    var query by memory::query
 
     // Résultats du dernier filtrage terminé ; null tant que la requête est vide.
     var results by remember(channel) { mutableStateOf<List<CatalogItem>?>(null) }
     var searching by remember(channel) { mutableStateOf(false) }
 
     LaunchedEffect(channel) {
-        state = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
+        if (memory.rows is LoadState.Loaded) return@LaunchedEffect
+        memory.rows = runCatching { withContext(Dispatchers.Default) { load() } }.fold(
             onSuccess = { LoadState.Loaded(it) },
             onFailure = { LoadState.Error(it.message ?: it.toString()) },
         )
     }
 
     // Index précalculé une fois : la normalisation (accents, casse) ne se refait pas à chaque frappe.
-    val rows = (state as? LoadState.Loaded)?.value
+    val rows = (memory.rows as? LoadState.Loaded)?.value
     val index = remember(rows) {
         rows.orEmpty().flatMap { it.items }.distinctBy { it.url }.map { SearchEntry(it, "${it.title} ${it.subtitle.orEmpty()}".searchKey()) }
     }
@@ -88,14 +94,18 @@ fun ChannelScreen(channel: Channel, load: suspend () -> List<CatalogRow>, onOpen
             Text(channel.label, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
             TvTextField(
                 value = query,
-                onValueChange = { query = it },
+                onValueChange = {
+                    query = it
+                    // Nouvelle recherche : la carte retenue appartenait aux anciens résultats.
+                    memory.focusedUrl = null
+                },
                 placeholder = "Rechercher un programme…",
                 keyboardType = KeyboardType.Text,
             )
         }
         Spacer(Modifier.height(16.dp))
 
-        when (val s = state) {
+        when (val s = memory.rows) {
             LoadState.Loading -> {
                 Message("Chargement des programmes…")
                 Spacer(Modifier.height(8.dp))
@@ -107,9 +117,9 @@ fun ChannelScreen(channel: Channel, load: suspend () -> List<CatalogRow>, onOpen
             is LoadState.Loaded -> {
                 val current = results
                 when {
-                    query.isBlank() -> if (s.value.isEmpty()) Message("Aucun programme en replay.") else RowsList(s.value, channel, onOpen)
+                    query.isBlank() -> if (s.value.isEmpty()) Message("Aucun programme en replay.") else RowsList(s.value, channel, onOpen, memory)
                     current == null -> Message("Recherche…")
-                    else -> SearchResults(current, query.trim(), searching, onOpen)
+                    else -> SearchResults(current, query.trim(), searching, onOpen, memory)
                 }
             }
         }
@@ -121,7 +131,17 @@ private class SearchEntry(val item: CatalogItem, val key: String)
 private const val SEARCH_DEBOUNCE_MS = 250L
 
 @Composable
-private fun SearchResults(matches: List<CatalogItem>, query: String, searching: Boolean, onOpen: (CatalogItem) -> Unit) {
+private fun SearchResults(matches: List<CatalogItem>, query: String, searching: Boolean, onOpen: (CatalogItem) -> Unit, memory: ScreenMemory) {
+    // Au retour d'une collection ouverte depuis les résultats, le curseur revient sur sa carte.
+    val returnFocus = remember { FocusRequester() }
+    val returnUrl = memory.focusedUrl
+    LaunchedEffect(Unit) {
+        if (returnUrl != null && matches.any { it.url == returnUrl }) {
+            withFrameNanos { }
+            runCatching { returnFocus.requestFocus() }
+        }
+    }
+
     Message(
         when {
             matches.isEmpty() && searching -> "Recherche…"
@@ -132,11 +152,15 @@ private fun SearchResults(matches: List<CatalogItem>, query: String, searching: 
     )
     Spacer(Modifier.height(12.dp))
     LazyVerticalGrid(
+        state = memory.grid,
         columns = GridCells.Adaptive(240.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(start = 48.dp, top = 16.dp, end = 48.dp, bottom = 48.dp),
     ) {
-        itemsIndexed(matches, key = { _, item -> item.url }) { _, item -> ItemCard(item, onOpen) }
+        itemsIndexed(matches, key = { _, item -> item.url }) { _, item ->
+            val target = if (item.url == returnUrl) Modifier.focusRequester(returnFocus) else Modifier
+            ItemCard(item, onOpen, target.onFocusChanged { if (it.isFocused) memory.focusedUrl = item.url })
+        }
     }
 }
