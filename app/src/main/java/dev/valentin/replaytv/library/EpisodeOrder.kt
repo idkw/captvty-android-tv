@@ -20,6 +20,7 @@ data class EpisodeNumber(val series: String, val season: Int, val episode: Int, 
         private val EPISODE = Regex("""\b(?:episode|ep|emission)\.?\s*(\d{1,4})(?:\s*/\s*\d+)?""", RegexOption.IGNORE_CASE)
         private val PART = Regex("""\b(?:partie|part)\s*(\d{1,2})""", RegexOption.IGNORE_CASE)
         private val FRACTION = Regex("""\((\d{1,3})\s*/\s*\d{1,3}\)""")
+        private val YEAR = Regex("""\((\d{4})\)\s*$""")
 
         /** Le sous-titre d'abord (TF1 y met « Saison · Épisode »), sinon le titre. */
         fun of(video: CatalogItem.Video): EpisodeNumber? =
@@ -47,7 +48,8 @@ data class EpisodeNumber(val series: String, val season: Int, val episode: Int, 
             val start = listOfNotNull(season, episode, part, fraction).minOf { it.range.first }
             return EpisodeNumber(
                 series = normalize(plain.substring(0, start)),
-                season = season?.groupValues?.get(1)?.toInt() ?: 0,
+                // Sans saison, l'année ajoutée au titre (M6, voir M6Catalog.withYears) en tient lieu.
+                season = season?.groupValues?.get(1)?.toInt() ?: YEAR.find(plain)?.groupValues?.get(1)?.toInt() ?: 0,
                 episode = episodeNumber,
                 part = partNumber,
             )

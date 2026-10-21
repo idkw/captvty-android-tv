@@ -56,10 +56,24 @@ class M6Catalog(private val http: OkHttpClient) {
     suspend fun program(url: String): List<CatalogRow> {
         val programId = PROGRAM_ID.find(url)?.groupValues?.get(1) ?: return emptyList()
         val videos = get("$MIDDLEWARE/programs/$programId/videos?csa=6&with=clips,freemiumpacks&type=vi&limit=100&offset=0")
-        val items = (videos as? JsonArray).orEmpty()
+        val items = withYears((videos as? JsonArray).orEmpty()
             .filter { it.arr("freemium_packs").isEmpty() }
-            .mapNotNull { video(it, url) }
+            .mapNotNull { json -> video(json, url)?.let { it to json.str("publication_date") } })
         return if (items.isEmpty()) emptyList() else listOf(CatalogRow("Épisodes gratuits", items))
+    }
+
+    /**
+     * M6 garde plusieurs saisons d'un programme sans numéro de saison : trois « Épisode 10 - Partie 2 »
+     * d'années différentes. Si des titres se répètent, chaque titre du programme reçoit l'année de
+     * publication : « Épisode 10 - Partie 2 (2026) ».
+     */
+    internal fun withYears(videos: List<Pair<CatalogItem.Video, String?>>): List<CatalogItem.Video> {
+        val repeated = videos.groupingBy { (video, _) -> video.title }.eachCount().any { it.value > 1 }
+        if (!repeated) return videos.map { it.first }
+        return videos.map { (video, date) ->
+            val year = date?.take(4)?.takeIf { it.length == 4 && it.all(Char::isDigit) }
+            if (year == null) video else video.copy(title = "${video.title} ($year)")
+        }
     }
 
     /** Fiche d'une vidéo, avec ses manifestes (`clips[0].assets`), dont l'URL signée expire après quelques heures. */

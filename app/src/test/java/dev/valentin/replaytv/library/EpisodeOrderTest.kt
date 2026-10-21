@@ -21,6 +21,7 @@ class EpisodeOrderTest {
             "Saison 2 · Épisode 3" to EpisodeNumber("", 2, 3, 0),
             "Le Bureau S3 E7" to EpisodeNumber("le bureau", 3, 7, 0),
             "S1 E2 - Épisode 2" to EpisodeNumber("", 1, 2, 0),
+            "Épisode 10 - Partie 2 (2026)" to EpisodeNumber("", 2026, 10, 2),
             "Les Aventures de Tintin (3/6)" to EpisodeNumber("les aventures de tintin", 0, 3, 0),
         )
 
