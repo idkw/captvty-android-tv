@@ -15,9 +15,9 @@ android {
         applicationId = "dev.valentin.replaytv"
         minSdk = 24
         targetSdk = 36
-        versionCode = 16
+        versionCode = 17
         // -Preplaytv.versionName=… permet de construire une version « ancienne » pour tester les mises à jour.
-        versionName = (project.findProperty("replaytv.versionName") as String?) ?: "0.5.3"
+        versionName = (project.findProperty("replaytv.versionName") as String?) ?: "0.6.0"
     }
 
     // Un APK par architecture (arm64-v8a : box 64 bits, armeabi-v7a : box 32 bits, x86_64 : émulateur)

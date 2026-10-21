@@ -100,6 +100,11 @@ fun InProgressScreen(app: ReplayTvApp, onResume: (CatalogItem.Video) -> Unit) {
                     selected = null
                     onResume(entry.video)
                 },
+                onRestart = {
+                    positions.clear(entry.video.url)
+                    selected = null
+                    onResume(entry.video)
+                },
                 onRemove = {
                     positions.clear(entry.video.url)
                     app.library.forgetPlayed(entry.video.url)
@@ -113,7 +118,7 @@ fun InProgressScreen(app: ReplayTvApp, onResume: (CatalogItem.Video) -> Unit) {
 }
 
 @Composable
-private fun InProgressDialog(entry: InProgress, onResume: () -> Unit, onRemove: () -> Unit, onDismiss: () -> Unit) {
+private fun InProgressDialog(entry: InProgress, onResume: () -> Unit, onRestart: () -> Unit, onRemove: () -> Unit, onDismiss: () -> Unit) {
     BackHandler(onBack = onDismiss)
     val focus = remember { FocusRequester() }
     LaunchedEffect(Unit) {
@@ -141,6 +146,7 @@ private fun InProgressDialog(entry: InProgress, onResume: () -> Unit, onRemove: 
             Spacer(Modifier.height(4.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Button(onClick = onResume, modifier = Modifier.focusRequester(focus)) { Text("Reprendre la lecture") }
+                Button(onClick = onRestart) { Text("Recommencer") }
                 Button(onClick = onRemove) { Text("Retirer de « En cours »") }
                 Button(onClick = onDismiss) { Text("Annuler") }
             }

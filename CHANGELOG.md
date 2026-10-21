@@ -3,6 +3,15 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.6.0
+
+- Revenir au début d'un épisode commencé :
+  - sur la fiche de l'épisode, bouton « Recommencer depuis le début » à côté de « Reprendre à … » ;
+  - dans l'onglet « En cours », choix « Recommencer » dans le popup ;
+  - pendant la lecture, menu ▲ › « Revenir au début de l'épisode », avec une confirmation où « Annuler » est sélectionné par défaut.
+- Le menu ▲ du lecteur s'ouvre maintenant sur toutes les vidéos ; quand il n'y a pas de sous-titres, il l'indique au lieu de rester fermé.
+- Le menu ▲ défile quand il est long (vidéos Arte avec beaucoup de pistes) : la ligne sélectionnée reste visible.
+
 ## v0.5.3
 
 - Onglets « Favoris » et « En cours », résultats de recherche : la première ligne de vignettes n'est plus rognée en haut quand une vignette est sélectionnée.

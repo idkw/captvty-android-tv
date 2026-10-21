@@ -147,6 +147,22 @@ fun DetailScreen(
                     modifier = Modifier.focusRequester(primaryFocus),
                 ) { Text(playLabel) }
 
+                // Seulement s'il y a une position de reprise ; jamais sélectionné par défaut.
+                if (resumeAtMs > 0) {
+                    val downloaded = entry?.takeIf { it.status is DownloadStatus.Done }
+                    Button(
+                        onClick = {
+                            positions.clear(video.url)
+                            resumeAtMs = 0
+                            when {
+                                downloaded != null -> playFile(downloaded.file, downloaded.meta.title)
+                                media?.streamUrl != null -> playStream(media.streamUrl, media.title)
+                            }
+                        },
+                        enabled = downloaded != null || (media?.streamUrl != null && !media.hasDrm),
+                    ) { Text("Recommencer depuis le début") }
+                }
+
                 if (entry == null) {
                     Button(
                         onClick = { app.downloads.enqueue(video, media) },

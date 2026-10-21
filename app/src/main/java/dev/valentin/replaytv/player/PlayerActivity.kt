@@ -74,6 +74,7 @@ class PlayerActivity : ComponentActivity() {
         // surcouche ; ne quitte la vidéo que si elle est déjà masquée, ou si la lecture est finie/en erreur.
         onBackPressedDispatcher.addCallback(this) {
             when {
+                ui.confirmRestart -> ui.confirmRestart = false
                 ui.menuOpen -> ui.menuOpen = false
                 ui.controlsVisible && !ui.ended && ui.error == null -> ui.controlsVisible = false
                 else -> finish()
@@ -157,6 +158,7 @@ class PlayerActivity : ComponentActivity() {
         }
         if (event.action != KeyEvent.ACTION_DOWN) return super.dispatchKeyEvent(event)
 
+        if (ui.confirmRestart) return handleConfirmKey(exoPlayer, event)
         if (ui.menuOpen) return handleMenuKey(exoPlayer, event)
 
         return when (event.keyCode) {
@@ -179,19 +181,50 @@ class PlayerActivity : ComponentActivity() {
     private fun openMenu(exoPlayer: ExoPlayer) {
         rebuildMenu(exoPlayer)
         if (ui.menuItems.isEmpty()) return
-        ui.menuIndex = ui.menuItems.indexOfFirst { it.selected }.coerceAtLeast(0)
+        // Focus sur le choix en cours, sinon sur la première ligne utilisable (jamais sur une information).
+        ui.menuIndex = ui.menuItems.indexOfFirst { it.selected }.takeIf { it >= 0 }
+            ?: ui.menuItems.indexOfFirst { it.kind != MenuItem.Kind.INFO }.coerceAtLeast(0)
         ui.menuOpen = true
         ui.showControls()
+    }
+
+    /** Confirmation du retour au début : gauche/droite choisit, OK valide, Retour annule. */
+    private fun handleConfirmKey(exoPlayer: ExoPlayer, event: KeyEvent): Boolean {
+        ui.showControls()
+        when (event.keyCode) {
+            KeyEvent.KEYCODE_DPAD_LEFT -> ui.confirmIndex = 0
+            KeyEvent.KEYCODE_DPAD_RIGHT -> ui.confirmIndex = 1
+            KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
+                if (ui.confirmIndex == 1) {
+                    restartFromBeginning(exoPlayer)
+                    ui.menuOpen = false
+                }
+                ui.confirmRestart = false
+            }
+            KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_DOWN -> Unit
+            else -> return super.dispatchKeyEvent(event)
+        }
+        return true
+    }
+
+    private fun restartFromBeginning(exoPlayer: ExoPlayer) {
+        exoPlayer.seekTo(0)
+        ui.seekTargetMs = null
+        ui.resumedFromMs = 0
+        ui.ended = false
+        positions.clear(resumeKey)
+        exoPlayer.play()
     }
 
     private fun handleMenuKey(exoPlayer: ExoPlayer, event: KeyEvent): Boolean {
         ui.showControls()
         when (event.keyCode) {
-            KeyEvent.KEYCODE_DPAD_UP -> ui.menuIndex = (ui.menuIndex - 1).coerceAtLeast(0)
-            KeyEvent.KEYCODE_DPAD_DOWN -> ui.menuIndex = (ui.menuIndex + 1).coerceAtMost(ui.menuItems.lastIndex)
+            KeyEvent.KEYCODE_DPAD_UP -> ui.menuIndex = nextUsable(ui.menuIndex, -1)
+            KeyEvent.KEYCODE_DPAD_DOWN -> ui.menuIndex = nextUsable(ui.menuIndex, +1)
             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER -> {
-                ui.menuItems.getOrNull(ui.menuIndex)?.action?.invoke()
-                rebuildMenu(exoPlayer)
+                val item = ui.menuItems.getOrNull(ui.menuIndex)
+                if (item != null && item.kind != MenuItem.Kind.INFO) item.action()
+                if (!ui.confirmRestart) rebuildMenu(exoPlayer)
             }
             KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> ui.menuOpen = false
             KeyEvent.KEYCODE_BACK -> return super.dispatchKeyEvent(event)
@@ -200,11 +233,28 @@ class PlayerActivity : ComponentActivity() {
         return true
     }
 
-    /** Construit le menu à partir des pistes de la vidéo : sous-titres, taille, versions audio. */
+    /** Ligne suivante dans [direction] en sautant les lignes d'information ; reste en place au bord. */
+    private fun nextUsable(from: Int, direction: Int): Int {
+        var index = from + direction
+        while (index in ui.menuItems.indices) {
+            if (ui.menuItems[index].kind != MenuItem.Kind.INFO) return index
+            index += direction
+        }
+        return from
+    }
+
+    /** Construit le menu : retour au début, puis sous-titres, taille et versions audio. */
     private fun rebuildMenu(exoPlayer: ExoPlayer) {
         val tracks = exoPlayer.currentTracks
         val params = exoPlayer.trackSelectionParameters
-        val items = mutableListOf<MenuItem>()
+        // En tête, toujours visible ; une confirmation suit : un appui sur OK par mégarde ne fait pas
+        // perdre la position.
+        val items = mutableListOf(
+            MenuItem(SECTION_PLAYBACK, "Revenir au début de l'épisode", selected = false, kind = MenuItem.Kind.ACTION) {
+                ui.confirmIndex = 0
+                ui.confirmRestart = true
+            },
+        )
 
         val textGroups = tracks.groupsOfType(C.TRACK_TYPE_TEXT)
         if (textGroups.isNotEmpty()) {
@@ -233,6 +283,8 @@ class PlayerActivity : ComponentActivity() {
                     prefs.subtitleSize = index
                 }
             }
+        } else {
+            items += MenuItem(SECTION_SUBTITLES, "Aucun sous-titre pour cette vidéo", selected = false, kind = MenuItem.Kind.INFO) {}
         }
 
         val audioGroups = tracks.groupsOfType(C.TRACK_TYPE_AUDIO)

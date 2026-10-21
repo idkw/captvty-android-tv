@@ -29,6 +29,10 @@ class PlayerUiState {
     var menuIndex by mutableStateOf(0)
     var menuItems by mutableStateOf<List<MenuItem>>(emptyList())
 
+    /** Confirmation « Revenir au début ? » ; 0 = Annuler (choix par défaut), 1 = Revenir au début. */
+    var confirmRestart by mutableStateOf(false)
+    var confirmIndex by mutableStateOf(0)
+
     fun showControls() {
         controlsVisible = true
         lastInteractionAt = SystemClock.uptimeMillis()

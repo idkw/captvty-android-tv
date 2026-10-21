@@ -136,6 +136,16 @@ fun DrmDetailScreen(
                     Button(onClick = ::play, enabled = !resolving, modifier = Modifier.focusRequester(primaryFocus)) {
                         Text(if (resumeAtMs > 0) "Reprendre à ${formatClock(resumeAtMs)}" else "Lire")
                     }
+                    if (resumeAtMs > 0) {
+                        Button(
+                            onClick = {
+                                positions.clear(video.url)
+                                resumeAtMs = 0
+                                play()
+                            },
+                            enabled = !resolving,
+                        ) { Text("Recommencer depuis le début") }
+                    }
                     Button(onClick = onAccounts) { Text("Compte ${video.source.label}") }
                 } else {
                     Button(onClick = onAccounts, modifier = Modifier.focusRequester(primaryFocus)) {

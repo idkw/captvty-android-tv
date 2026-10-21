@@ -8,6 +8,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -89,9 +91,11 @@ fun PlayerScreen(player: ExoPlayer, ui: PlayerUiState, title: String, onTick: ()
             Overlay(ui, title)
         }
 
-        AnimatedVisibility(visible = ui.menuOpen, enter = fadeIn(), exit = fadeOut(), modifier = Modifier.align(Alignment.CenterEnd)) {
+        AnimatedVisibility(visible = ui.menuOpen && !ui.confirmRestart, enter = fadeIn(), exit = fadeOut(), modifier = Modifier.align(Alignment.CenterEnd)) {
             TrackMenu(ui)
         }
+
+        if (ui.confirmRestart) RestartConfirmation(ui)
     }
 }
 
@@ -121,45 +125,64 @@ private fun Subtitles(ui: PlayerUiState, modifier: Modifier) {
 
 @Composable
 private fun TrackMenu(ui: PlayerUiState) {
+    // Liste défilante : avec beaucoup de pistes (Arte), le menu dépasse la hauteur de l'écran, et la
+    // ligne sélectionnée doit rester visible.
+    val listState = rememberLazyListState()
+    val rows = remember(ui.menuItems) { menuRows(ui.menuItems) }
+    LaunchedEffect(ui.menuIndex, rows) {
+        val row = rows.indexOfFirst { it.itemIndex == ui.menuIndex }
+        if (row >= 0) listState.animateScrollToItem((row - 2).coerceAtLeast(0))
+    }
     Column(
         modifier = Modifier
-            .padding(end = 48.dp)
+            .padding(top = 48.dp, bottom = 48.dp, end = 48.dp)
             .width(460.dp)
             .background(Color(0xE6141C2B), RoundedCornerShape(16.dp))
             .padding(vertical = 20.dp, horizontal = 8.dp),
     ) {
-        var lastSection: String? = null
-        ui.menuItems.forEachIndexed { index, item ->
-            if (item.section != lastSection) {
-                lastSection = item.section
-                Text(
-                    item.section,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(start = 20.dp, top = if (index == 0) 0.dp else 16.dp, bottom = 6.dp),
-                )
-            }
-            val focused = index == ui.menuIndex
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(if (focused) Color.White else Color.Transparent, RoundedCornerShape(10.dp))
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
-            ) {
-                Text(
-                    if (item.selected) "●" else "○",
-                    color = if (focused) Color(0xFF141C2B) else Color.White,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-                Spacer(Modifier.width(14.dp))
-                Text(
-                    item.label,
-                    color = if (focused) Color(0xFF141C2B) else Color.White,
-                    style = MaterialTheme.typography.bodyLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+        LazyColumn(state = listState, modifier = Modifier.weight(1f, fill = false)) {
+            items(rows.size) { rowIndex ->
+                val row = rows[rowIndex]
+                if (row.header != null) {
+                    Text(
+                        row.header,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(start = 20.dp, top = if (rowIndex == 0) 0.dp else 16.dp, bottom = 6.dp),
+                    )
+                } else {
+                    val item = ui.menuItems[row.itemIndex]
+                    val focused = row.itemIndex == ui.menuIndex
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(if (focused) Color.White else Color.Transparent, RoundedCornerShape(10.dp))
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
+                    ) {
+                        Text(
+                            when (item.kind) {
+                                MenuItem.Kind.ACTION -> "↺"
+                                MenuItem.Kind.INFO -> " "
+                                MenuItem.Kind.CHOICE -> if (item.selected) "●" else "○"
+                            },
+                            color = if (focused) Color(0xFF141C2B) else Color.White,
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                        Spacer(Modifier.width(14.dp))
+                        Text(
+                            item.label,
+                            color = when {
+                                focused -> Color(0xFF141C2B)
+                                item.kind == MenuItem.Kind.INFO -> Color.White.copy(alpha = 0.6f)
+                                else -> Color.White
+                            },
+                            style = MaterialTheme.typography.bodyLarge,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
             }
         }
         Text(
@@ -168,6 +191,20 @@ private fun TrackMenu(ui: PlayerUiState) {
             color = Color.White.copy(alpha = 0.6f),
             modifier = Modifier.padding(start = 20.dp, top = 16.dp),
         )
+    }
+}
+
+/** Ligne affichée du menu : un titre de section, ou un élément (par son indice dans la liste). */
+private class MenuRow(val header: String?, val itemIndex: Int)
+
+private fun menuRows(items: List<MenuItem>): List<MenuRow> = buildList {
+    var lastSection: String? = null
+    items.forEachIndexed { index, item ->
+        if (item.section != lastSection) {
+            lastSection = item.section
+            add(MenuRow(item.section, -1))
+        }
+        add(MenuRow(null, index))
     }
 }
 
@@ -226,7 +263,7 @@ private fun Overlay(ui: PlayerUiState, title: String) {
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
-                    "OK : lecture / pause   ◀ ▶ : ±10 s (maintenir pour accélérer)   ▲ : sous-titres et audio   Retour : masquer",
+                    "OK : lecture / pause   ◀ ▶ : ±10 s (maintenir pour accélérer)   ▲ : menu (début, sous-titres, audio)   Retour : masquer",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.7f),
                 )
@@ -324,4 +361,41 @@ private fun playTriangle(size: Float): Path = Path().apply {
     lineTo(size * 0.8f, size * 0.5f)
     lineTo(size * 0.3f, size * 0.8f)
     close()
+}
+
+@Composable
+private fun RestartConfirmation(ui: PlayerUiState) {
+    Box(modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.6f)), contentAlignment = Alignment.Center) {
+        Column(
+            modifier = Modifier
+                .width(680.dp)
+                .background(Color(0xF0141C2B), RoundedCornerShape(16.dp))
+                .padding(32.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text("Revenir au début de l'épisode ?", style = MaterialTheme.typography.headlineSmall, color = Color.White)
+            Text(
+                "La lecture reprendra à 0:00 et la position actuelle (${formatClock(ui.positionMs)}) sera oubliée.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White.copy(alpha = 0.75f),
+            )
+            Spacer(Modifier.height(8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                ConfirmChoice("Annuler", focused = ui.confirmIndex == 0)
+                ConfirmChoice("Revenir au début", focused = ui.confirmIndex == 1)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConfirmChoice(label: String, focused: Boolean) {
+    Text(
+        label,
+        style = MaterialTheme.typography.titleMedium,
+        color = if (focused) Color(0xFF141C2B) else Color.White,
+        modifier = Modifier
+            .background(if (focused) Color.White else Color.White.copy(alpha = 0.12f), RoundedCornerShape(24.dp))
+            .padding(horizontal = 24.dp, vertical = 12.dp),
+    )
 }

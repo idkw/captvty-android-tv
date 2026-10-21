@@ -10,12 +10,17 @@ class MenuItem(
     val section: String,
     val label: String,
     val selected: Boolean,
+    /** Choix (pastille ●/○), action (flèche ↺) ou simple information, sans effet. */
+    val kind: Kind = Kind.CHOICE,
     val action: () -> Unit,
-)
+) {
+    enum class Kind { CHOICE, ACTION, INFO }
+}
 
 const val SECTION_SUBTITLES = "Sous-titres"
 const val SECTION_SUBTITLE_SIZE = "Taille des sous-titres"
 const val SECTION_AUDIO = "Audio"
+const val SECTION_PLAYBACK = "Lecture"
 
 fun Tracks.groupsOfType(type: Int): List<Tracks.Group> = groups.filter { it.type == type && it.isSupported }
 
