@@ -1,0 +1,96 @@
+{
+ "data": {
+  "sliderOfSearchPrograms": {
+   "items": [
+    {
+     "id": "f9792451-b523-4b3a-889c-ed42ffeac684",
+     "program": {
+      "name": "Koh-Lanta",
+      "slug": "koh-lanta",
+      "mainChannel": {
+       "id": "beaf7cc1-5527-4af9-ab9c-7876bfc88b94",
+       "slug": "tf1"
+      },
+      "typologyDetails": {
+       "label": "Émission",
+       "slug": "emission"
+      },
+      "decoration": {
+       "thumbnail": {
+        "id": "program-card-landscape-jpg-c5b9dc",
+        "sourcesWithScales": [
+         {
+          "height": "720",
+          "scale": 1,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-2ab354-0@1x.jpg",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 2,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-3c3594-0@2x.jpg",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 3,
+          "type": "jpg",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-3836c0-0@3x.jpg",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 1,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-dabda5-0@1x.webp",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 2,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-11fc0e-0@2x.webp",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 3,
+          "type": "webp",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-1eecaf-0@3x.webp",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 1,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-7576e4-0@1x.avif",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 2,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-ecae0d-0@2x.avif",
+          "width": "1280"
+         },
+         {
+          "height": "720",
+          "scale": 3,
+          "type": "avif",
+          "url": "https://photos.tf1.fr/1280/720/program-card-landscape-jpg-c5b9dc-dd5f11-0@3x.avif",
+          "width": "1280"
+         }
+        ]
+       }
+      }
+     }
+    }
+   ]
+  },
+  "sliderOfSearchVideos": {
+   "items": []
+  }
+ }
+}

@@ -27,6 +27,7 @@ sealed interface Screen {
     data object Home : Screen
     data class ChannelReplays(val channel: Channel) : Screen
     data object Themes : Screen
+    data object Search : Screen
     data class Browse(val section: Section) : Screen
     data class Collection(val item: CatalogItem.Collection) : Screen
     /** [collection] : la collection d'où vient la vidéo, pour proposer les épisodes suivants en fin de lecture. */
@@ -119,6 +120,7 @@ private fun Screens(
                 onAccounts = { push(Screen.Accounts) },
                 onFavorites = { push(Screen.Favorites) },
                 onInProgress = { push(Screen.InProgress) },
+                onSearch = { push(Screen.Search) },
                 onCheckUpdates = { app.updates.check(manual = true) },
             )
 
@@ -130,6 +132,8 @@ private fun Screens(
             )
 
             Screen.Themes -> ThemesScreen(onSection = { push(Screen.Browse(it)) })
+
+            Screen.Search -> SearchScreen(app = app, onOpen = { open(it, null) }, memory = memory)
 
             is Screen.Browse -> BrowseScreen(
                 title = "${current.section.source.label} · ${current.section.label}",

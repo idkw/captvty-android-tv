@@ -4,6 +4,9 @@ import android.text.Html
 import dev.valentin.replaytv.model.CatalogItem
 import dev.valentin.replaytv.model.CatalogRow
 import dev.valentin.replaytv.model.Source
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 
 /**
@@ -37,6 +40,18 @@ class FranceTvCatalog(private val http: OkHttpClient) {
             if (items.isEmpty()) null else CatalogRow(title, items)
         }
         return rows.ifEmpty { page(path) }
+    }
+
+    /**
+     * Programmes trouvés par le moteur de recherche de l'application mobile france.tv. Les vidéos
+     * isolées sont écartées : la réponse ne donne pas l'adresse de leur page, que yt-dlp attend.
+     */
+    suspend fun search(query: String): List<CatalogItem> {
+        val url = SEARCH.toHttpUrl().newBuilder()
+            .addQueryParameter("term", query)
+            .addQueryParameter("platform", "apps")
+            .build().toString()
+        return parseSearch(http.getString(url, accept = "application/json"))
     }
 
     internal fun parseCards(html: String): List<CatalogItem> {
@@ -73,6 +88,27 @@ class FranceTvCatalog(private val http: OkHttpClient) {
 
     companion object {
         const val BASE = "https://www.france.tv"
+        private const val SEARCH = "https://api-mobile.yatta.francetv.fr/apps/search"
+        private val json = Json { ignoreUnknownKeys = true }
+
+        /**
+         * `collections[].items[]` de type `program` ; `program_path` donne l'adresse de la page du
+         * programme, les « _ » séparant ses segments : `france-2_la-terre-et-le-sang` →
+         * `/france-2/la-terre-et-le-sang/`.
+         */
+        fun parseSearch(body: String): List<CatalogItem> =
+            json.parseToJsonElement(body).arr("collections").flatMap { it.arr("items") }.mapNotNull { item ->
+                if (item.str("type") != "program") return@mapNotNull null
+                val path = item.str("program_path") ?: return@mapNotNull null
+                val image = item.arr("images").firstOrNull().obj("urls")?.let { urls -> (urls["w:800"] ?: urls.values.firstOrNull()) }
+                CatalogItem.Collection(
+                    source = Source.FRANCE_TV,
+                    title = item.str("label") ?: return@mapNotNull null,
+                    subtitle = null,
+                    imageUrl = (image as? JsonPrimitive)?.content,
+                    url = "$BASE/${path.replace('_', '/')}/",
+                )
+            }.distinctBy { it.url }
         private val CARD = Regex("""<a data-card-link="true"[^>]*href="([^"]+)"[^>]*>(.*?)</a>""", RegexOption.DOT_MATCHES_ALL)
         private val SPAN = Regex("""<span[^>]*>([^<]*)</span>""")
         private val IMG = Regex("""<img[^>]*\ssrc="([^"]+)"""")

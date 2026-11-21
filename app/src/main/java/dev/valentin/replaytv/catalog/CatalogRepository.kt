@@ -8,7 +8,13 @@ import dev.valentin.replaytv.model.Source
 import dev.valentin.replaytv.ytdlp.YtDlp
 import okhttp3.OkHttpClient
 
-class CatalogRepository(http: OkHttpClient, ytDlp: YtDlp, private val m6: M6Catalog, private val tf1: Tf1Catalog) {
+class CatalogRepository(
+    http: OkHttpClient,
+    ytDlp: YtDlp,
+    private val m6: M6Catalog,
+    private val tf1: Tf1Catalog,
+    private val m6Index: M6ProgramIndex,
+) {
 
     private val franceTv = FranceTvCatalog(http)
     private val arte = ArteCatalog(http, ytDlp)
@@ -32,5 +38,16 @@ class CatalogRepository(http: OkHttpClient, ytDlp: YtDlp, private val m6: M6Cata
         Source.ARTE -> arte.collection(item.url)
         Source.TF1 -> tf1.program(item.url)
         Source.M6 -> m6.program(item.url)
+    }
+
+    /**
+     * Recherche dans une source : le moteur de recherche de la chaîne pour France TV, Arte et TF1+,
+     * la liste des programmes préchargée pour M6+ (voir [M6ProgramIndex]).
+     */
+    suspend fun search(source: Source, query: String): List<CatalogItem> = when (source) {
+        Source.FRANCE_TV -> franceTv.search(query)
+        Source.ARTE -> arte.search(query)
+        Source.TF1 -> tf1.search(query)
+        Source.M6 -> m6Index.search(query)
     }
 }

@@ -1,5 +1,11 @@
 package dev.valentin.replaytv.ui
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.tv.material3.LocalContentColor
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +47,7 @@ fun HomeScreen(
     onCheckUpdates: () -> Unit,
     onFavorites: () -> Unit,
     onInProgress: () -> Unit,
+    onSearch: () -> Unit,
 ) {
     val ytState by app.ytDlp.state.collectAsStateWithLifecycle()
     val downloads by app.downloads.entries.collectAsStateWithLifecycle()
@@ -54,15 +61,10 @@ fun HomeScreen(
     Column(modifier = Modifier.fillMaxSize().padding(vertical = 32.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 48.dp)) {
             Text("Replay TV", style = MaterialTheme.typography.displaySmall)
-            Spacer(Modifier.width(24.dp))
-            // Le moteur de téléchargement ne se signale qu'en cas de panne.
-            val failure = (ytState as? YtDlp.State.Failed)?.message
-            Text(
-                text = failure?.let { "Moteur de téléchargement indisponible : $it" }.orEmpty(),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.weight(1f),
-            )
+            Spacer(Modifier.weight(1f))
+            // Une loupe plutôt qu'un libellé : la rangée de boutons tient tout juste dans la largeur.
+            Button(onClick = onSearch) { SearchIcon() }
+            Spacer(Modifier.width(12.dp))
             Button(onClick = onInProgress) { Text("En cours") }
             Spacer(Modifier.width(12.dp))
             Button(onClick = onFavorites) { Text("Favoris") }
@@ -84,6 +86,15 @@ fun HomeScreen(
             Button(onClick = onAccounts) { Text("Comptes") }
             Spacer(Modifier.width(12.dp))
             Button(onClick = onCheckUpdates) { Text("v${BuildConfig.VERSION_NAME}") }
+        }
+        // Le moteur de téléchargement ne se signale qu'en cas de panne.
+        (ytState as? YtDlp.State.Failed)?.message?.let {
+            Text(
+                "Moteur de téléchargement indisponible : $it",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(horizontal = 48.dp),
+            )
         }
 
         Spacer(Modifier.height(36.dp))
@@ -129,5 +140,16 @@ private fun ChannelTile(channel: Channel, onChannel: (Channel) -> Unit, modifier
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
+    }
+}
+
+/** Loupe dessinée : les polices de la box n'ont pas toutes le symbole. Prend la couleur du texte du bouton. */
+@Composable
+private fun SearchIcon() {
+    val color = LocalContentColor.current
+    Canvas(modifier = Modifier.size(24.dp)) {
+        val stroke = size.width * 0.12f
+        drawCircle(color, radius = size.width * 0.3f, center = Offset(size.width * 0.42f, size.height * 0.42f), style = Stroke(stroke))
+        drawLine(color, Offset(size.width * 0.64f, size.height * 0.64f), Offset(size.width * 0.9f, size.height * 0.9f), strokeWidth = stroke, cap = StrokeCap.Round)
     }
 }

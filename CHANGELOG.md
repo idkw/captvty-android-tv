@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.8.0
+
+- Recherche dans toutes les chaînes : la loupe en haut de l'accueil ouvre une recherche qui interroge TF1+, France TV, M6+ et Arte en même temps. Les résultats s'affichent par chaîne dès qu'ils arrivent. TF1+, France TV et Arte passent par leur propre moteur de recherche, donc tout leur catalogue est couvert ; M6+ n'en a pas, sa liste de programmes est chargée au démarrage de l'application.
+- Page d'une chaîne : la barre de recherche ne prend plus le curseur pendant le chargement. Il va sur la première vignette ; la flèche du haut mène à la barre.
+
 ## v0.7.6
 
 - Épisodes suivants en fin de lecture : la collection est relue auprès de la chaîne pendant les 2 dernières minutes de l'épisode (ou à la fin si on y a sauté), pour proposer un épisode publié pendant la lecture.

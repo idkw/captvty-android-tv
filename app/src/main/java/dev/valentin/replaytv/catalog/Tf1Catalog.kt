@@ -50,6 +50,12 @@ class Tf1Catalog(private val http: OkHttpClient, private val queries: Tf1QueryRe
             CatalogItem.Collection(Source.TF1, name, null, imageUrl, "$BASE/$channelSlug/$slug/videos")
     }
 
+    /** Programmes trouvés par le moteur de recherche du site (requête `SearchResultsDocument`). */
+    suspend fun search(query: String): List<CatalogItem> {
+        val response = named(QUERY_SEARCH, buildJsonObject { put("query", query) }) ?: throw Tf1CatalogChangedException()
+        return parseSearchPrograms(response).map { it.toItem() }
+    }
+
     /** Les programmes d'une catégorie (slug du catalogue), une rangée par chaîne. */
     suspend fun page(categorySlug: String): List<CatalogRow> {
         val programs = programsByCategory(categorySlug).filter { it.replayCount > 0 }
@@ -202,6 +208,7 @@ class Tf1Catalog(private val http: OkHttpClient, private val queries: Tf1QueryRe
         private const val GRAPHQL = "$BASE/graphql/web"
         const val QUERY_PROGRAM_CATALOG = "ProgramCatalogDocument"
         const val QUERY_PROGRAM_VIDEOS = "VideoContainer_RelatedVideosListDocument"
+        const val QUERY_SEARCH = "SearchResultsDocument"
         const val LEGACY_QUERY_PROGRAMS = "483ce0f"
         const val LEGACY_QUERY_PROGRAM_VIDEOS = "a6f9cf0e"
         private const val PAGE_SIZE = 500
@@ -244,6 +251,22 @@ class Tf1Catalog(private val http: OkHttpClient, private val queries: Tf1QueryRe
                     imageUrl = pickSource(program.obj("decoration").obj("thumbnail").arr("sourcesWithScales"), preferredScale = 1),
                     replayCount = program.obj("sliderOfVideos").int("total") ?: 1,
                     group = typologyLabel(program.str("typology")),
+                )
+            }
+
+        /** `SearchResultsDocument` : `data.sliderOfSearchPrograms.items[].program`. */
+        fun parseSearchPrograms(response: JsonElement): List<Program> =
+            response.obj("data").obj("sliderOfSearchPrograms").arr("items").mapNotNull { item ->
+                val program = item.obj("program") ?: return@mapNotNull null
+                val channel = program.obj("mainChannel")
+                Program(
+                    slug = program.str("slug") ?: return@mapNotNull null,
+                    name = program.str("name") ?: return@mapNotNull null,
+                    channelSlug = channel.str("slug") ?: "tf1",
+                    channelLabel = channel.str("label") ?: "TF1+",
+                    imageUrl = pickSource(program.obj("decoration").obj("thumbnail").arr("sourcesWithScales"), preferredScale = 1),
+                    replayCount = 1,
+                    group = typologyLabel(program.obj("typologyDetails").str("label")),
                 )
             }
 

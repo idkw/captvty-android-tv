@@ -10,6 +10,20 @@ import org.junit.Test
 class Tf1CatalogParsingTest {
 
     @Test
+    fun `should parse programmes found by the search query`() {
+        // GIVEN une réponse réelle de SearchResultsDocument pour « koh lanta »
+        val response = Fixtures.json("search_response.json")
+
+        // WHEN on l'analyse
+        val items = Tf1Catalog.parseSearchPrograms(response).map { it.toItem() }
+
+        // THEN le programme mène à sa page de vidéos, avec sa vignette
+        assertEquals(listOf("Koh-Lanta"), items.map { it.title })
+        assertEquals("https://www.tf1.fr/tf1/koh-lanta/videos", items[0].url)
+        assertTrue(items[0].imageUrl!!.startsWith("https://photos.tf1.fr/"))
+    }
+
+    @Test
     fun `should parse programmes of the current catalogue query`() {
         // GIVEN une réponse réelle de ProgramCatalogDocument
         val response = Fixtures.json("program_catalog_response.json")

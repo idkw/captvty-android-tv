@@ -11,6 +11,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 
 /**
@@ -22,8 +23,16 @@ class ArteCatalog(private val http: OkHttpClient, private val ytDlp: YtDlp) {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun page(code: String): List<CatalogRow> {
-        val root = json.parseToJsonElement(http.getString("$EMAC/pages/$code", accept = "application/json"))
+    suspend fun page(code: String): List<CatalogRow> = zones("$EMAC/pages/$code")
+
+    /** Résultats du moteur de recherche du site : la page EMAC `SEARCH`, hors offre VOD payante. */
+    suspend fun search(query: String): List<CatalogItem> {
+        val url = "$EMAC/pages/SEARCH/".toHttpUrl().newBuilder().addQueryParameter("query", query).build().toString()
+        return zones(url).flatMap { it.items }.distinctBy { it.url }
+    }
+
+    private suspend fun zones(url: String): List<CatalogRow> {
+        val root = json.parseToJsonElement(http.getString(url, accept = "application/json"))
         return root.arr("zones").mapNotNull { zone ->
             val title = zone.str("title") ?: return@mapNotNull null
             if (title.contains("(event teaser)")) return@mapNotNull null

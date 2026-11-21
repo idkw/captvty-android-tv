@@ -5,7 +5,9 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dev.valentin.replaytv.model.CatalogItem
 import dev.valentin.replaytv.model.CatalogRow
+import dev.valentin.replaytv.model.Source
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -19,6 +21,10 @@ class ScreenMemory {
     var rows by mutableStateOf<LoadState<List<CatalogRow>>>(LoadState.Loading)
     var query by mutableStateOf("")
     var needsReload = false
+
+    /** Recherche globale : résultats par source pour [searchedQuery]. */
+    var searchResults by mutableStateOf<Map<Source, LoadState<List<CatalogItem>>>>(emptyMap())
+    var searchedQuery: String? = null
 
     /** Carte sélectionnée, par URL : un rechargement peut insérer un épisode et décaler les positions. */
     var focusedUrl: String? = null

@@ -1,0 +1,142 @@
+{
+ "label": "terre",
+ "collections": [
+  {
+   "label": "Programmes",
+   "type": "playlist_program",
+   "items": [
+    {
+     "id": 97559,
+     "label": "Terre de Blues 2026, Marie-Galante",
+     "type": "program",
+     "program_path": "la1ere_guadeloupe_terre-de-blues-2026-marie-galante",
+     "images": []
+    },
+    {
+     "id": 67601,
+     "label": "Terre Jams",
+     "type": "program",
+     "program_path": "tv5-monde_terre-jams",
+     "images": [
+      {
+       "urls": {
+        "w:800": "https://medias.france.tv/TVeRT0dd9cOD2PuV4emUbSz_dOA/800x450/filters:quality(85)/d/c/9/734b59de5db74c58857ab880108ee98912f3c21949dae84fba174545776719cd.jpg",
+        "w:1024": "https://medias.france.tv/J4TVHruTzRQ0_sfVrJ7poiFRkB8/1024x576/filters:quality(85)/d/c/9/734b59de5db74c58857ab880108ee98912f3c21949dae84fba174545776719cd.jpg",
+        "w:2500": "https://medias.france.tv/ABCmMmuPu9KoEdpRupiMUHonBgU/2500x1406/filters:quality(85)/d/c/9/734b59de5db74c58857ab880108ee98912f3c21949dae84fba174545776719cd.jpg"
+       },
+       "type": "background_16x9"
+      },
+      {
+       "urls": {
+        "w:0": "https://medias.france.tv/2ZF-v8j4WnFAQ7CYb036Cim1alY/0x0/filters:quality(85)/8/0/d/835860c4f97347d6a2b2474c3833c1605e892a17e23ae549cf04bd246547bd08.jpg",
+        "w:25": "https://medias.france.tv/7YK09QLdsHumi7f3GfEk-tSTuo4/25x0/filters:quality(85)/8/0/d/835860c4f97347d6a2b2474c3833c1605e892a17e23ae549cf04bd246547bd08.jpg",
+        "w:150": "https://medias.france.tv/G63S-D3Euxi5lZxxnIqqBbL7aZs/150x0/filters:quality(85)/8/0/d/835860c4f97347d6a2b2474c3833c1605e892a17e23ae549cf04bd246547bd08.jpg",
+        "w:300": "https://medias.france.tv/0FmM-6Rc5FguTmnpTcvFQT5IqyE/300x0/filters:quality(85)/8/0/d/835860c4f97347d6a2b2474c3833c1605e892a17e23ae549cf04bd246547bd08.jpg",
+        "w:450": "https://medias.france.tv/6QEdw4inzcHP1OacEhITYMZTTUU/450x0/filters:quality(85)/8/0/d/835860c4f97347d6a2b2474c3833c1605e892a17e23ae549cf04bd246547bd08.jpg",
+        "w:1024": "https://medias.france.tv/gH2su1fGMniY1w5HOhDSMFe9P84/1024x0/filters:quality(85)/8/0/d/835860c4f97347d6a2b2474c3833c1605e892a17e23ae549cf04bd246547bd08.jpg"
+       },
+       "type": "logo"
+      },
+      {
+       "urls": {
+        "w:400": "https://medias.france.tv/8bcUDnHeaD6dmKVFU9b7e2XN-_A/400x0/filters:quality(85)/2/b/9/24f31db790fe4c7296d0190d310b83bb31aecdd0947ff081f01890222418c9b2.jpg",
+        "w:800": "https://medias.france.tv/GeYzgXQmdz7acSHTbsWf3ZoXPGM/800x450/filters:quality(85)/2/b/9/24f31db790fe4c7296d0190d310b83bb31aecdd0947ff081f01890222418c9b2.jpg",
+        "w:1024": "https://medias.france.tv/Sg12mOSELNGY16zDaN49bmpDFXw/1024x576/filters:quality(85)/2/b/9/24f31db790fe4c7296d0190d310b83bb31aecdd0947ff081f01890222418c9b2.jpg",
+        "w:2500": "https://medias.france.tv/DjTFYGQjvrLKRFU41Z78mllRTbM/2500x1406/filters:quality(85)/2/b/9/24f31db790fe4c7296d0190d310b83bb31aecdd0947ff081f01890222418c9b2.jpg"
+       },
+       "type": "vignette_16x9"
+      },
+      {
+       "urls": {
+        "w:400": "https://medias.france.tv/WZLaTrgfGda0NCqowrYB0gFXzYc/400x533/filters:quality(85)/9/5/5/08e5fde30aef4f739273791d45b7b2fc74af7d3676492089de4aa990cf4e0559.jpg",
+        "w:800": "https://medias.france.tv/lKsML6xJbjy2b8mutihBU4Qoq34/800x1066/filters:quality(85)/9/5/5/08e5fde30aef4f739273791d45b7b2fc74af7d3676492089de4aa990cf4e0559.jpg",
+        "w:1024": "https://medias.france.tv/L3aF3LiXbCzbkNTau3y3W_Sb6oE/1024x1365/filters:quality(85)/9/5/5/08e5fde30aef4f739273791d45b7b2fc74af7d3676492089de4aa990cf4e0559.jpg"
+       },
+       "type": "vignette_3x4"
+      }
+     ]
+    },
+    {
+     "id": 100587,
+     "label": "La terre et le sang",
+     "type": "program",
+     "program_path": "france-2_la-terre-et-le-sang",
+     "images": [
+      {
+       "urls": {
+        "w:800": "https://medias.france.tv/Q9LkLwJ5XD0GCc4nHJW9YsLXusA/800x450/filters:quality(85)/s/l/e/phpcqaels.jpg",
+        "w:1024": "https://medias.france.tv/Uef_CYDzgcQY5RzWClxFq6MUFgU/1024x576/filters:quality(85)/s/l/e/phpcqaels.jpg",
+        "w:2500": "https://medias.france.tv/P7gtcfCySI71mmuLJQbpqzC_Y8k/2500x1406/filters:quality(85)/s/l/e/phpcqaels.jpg"
+       },
+       "type": "background_16x9"
+      },
+      {
+       "urls": {
+        "w:0": "https://medias.france.tv/_pYJXzclGlvZPB7vB-U5SudTGqQ/0x0/filters:quality(85)/j/t/e/phpxwmetj.png",
+        "w:25": "https://medias.france.tv/ap-hx4LIZ3d39DoNLZ_i2bDan0c/25x0/filters:quality(85)/j/t/e/phpxwmetj.png",
+        "w:150": "https://medias.france.tv/9L24hLT8migCYkmKONqaUT0aRFQ/150x0/filters:quality(85)/j/t/e/phpxwmetj.png",
+        "w:300": "https://medias.france.tv/ySh-altgdkbXuHWsdli0YXJpVo0/300x0/filters:quality(85)/j/t/e/phpxwmetj.png",
+        "w:450": "https://medias.france.tv/NewIOgTF0i6P6wj38FoWA-8ovkg/450x0/filters:quality(85)/j/t/e/phpxwmetj.png",
+        "w:1024": "https://medias.france.tv/_p0GRlmRJjD8lmnsQJYjPxomvJw/1024x0/filters:quality(85)/j/t/e/phpxwmetj.png"
+       },
+       "type": "logo"
+      },
+      {
+       "urls": {
+        "w:1280": "https://medias.france.tv/DDXVo-AfiN1H2vOP7jFOS50Jp7M/1920x1080/filters:quality(85)/w/n/m/phplh2mnw.jpg"
+       },
+       "type": "lt_16x9"
+      },
+      {
+       "urls": {
+        "w:400": "https://medias.france.tv/U32Ls6LRpSmBLF6RM1l7M6YicYs/400x0/filters:quality(85)/f/t/u/phppcsutf.jpg",
+        "w:800": "https://medias.france.tv/Jig0ybli9IjA9WaAWEe2GAtUB9M/800x450/filters:quality(85)/f/t/u/phppcsutf.jpg",
+        "w:1024": "https://medias.france.tv/JgcXSuhXuRntrl5nxTyP5Osuyyo/1024x576/filters:quality(85)/f/t/u/phppcsutf.jpg",
+        "w:2500": "https://medias.france.tv/MeZLlT78HO44I885WKuThUTyAyQ/2500x1406/filters:quality(85)/f/t/u/phppcsutf.jpg"
+       },
+       "type": "vignette_16x9"
+      },
+      {
+       "urls": {
+        "w:2000": "https://medias.france.tv/lsVHObgpmr9H4h-SghclRie0v7c/2000x0/filters:quality(85)/t/7/c/phparfc7t.jpg"
+       },
+       "type": "vignette_2x3"
+      },
+      {
+       "urls": {
+        "w:400": "https://medias.france.tv/K19V-9-CL-AYlV0-YYFFuR0ym0w/400x533/filters:quality(85)/4/r/i/phppvzir4.jpg",
+        "w:800": "https://medias.france.tv/7_atx7oVsKrgiC5C4L9EUS9LnTc/800x1066/filters:quality(85)/4/r/i/phppvzir4.jpg",
+        "w:1024": "https://medias.france.tv/zFMqPs1iw1dXrxBTcjJPT6QeZ2c/1024x1365/filters:quality(85)/4/r/i/phppvzir4.jpg"
+       },
+       "type": "vignette_3x4"
+      },
+      {
+       "urls": {
+        "w:1600": "https://medias.france.tv/sDkaTMTZfdEg4OOKxa8JEpGmjB8/1600x1200/filters:quality(85)/y/c/1/phpfu91cy.jpg"
+       },
+       "type": "vignette_4x3"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "label": "Vidéos",
+   "type": "playlist_video",
+   "items": [
+    {
+     "id": 7573208,
+     "title": "Terre",
+     "type": "integrale",
+     "episode_title": "S7 E6 - Terre"
+    },
+    {
+     "id": 8950194,
+     "title": "Terre-Neuve, rester ou partir ?",
+     "type": "integrale",
+     "episode_title": "Terre-Neuve, rester ou partir ?"
+    }
+   ]
+  }
+ ]
+}

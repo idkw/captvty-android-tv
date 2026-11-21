@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
@@ -95,6 +96,10 @@ fun ChannelScreen(channel: Channel, load: suspend () -> List<CatalogRow>, onOpen
                 },
                 placeholder = "Rechercher un programme…",
                 keyboardType = KeyboardType.Text,
+                // Pendant le chargement, le champ serait le seul élément sélectionnable et Android lui
+                // donnerait le focus : un appui sur OK ouvrirait le clavier. Le focus va à la première
+                // vignette dès qu'elle apparaît ; le champ reste accessible avec la flèche du haut.
+                modifier = Modifier.focusProperties { canFocus = memory.rows !is LoadState.Loading },
             )
         }
         Spacer(Modifier.height(16.dp))
