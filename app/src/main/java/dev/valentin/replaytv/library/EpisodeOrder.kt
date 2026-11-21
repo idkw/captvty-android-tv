@@ -20,7 +20,6 @@ data class EpisodeNumber(val series: String, val season: Int, val episode: Int, 
         private val EPISODE = Regex("""\b(?:episode|ep|emission)\.?\s*(\d{1,4})(?:\s*/\s*\d+)?""", RegexOption.IGNORE_CASE)
         private val PART = Regex("""\b(?:partie|part)\s*(\d{1,2})""", RegexOption.IGNORE_CASE)
         private val FRACTION = Regex("""\((\d{1,3})\s*/\s*\d{1,3}\)""")
-        private val YEAR = Regex("""\((\d{4})\)\s*$""")
 
         /** Le sous-titre d'abord (TF1 y met « Saison · Épisode »), sinon le titre. */
         fun of(video: CatalogItem.Video): EpisodeNumber? =
@@ -48,8 +47,8 @@ data class EpisodeNumber(val series: String, val season: Int, val episode: Int, 
             val start = listOfNotNull(season, episode, part, fraction).minOf { it.range.first }
             return EpisodeNumber(
                 series = normalize(plain.substring(0, start)),
-                // Sans saison, l'année ajoutée au titre (M6, voir M6Catalog.withYears) en tient lieu.
-                season = season?.groupValues?.get(1)?.toInt() ?: YEAR.find(plain)?.groupValues?.get(1)?.toInt() ?: 0,
+                // Chez M6, la saison est ajoutée au titre par M6Catalog.withSeasons : « (Saison 21) ».
+                season = season?.groupValues?.get(1)?.toInt() ?: 0,
                 episode = episodeNumber,
                 part = partNumber,
             )
@@ -89,9 +88,8 @@ fun nextEpisodes(
             .filter { (_, video) -> video.url != current.url && (!titleIsProgram || video.title == current.title) }
             .mapNotNull { (position, video) -> EpisodeNumber.of(video)?.let { Triple(position, video, it) } }
             .filter { (_, _, number) -> number.series == currentNumber.series && number > currentNumber }
-            // M6 garde plusieurs saisons sans numéro de saison : trois « Épisode 10 - Partie 2 »
-            // d'années différentes. On garde celui qui est le plus près de la vidéo courante dans la
-            // liste, c'est-à-dire de la même saison.
+            // Si un même numéro revient (saisons qu'on n'a pas su distinguer), on garde celui qui est
+            // le plus près de la vidéo courante dans la liste, c'est-à-dire de la même saison.
             .groupBy { (_, _, number) -> number }
             .map { (number, candidates) -> number to candidates.minBy { (position, _, _) -> kotlin.math.abs(position - index) }.second }
             .sortedBy { (number, _) -> number }
@@ -99,9 +97,16 @@ fun nextEpisodes(
     }
     if (following.size >= count) return following.take(count)
 
-    // Complément : les vidéos qui suivent la vidéo courante dans la liste, puis celles d'avant.
+    // Complément : les vidéos qui suivent la vidéo courante dans la liste, puis celles d'avant, sauf
+    // les épisodes antérieurs de la même série (à la fin d'une saison, l'épisode 15 de la saison
+    // précédente n'est pas une suite).
     val listOrder = if (index < 0) others else episodes.drop(index + 1) + episodes.take(index)
     val chosen = following.map { it.url }.toMutableSet()
-    val filler = listOrder.filter { it.url != current.url && !isWatched(it.url) && chosen.add(it.url) }
+    val filler = listOrder.filter { video ->
+        val number = EpisodeNumber.of(video)
+        val earlier = currentNumber != null && number != null && number.series == currentNumber.series &&
+            (!titleIsProgram || video.title == current.title) && number < currentNumber
+        video.url != current.url && !earlier && !isWatched(video.url) && chosen.add(video.url)
+    }
     return (following + filler).take(count)
 }

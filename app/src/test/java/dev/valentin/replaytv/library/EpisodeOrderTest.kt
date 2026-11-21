@@ -21,7 +21,7 @@ class EpisodeOrderTest {
             "Saison 2 · Épisode 3" to EpisodeNumber("", 2, 3, 0),
             "Le Bureau S3 E7" to EpisodeNumber("le bureau", 3, 7, 0),
             "S1 E2 - Épisode 2" to EpisodeNumber("", 1, 2, 0),
-            "Épisode 10 - Partie 2 (2026)" to EpisodeNumber("", 2026, 10, 2),
+            "Épisode 10 - Partie 2 (Saison 21)" to EpisodeNumber("", 21, 10, 2),
             "Les Aventures de Tintin (3/6)" to EpisodeNumber("les aventures de tintin", 0, 3, 0),
         )
 
@@ -75,6 +75,24 @@ class EpisodeOrderTest {
     }
 
     @Test
+    fun `should not propose the rest of an older season`() {
+        // GIVEN la fin de la saison 21 publiée, et la saison 20 qui va jusqu'à l'épisode 15
+        val episodes = listOf(
+            video("Épisode 14 - Partie 1 (Saison 21)", url = "21-14-1"),
+            video("Épisode 14 - Partie 2 (Saison 21)", url = "21-14-2"),
+            video("Épisode 15 - Partie 2 (Saison 20)", url = "20-15-2"),
+            video("Épisode 15 - Partie 1 (Saison 20)", url = "20-15-1"),
+            video("Épisode 14 - Partie 2 (Saison 20)", url = "20-14-2"),
+        )
+
+        // WHEN on termine la partie 2 de l'épisode 14 de la saison 21
+        val next = nextEpisodes(episodes[1], episodes)
+
+        // THEN aucun épisode de la saison 20 n'est proposé, ni comme suite ni en complément
+        assertEquals(emptyList<String>(), next.map { it.url }.filter { it.startsWith("20-") })
+    }
+
+    @Test
     fun `should use the season and episode of the subtitle`() {
         // GIVEN des épisodes TF1 : le titre est le nom de l'épisode, le sous-titre son numéro
         val episodes = listOf(
@@ -121,7 +139,8 @@ class EpisodeOrderTest {
         // WHEN on termine l'épisode 3
         val next = nextEpisodes(episodes[1], episodes, isWatched = { it == "Interview" })
 
-        // THEN les vidéos qui suivent dans la liste viennent en complément, sans la vidéo déjà vue
-        assertEquals(listOf("Épisode 2", "Making-of", "Bonus : les coulisses"), next.map { it.title })
+        // THEN les vidéos qui suivent dans la liste viennent en complément, sans la vidéo déjà vue ni
+        // l'épisode précédent de la série
+        assertEquals(listOf("Making-of", "Bonus : les coulisses"), next.map { it.title })
     }
 }

@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.8.1
+
+- M6+ : les saisons d'un même programme sont distinguées par leur numéro et non plus par l'année de publication, qui ne suffisait pas (M6 a republié en janvier 2026 la saison précédente de « L'amour est dans le pré »). Les épisodes affichent « (Saison 21) », « (Saison 20) »…
+- Fin d'un épisode : quand la saison en cours n'a pas encore d'épisode suivant, l'écran de fin ne propose plus les épisodes d'une saison précédente.
+
 ## v0.8.0
 
 - Recherche dans toutes les chaînes : la loupe en haut de l'accueil ouvre une recherche qui interroge TF1+, France TV, M6+ et Arte en même temps. Les résultats s'affichent par chaîne dès qu'ils arrivent. TF1+, France TV et Arte passent par leur propre moteur de recherche, donc tout leur catalogue est couvert ; M6+ n'en a pas, sa liste de programmes est chargée au démarrage de l'application.

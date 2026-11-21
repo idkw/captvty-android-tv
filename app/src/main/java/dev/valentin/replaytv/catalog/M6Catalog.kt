@@ -1,5 +1,6 @@
 package dev.valentin.replaytv.catalog
 
+import dev.valentin.replaytv.library.EpisodeNumber
 import dev.valentin.replaytv.model.CatalogItem
 import dev.valentin.replaytv.model.CatalogRow
 import dev.valentin.replaytv.model.Source
@@ -56,25 +57,69 @@ class M6Catalog(private val http: OkHttpClient) {
     suspend fun program(url: String): List<CatalogRow> {
         val programId = PROGRAM_ID.find(url)?.groupValues?.get(1) ?: return emptyList()
         val videos = get("$MIDDLEWARE/programs/$programId/videos?csa=6&with=clips,freemiumpacks&type=vi&limit=100&offset=0")
-        val items = withYears((videos as? JsonArray).orEmpty()
+        val items = withSeasons((videos as? JsonArray).orEmpty()
             .filter { it.arr("freemium_packs").isEmpty() }
-            .mapNotNull { json -> video(json, url)?.let { it to json.str("publication_date") } })
+            .mapNotNull { json -> video(json, url)?.let { M6Episode(it, json.arr("clips").firstOrNull().int("id") ?: 0) } })
         return if (items.isEmpty()) emptyList() else listOf(CatalogRow("Épisodes gratuits", items))
     }
 
+    /** Une vidéo d'un programme et l'identifiant de son clip, attribué par M6 dans l'ordre de création. */
+    internal class M6Episode(val video: CatalogItem.Video, val clipId: Int)
+
     /**
-     * M6 garde plusieurs saisons d'un programme sans numéro de saison : trois « Épisode 10 - Partie 2 »
-     * d'années différentes. Si des titres se répètent, chaque titre du programme reçoit l'année de
-     * publication : « Épisode 10 - Partie 2 (2026) ».
+     * M6 garde plusieurs saisons d'un programme sans numéro de saison dans les titres : trois
+     * « Épisode 14 - Partie 2 », de 2024 à 2026. L'année de publication ne suffit pas à les séparer :
+     * M6 republie parfois une saison entière d'un coup, la saison de l'an dernier a ainsi été publiée
+     * le 5 janvier 2026. Si des titres se répètent, chaque épisode reçoit sa saison :
+     * « Épisode 14 - Partie 2 (Saison 21) ».
      */
-    internal fun withYears(videos: List<Pair<CatalogItem.Video, String?>>): List<CatalogItem.Video> {
-        val repeated = videos.groupingBy { (video, _) -> video.title }.eachCount().any { it.value > 1 }
-        if (!repeated) return videos.map { it.first }
-        return videos.map { (video, date) ->
-            val year = date?.take(4)?.takeIf { it.length == 4 && it.all(Char::isDigit) }
-            if (year == null) video else video.copy(title = "${video.title} ($year)")
-        }
+    internal fun withSeasons(videos: List<M6Episode>): List<CatalogItem.Video> {
+        val repeated = videos.groupingBy { it.video.title }.eachCount().any { it.value > 1 }
+        if (!repeated) return videos.map { it.video }
+        val labels = HashMap<Int, String>()
+        videos.mapNotNull { episode -> EpisodeNumber.parse(episode.video.title)?.let { episode to it } }
+            .groupBy { (_, number) -> number.series }
+            .values
+            .forEach { series -> seasons(series).forEach { (episodes, label) -> episodes.forEach { labels[it.clipId] = label } } }
+        return videos.map { episode -> labels[episode.clipId]?.let { episode.video.copy(title = "${episode.video.title} ($it)") } ?: episode.video }
     }
+
+    /**
+     * Les saisons d'une série : dans l'ordre de création des clips, une saison commence quand un
+     * numéro déjà vu revient, ou quand la numérotation repart nettement en arrière (de l'épisode 15
+     * à l'épisode 2). Un léger désordre est toléré : la partie 1 de l'épisode 13 est parfois créée
+     * après l'épisode 14. Le numéro de saison vient des
+     * descriptions (« 21e saison », « saison 19 ») ; à défaut, les saisons sont numérotées dans l'ordre.
+     */
+    private fun seasons(series: List<Pair<M6Episode, EpisodeNumber>>): List<Pair<List<M6Episode>, String>> {
+        val groups = mutableListOf<MutableList<M6Episode>>()
+        val seen = HashSet<EpisodeNumber>()
+        var maxEpisode = 0
+        var lastClipId = 0
+        series.sortedBy { (episode, _) -> episode.clipId }.forEach { (episode, number) ->
+            val restarts = groups.isEmpty() ||
+                number in seen ||
+                number.episode < maxEpisode - 2 ||
+                (number.episode < maxEpisode && episode.clipId - lastClipId > SEASON_GAP)
+            if (restarts) {
+                groups += mutableListOf<M6Episode>()
+                seen.clear()
+                maxEpisode = 0
+            }
+            seen += number
+            groups.last() += episode
+            maxEpisode = maxOf(maxEpisode, number.episode)
+            lastClipId = episode.clipId
+        }
+        if (groups.size < 2) return emptyList()
+        return groups.mapIndexed { index, group -> group to "Saison ${seasonNumber(group) ?: (index + 1)}" }
+    }
+
+    /** Numéro de saison le plus cité dans les descriptions des épisodes du groupe. */
+    private fun seasonNumber(group: List<M6Episode>): Int? =
+        group.flatMap { episode -> SEASON_IN_TEXT.findAll(episode.video.description.orEmpty()).map { (it.groupValues[1].ifEmpty { it.groupValues[2] }).toInt() } }
+            .groupingBy { it }.eachCount()
+            .maxByOrNull { it.value }?.key
 
     /** Fiche d'une vidéo, avec ses manifestes (`clips[0].assets`), dont l'URL signée expire après quelques heures. */
     suspend fun clip(clipId: String): JsonElement = get("$MIDDLEWARE/videos/$clipId?csa=6&with=clips,freemiumpacks")
@@ -121,5 +166,9 @@ class M6Catalog(private val http: OkHttpClient) {
         private const val PAGE_SIZE = 100
         private const val SITE = "https://www.6play.fr"
         private val PROGRAM_ID = Regex("""-p_(\d+)""")
+        private val SEASON_IN_TEXT = Regex("""(\d{1,2})(?:e|ème)\s+saison|saison\s+(\d{1,2})\b""", RegexOption.IGNORE_CASE)
+
+        /** Écart d'identifiants de clips d'environ 5 mois : au-delà, une numérotation qui recule marque une nouvelle saison. */
+        private const val SEASON_GAP = 20_000
     }
 }
