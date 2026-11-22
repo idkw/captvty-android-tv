@@ -79,7 +79,9 @@ class Tf1QueryResolver(
         if (current != null && now() - current.fetchedAt < RECENT_MS && synchronized(invalidated) { invalidated.isEmpty() }) return current
         lastFailureAt?.let { if (now() - it < RETRY_AFTER_FAILURE_MS) return null }
 
-        val table = runCatching { fetchTable() }.getOrElse { log("découverte impossible : ${it.message}"); emptyMap() }
+        // Analyser une centaine de scripts prend plusieurs secondes : jamais sur le fil principal,
+        // quel que soit l'appelant (un appel depuis l'interface avait bloqué l'application).
+        val table = runCatching { withContext(Dispatchers.Default) { fetchTable() } }.getOrElse { log("découverte impossible : ${it.message}"); emptyMap() }
         if (table.size < MIN_ENTRIES) {
             log("découverte échouée : ${table.size} requête(s) trouvée(s)")
             lastFailureAt = now()

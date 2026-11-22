@@ -29,7 +29,11 @@ import dev.valentin.replaytv.model.Source
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.coroutineScope
 
@@ -44,6 +48,8 @@ import kotlinx.coroutines.coroutineScope
 fun SearchScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit, memory: ScreenMemory) {
     var query by memory::query
     val fieldFocus = remember { FocusRequester() }
+    // La touche « Terminé » du clavier lance la recherche sans attendre la fin du délai de saisie.
+    val submitted = remember { MutableSharedFlow<String>(extraBufferCapacity = 1) }
 
     // À l'arrivée, le curseur va dans le champ ; au retour d'une fiche, il revient sur la carte ouverte.
     LaunchedEffect(Unit) {
@@ -54,9 +60,10 @@ fun SearchScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit, memory: Screen
     }
 
     LaunchedEffect(Unit) {
-        snapshotFlow { query.trim() }
+        // Sur un clavier de télécommande, passer d'une lettre à la suivante prend plus d'une seconde :
+        // la recherche attend une pause plus longue que cela, pour ne pas partir à chaque caractère.
+        merge(snapshotFlow { query.trim() }.debounce(SEARCH_DEBOUNCE_MS), submitted)
             .distinctUntilChanged()
-            .debounce(SEARCH_DEBOUNCE_MS)
             .collectLatest { text ->
                 if (text == memory.searchedQuery && !memory.needsReload) return@collectLatest
                 memory.needsReload = false
@@ -69,7 +76,9 @@ fun SearchScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit, memory: Screen
                 coroutineScope {
                     SOURCES.forEach { source ->
                         launch {
-                            val result = runCatching { app.catalog.search(source, text) }.fold(
+                            // Hors du fil principal : réponses à analyser, et pour TF1+ parfois la
+                            // découverte des requêtes du site, qui bloquait l'application.
+                            val result = runCatching { withContext(Dispatchers.Default) { app.catalog.search(source, text) } }.fold(
                                 onSuccess = { LoadState.Loaded(it) },
                                 onFailure = { LoadState.Error(it.message ?: it.toString()) },
                             )
@@ -94,6 +103,7 @@ fun SearchScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit, memory: Screen
                 placeholder = "Programme, série, émission…",
                 keyboardType = KeyboardType.Text,
                 modifier = Modifier.focusRequester(fieldFocus),
+                onDone = { submitted.tryEmit(query.trim()) },
             )
         }
         Spacer(Modifier.height(16.dp))
@@ -118,7 +128,7 @@ fun SearchScreen(app: ReplayTvApp, onOpen: (CatalogItem) -> Unit, memory: Screen
 }
 
 private val SOURCES = listOf(Source.TF1, Source.FRANCE_TV, Source.M6, Source.ARTE)
-private const val SEARCH_DEBOUNCE_MS = 400L
+private const val SEARCH_DEBOUNCE_MS = 1_200L
 private const val MIN_QUERY_LENGTH = 2
 
 private fun countLabel(count: Int): String = if (count == 1) "1 résultat" else "$count résultats"

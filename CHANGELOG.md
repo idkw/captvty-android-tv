@@ -3,6 +3,11 @@
 Chaque release GitHub reprend la section de sa version. Ajouter la section de la prochaine version
 avant de pousser son tag : sans elle, le workflow de release échoue.
 
+## v0.8.2
+
+- Recherche dans toutes les chaînes : l'application ne se fige plus et ne se ferme plus pendant une recherche. La recherche tournait sur le fil de l'interface, et la première recherche TF1+ y analysait les scripts du site pendant plusieurs secondes.
+- La recherche part après 1,2 s sans frappe, au lieu de 0,4 s : sur le clavier de la télécommande, une recherche ne part plus à chaque lettre. La touche ✓ du clavier la lance tout de suite.
+
 ## v0.8.1
 
 - M6+ : les saisons d'un même programme sont distinguées par leur numéro et non plus par l'année de publication, qui ne suffisait pas (M6 a republié en janvier 2026 la saison précédente de « L'amour est dans le pré »). Les épisodes affichent « (Saison 21) », « (Saison 20) »…
